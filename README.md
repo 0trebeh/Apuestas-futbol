@@ -1,5 +1,5 @@
 # Node.js Express y MongoDB. 🛠️
-* **CRUD Rest API to connect React Native mobile app.**
+* **CRUD Rest API to connect React app web.**
 
 ## Install using npm 🔧:
 ```
