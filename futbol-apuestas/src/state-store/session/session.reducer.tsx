@@ -3,7 +3,8 @@ import { SAVE_SESSION_DATA, SessionState, SessionActionTypes } from './session.t
 const initialState: SessionState = {
     session: {
         token: '',
-        username: ''
+        username: '',
+        isSessionActive: false
     }
 }
 

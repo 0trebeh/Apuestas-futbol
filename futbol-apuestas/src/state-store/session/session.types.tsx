@@ -2,7 +2,8 @@ export const SAVE_SESSION_DATA = 'SAVE_SESSION_DATA';
 
 export interface Session {
     username: string,
-    token: string
+    token: string,
+    isSessionActive: boolean
 }
 
 export interface SessionState {
