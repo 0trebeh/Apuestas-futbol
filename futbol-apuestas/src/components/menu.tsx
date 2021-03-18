@@ -8,7 +8,7 @@ type Props = {
 function MenuComponent(props: Props) {
     let history = useHistory();
 
-    const [hidden, setHidden] = useState(false);
+    const [hidden, setHidden] = useState(true);
 
     return (
         <div
@@ -17,7 +17,8 @@ function MenuComponent(props: Props) {
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '100%',
-                textAlign: 'center'
+                textAlign: 'center',
+                position: 'fixed'
             }}
         >
             <span
@@ -47,7 +48,7 @@ function MenuComponent(props: Props) {
                     color: 'white',
                     left: '5%',
                     position: 'absolute',
-                    top: '5%'
+                    top: '30%'
                 }}
                 onClick={() => (
                     setHidden(!hidden)
@@ -73,7 +74,8 @@ function MenuComponent(props: Props) {
                                     padding: 10,
                                     fontWeight: 'bold',
                                     fontSize: 20,
-                                    borderBottomStyle: 'solid'
+                                    borderBottomStyle: 'solid',
+                                    cursor: 'pointer'
                                 }}
                             >
                                 Apuestas
@@ -92,7 +94,8 @@ function MenuComponent(props: Props) {
                                     padding: 10,
                                     fontWeight: 'bold',
                                     fontSize: 20,
-                                    borderBottomStyle: 'solid'
+                                    borderBottomStyle: 'solid',
+                                    cursor: 'pointer'
                                 }}
                             >
                                 Estadisticas
@@ -111,7 +114,8 @@ function MenuComponent(props: Props) {
                                     padding: 10,
                                     fontWeight: 'bold',
                                     fontSize: 20,
-                                    borderBottomStyle: 'solid'
+                                    borderBottomStyle: 'solid',
+                                    cursor: 'pointer'
                                 }}
                             >
                                 Predicciones
@@ -132,7 +136,8 @@ function MenuComponent(props: Props) {
                                             padding: 10,
                                             fontWeight: 'bold',
                                             fontSize: 20,
-                                            borderBottomStyle: 'solid'
+                                            borderBottomStyle: 'solid',
+                                            cursor: 'pointer'
                                         }}
                                     >
                                         Perfil
@@ -152,7 +157,8 @@ function MenuComponent(props: Props) {
                                             padding: 10,
                                             fontWeight: 'bold',
                                             fontSize: 20,
-                                            borderBottomStyle: 'solid'
+                                            borderBottomStyle: 'solid',
+                                            cursor: 'pointer'
                                         }}
                                     >
                                         Iniciar sesion
@@ -175,8 +181,12 @@ function MenuComponent(props: Props) {
                                             padding: 10,
                                             fontWeight: 'bold',
                                             fontSize: 20,
-                                            borderBottomStyle: 'solid'
+                                            borderBottomStyle: 'solid',
+                                            cursor: 'pointer'
                                         }}
+                                        onClick={() => (
+                                            history.push('/register')
+                                        )}
                                     >
                                         Registrarse
                                     </td>

@@ -43,7 +43,7 @@ function Home(props: Props) {
             <div
                 style={{
                     backgroundColor: 'red',
-                    width: '99%',
+                    width: '99.5%',
                     borderStyle: 'solid',
                     borderColor: 'transparent'
                 }}
@@ -126,7 +126,7 @@ function Home(props: Props) {
             <div
                 style={{
                     backgroundColor: 'blue',
-                    width: '99%',
+                    width: '99.5%',
                     borderStyle: 'solid',
                     borderColor: 'transparent'
                 }}
@@ -209,7 +209,7 @@ function Home(props: Props) {
             <div
                 style={{
                     backgroundColor: 'green',
-                    width: '99%',
+                    width: '99.5%',
                     borderStyle: 'solid',
                     borderColor: 'transparent'
                 }}
@@ -292,7 +292,7 @@ function Home(props: Props) {
             <div
                 style={{
                     backgroundColor: 'indigo',
-                    width: '99%',
+                    width: '99.5%',
                     borderStyle: 'solid',
                     borderColor: 'transparent'
                 }}
