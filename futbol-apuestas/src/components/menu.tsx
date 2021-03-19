@@ -160,6 +160,9 @@ function MenuComponent(props: Props) {
                                             borderBottomStyle: 'solid',
                                             cursor: 'pointer'
                                         }}
+                                        onClick={() => (
+                                            history.push('/login')
+                                        )}
                                     >
                                         Iniciar sesion
                                         </td>
