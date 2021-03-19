@@ -11,7 +11,7 @@ import { persistor, store } from './state-store/store';
 
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://fap-api.herokuapp.com/';
+axios.defaults.baseURL = 'https://fap-api.herokuapp.com';
 
 function App() {
   

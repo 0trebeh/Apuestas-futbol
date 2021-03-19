@@ -17,7 +17,7 @@ const RegisterPage = () => {
         setSaving(true);
         setTitle('Creando...');
         try {
-            let response = await axios.post('', {
+            let response = await axios.post('/api/users/', {
                 name: name,
                 email: email,
                 password: password
