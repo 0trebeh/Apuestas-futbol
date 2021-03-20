@@ -2,7 +2,7 @@ import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import MenuComponent from '../components/pageHeader';
 import { Card, Carousel, Image } from 'antd';
-import { LoadingOutlined, ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
+import { LoadingOutlined } from '@ant-design/icons';
 import type { RootState } from '../state-store/reducer.root';
 import type { Session } from '../state-store/session/session.types';
 
