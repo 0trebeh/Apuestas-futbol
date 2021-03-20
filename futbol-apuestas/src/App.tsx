@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import TestPage from './pages/test';
-import Start from './pages/start';
-import Register from './pages/registration';
-import Login from './pages/login';
-import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
+import Home from './pages/home';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import { persistor, store } from './state-store/store';
@@ -28,16 +24,7 @@ function App() {
         <BrowserRouter>
           <Switch>
             <Route exact path={'/'} >
-              <Start width={width} />
-            </Route>
-            <Route path={'/test'} >
-              <TestPage />
-            </Route>
-            <Route path={'/register'} >
-              <Register />
-            </Route>
-            <Route path={'/login'} >
-              <Login />
+              <Home width={width} />
             </Route>
           </Switch>
         </BrowserRouter >
