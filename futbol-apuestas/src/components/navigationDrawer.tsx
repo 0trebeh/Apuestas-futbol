@@ -1,8 +1,6 @@
 import React from 'react';
-import {useHistory} from 'react-router-dom';
-import { Drawer, Typography } from 'antd';
-
-const { Title } = Typography;
+import { useHistory } from 'react-router-dom';
+import { Drawer, Typography, Menu } from 'antd';
 
 type menuOptions = {
     name: string,
@@ -76,45 +74,37 @@ const NavigationDrawer = (props: Props) => {
             visible={props.menuVisible}
             onClose={props.setMenuVisible}
         >
-            <Typography>
-                <Title>Menu</Title>
+            <Menu defaultSelectedKeys={['0']} >
+                <Typography.Title>Menu</Typography.Title>
                 {
                     props.sessionActive ?
-                        menuOptions.map((option) => {
+                        menuOptions.map((option, index) => {
                             if (option.type !== 'visit')
                                 return (
-                                    <li
-                                        key={option.name}
+                                    <Menu.Item
+                                        key={index}
                                         onClick={option.action}
-                                        style={{
-                                            cursor: 'pointer',
-                                            fontSize: 18
-                                        }}
                                     >
                                         {option.name}
-                                    </li>
+                                    </Menu.Item>
                                 )
                             else return null
                         })
                         :
-                        menuOptions.map((option) => {
+                        menuOptions.map((option, index) => {
                             if (option.type !== 'session')
                                 return (
-                                    <li
-                                        key={option.name}
+                                    <Menu.Item
+                                        key={index}
                                         onClick={option.action}
-                                        style={{
-                                            cursor: 'pointer',
-                                            fontSize: 18
-                                        }}
                                     >
                                         {option.name}
-                                    </li>
+                                    </Menu.Item>
                                 )
                             else return null
                         })
                 }
-            </Typography>
+            </Menu>
         </Drawer>
     )
 }

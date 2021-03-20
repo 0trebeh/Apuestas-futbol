@@ -22,9 +22,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>
 
-type Props = PropsFromRedux & {
-    width: number
-}
+type Props = PropsFromRedux;
 
 function Home(props: Props) {
 

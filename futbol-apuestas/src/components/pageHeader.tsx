@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PageHeader} from 'antd';
+import { PageHeader } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import Login from './login';
 import Register from './register';
@@ -25,7 +25,10 @@ function MenuComponent(props: Props) {
                     backgroundColor: '#dbd8e3'
                 }}
                 extra={[
-                    <MenuOutlined onClick={() => (setMenuVisible(!menuVisible))} />
+                    <MenuOutlined
+                        key={'menuIcon'}
+                        onClick={() => (setMenuVisible(!menuVisible))}
+                    />
                 ]}
             >
             </PageHeader>
@@ -33,11 +36,11 @@ function MenuComponent(props: Props) {
                 visible={loginVisible}
                 onClose={() => (setLoginVisible(!loginVisible))}
             />
-            <Register 
+            <Register
                 visible={registerVisible}
                 onClose={() => (setRegisterVisible(!registerVisible))}
             />
-            <NavDrawer 
+            <NavDrawer
                 menuVisible={menuVisible}
                 setLoginVisible={() => (setLoginVisible(!loginVisible))}
                 sessionActive={props.sessionActive}

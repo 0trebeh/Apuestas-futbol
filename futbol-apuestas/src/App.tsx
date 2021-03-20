@@ -5,18 +5,11 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import { persistor, store } from './state-store/store';
-
 import axios from 'axios';
 
 axios.defaults.baseURL = 'https://fap-api.herokuapp.com';
 
 function App() {
-  
-  const [width, setWidth] = useState(window.innerWidth);
-
-  window.addEventListener('resize', (e) => {
-    setWidth(window.innerWidth);
-  })
 
   return (
     <Provider store={store} >
@@ -24,7 +17,7 @@ function App() {
         <BrowserRouter>
           <Switch>
             <Route exact path={'/'} >
-              <Home width={width} />
+              <Home />
             </Route>
           </Switch>
         </BrowserRouter >
