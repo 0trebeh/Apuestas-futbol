@@ -13,18 +13,18 @@ import type { DefaultResponse, LoginSuccess } from '../types/responseTypes';
 
 export class UserController extends CrudController {
     async create(req: Request, res: Response) {
-        let { username, email, password }: UserRegister = req.body;
+        let { name, email, password }: UserRegister = req.body;
         const client = await db.getClient();
         try {
             const salt = await bcrypt.genSalt();
             password = await bcrypt.hash(password, salt);
-            await client.query(query.registerUser, [username, email, password]);
+            await client.query(query.registerUser, [name, email, password]);
             const resBody: DefaultResponse = {
                 title: 'Success',
                 content: 'Usuario registrado!'
             };
             res.status(200).json(resBody);
-            Mail(username, email);
+            Mail(name, email);
         } catch (err) {
             console.error(err);
             const resBody: DefaultResponse = {
