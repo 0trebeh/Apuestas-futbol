@@ -4,7 +4,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 
-import userRoutes from './routers/userRoutes';
+import { UserRouter } from './routers';
 
 const app = express();
 
@@ -18,7 +18,7 @@ app.get('/', (req: Request, response: Response) => {
     response.status(200).send('Hola :)');
 });
 
-app.use('/users', userRoutes);
+app.use('/users', UserRouter);
 
 app.listen(port, () => {
     console.log(`Running at port ${port}`);

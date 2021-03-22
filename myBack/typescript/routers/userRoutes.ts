@@ -1,10 +1,15 @@
-import express from 'express';
-import cors from 'cors';
-import userController from '../controllers/users';
+import express, {Request, Response} from 'express';
 
-const Router = express.Router();
+import {userController, userSession} from '../controllers';
 
-Router.post('/', cors(), userController.createUser);
-Router.post('/login', userController.login);
+export const Router = express.Router({
+    strict: true
+});
 
-export default Router;
+Router.post('/', (req: Request, res: Response) => {
+    userController.create(req, res);
+});
+
+Router.post('/login', (req: Request, res: Response) => {
+    userSession.signIn(req, res);
+});
