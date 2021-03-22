@@ -1,6 +1,10 @@
+require('dotenv').config();
+
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+
+import userRoutes from './routers/userRoutes';
 
 const app = express();
 
@@ -10,9 +14,11 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-app.post('/hola', (req: Request, response: Response) => {
-    response.status(200).json({ content: 'jejejejej' })
+app.get('/', (req: Request, response: Response) => {
+    response.status(200).send('Hola :)');
 });
+
+app.use('/users', userRoutes);
 
 app.listen(port, () => {
     console.log(`Running at port ${port}`);
