@@ -1,7 +1,7 @@
 import pg from 'pg';
 
 const Pool = new pg.Pool({
-    connectionString: process.env.DATABASE_URI,
+    connectionString: process.env.DBURI,
     max: 20,
     ssl: {
         rejectUnauthorized: false
