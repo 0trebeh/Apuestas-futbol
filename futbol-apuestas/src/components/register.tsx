@@ -25,6 +25,7 @@ const RegisterPage = (props: Props) => {
                 password: password,
                 email: email
             });
+            console.log(response);
             if (response.status === 200) {
                 notification.success({
                     message: 'Cuenta creada exitosamente!',
