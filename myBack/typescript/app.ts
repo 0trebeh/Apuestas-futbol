@@ -11,9 +11,7 @@ const app = express();
 const port = process.env.PORT || 8000;
 
 app.use(helmet());
-app.use((req, resp, next) => {
-    next()
-}, cors({ maxAge: 84600 }));
+app.use(cors());
 app.use(express.json());
 
 app.get('/', (req: Request, response: Response) => {
