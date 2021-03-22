@@ -2,12 +2,22 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Card, Input, Form, Button, Modal, notification } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
+import { connect, ConnectedProps } from 'react-redux';
 
-type Props = {
+import type { Session } from '../state-store/session/session.types';
+
+const mapDispatchToProps = {
+    reduxSession: (userData: Session) => ({ type: 'SAVE_SESSION_DATA', data: userData })
+}
+
+const connector = connect(null, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type Props = PropsFromRedux & {
     visible: boolean,
     onClose: () => void
 }
-
 const LoginPage = (props: Props) => {
 
     const [name, setName] = useState('');
@@ -58,7 +68,7 @@ const LoginPage = (props: Props) => {
                 placement: 'topRight'
             })
         }
-        else{
+        else {
             setNumber(number + 1);
         }
     }
@@ -133,4 +143,4 @@ const LoginPage = (props: Props) => {
     );
 }
 
-export default LoginPage;
+export default connect(null, mapDispatchToProps)(LoginPage);

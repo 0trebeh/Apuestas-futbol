@@ -20,7 +20,7 @@ const RegisterPage = (props: Props) => {
         setSaving(true);
         setTitle('Creando...');
         try {
-            let response = await axios.post('/hola', {
+            let response = await axios.post('/', {
                 name: name,
                 password: password,
                 email: email

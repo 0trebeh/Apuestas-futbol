@@ -29,6 +29,7 @@ function Home(props: Props) {
     return (
         <div>
             <MenuComponent sessionActive={props.sessionActive} />
+            <p style={{color: 'black'}}>{props.username}</p>
             <Carousel
                 autoplay={true}
                 draggable={true}
