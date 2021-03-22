@@ -33,7 +33,7 @@ const createUser = async (req: Request, res: Response) => {
     }
 }
 
-const Login = async (req: Request, res: Response) => {
+const login = async (req: Request, res: Response) => {
     if (!process.env.JWT_SECRET) {
         const resBody: DefaultResponse = {
             title: 'Error',
@@ -90,5 +90,6 @@ const Login = async (req: Request, res: Response) => {
 }
 
 export = {
-    createUser
+    createUser,
+    login
 }
