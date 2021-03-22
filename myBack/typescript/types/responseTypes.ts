@@ -3,6 +3,13 @@ type DefaultResponse = {
     content: string
 }
 
+type LoginSuccess = {
+    title: string,
+    content: string,
+    token: string
+}
+
 export type {
-    DefaultResponse
+    DefaultResponse,
+    LoginSuccess
 }
