@@ -1,4 +1,4 @@
-import { json, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import db from '../helpers/database';
 import query from '../helpers/query';
 import bcrypt from 'bcrypt';
