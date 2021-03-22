@@ -6,7 +6,7 @@ const helmet = require("helmet");
 const server = express();
 
 //Middlewares
-server.use(cors({origin: 'localhost:3000'}));
+server.use(cors({origin: 'http://localhost:3000'}));
 server.use(helmet());
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
