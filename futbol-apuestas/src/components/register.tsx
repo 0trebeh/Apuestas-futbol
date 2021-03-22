@@ -17,14 +17,16 @@ const RegisterPage = (props: Props) => {
     const [title, setTitle] = useState('Registrarse');
 
     const doRegister = async () => {
+        console.log("llego 1");
         setSaving(true);
         setTitle('Creando...');
-        try {
-            let response = await axios.post('/api/users/', {
+        try {//https://fap-api.herokuapp.com/
+            let response = await axios.post('http://localhost:4000/api/users/', {
                 name: name,
                 password: password,
                 email: email
             });
+            console.log(response);
             if (response.status === 200) {
                 notification.success({
                     message: 'Cuenta creada exitosamente!',

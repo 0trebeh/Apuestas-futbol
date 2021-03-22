@@ -20,7 +20,7 @@ const LoginPage = (props: Props) => {
         setSaving(true);
         setTitle('Verificando...');
         try {
-            let response = await axios.post('/api/users/login', {
+            let response = await axios.post('https://fap-api.herokuapp.com/api/users/login', {
                 name: name,
                 password: password
             });
