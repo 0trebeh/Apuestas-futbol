@@ -1,5 +1,4 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 const helmet = require("helmet");
 
@@ -9,8 +8,8 @@ const server = express();
 //Middlewares
 server.use(cors());
 server.use(helmet());
-server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({ extended: true }));
+server.use(express.json());
+server.use(express.urlencoded({ extended: true }));
 
 //rutas
 server.use('/api/users', require('./routes/users'));
