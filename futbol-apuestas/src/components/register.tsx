@@ -20,28 +20,21 @@ const RegisterPage = (props: Props) => {
         setSaving(true);
         setTitle('Creando...');
         try {
-            let response = await axios.post('/hola', {
+            let response = await axios.post('/users/', {
                 name: name,
                 password: password,
                 email: email
             });
-            if (response.status === 200) {
-                notification.success({
-                    message: 'Cuenta creada exitosamente!',
-                    placement: 'topRight'
-                });
-                console.log('Register');
-            }
-            else {
-                notification.error({
-                    message: 'Error creando la cuenta. Por favor intenta mas tarde.',
-                    placement: 'topRight'
-                });
-                console.error(JSON.stringify(response));
-            }
+            console.log(response);
+            notification.success({
+                message: 'Cuenta creada exitosamente!',
+                placement: 'topRight'
+            });
+            console.log('Register');
         } catch (err) {
             notification.error({
-                message: 'Error creando la cuenta. Por favor intenta mas tarde.',
+                message: err.response.data.content,
+                description: 'Es posible que el Email ya este registrado.',
                 placement: 'topRight'
             });
             console.error(err);
