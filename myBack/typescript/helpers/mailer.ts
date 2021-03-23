@@ -1,35 +1,38 @@
 import nodemailer from 'nodemailer';
+import Mail from 'nodemailer/lib/mailer';
 
-const Mail = async (username: string, email: string) => {
+import { MailerObject } from './types/mailerType';
 
-    if (!process.env.PORTMAIL) {
-        console.error('PORTMAIL not specified');
-        return;
+export class Mailer extends MailerObject {
+
+    transporter: Mail;
+
+    constructor() {
+        super();
+        this.transporter = nodemailer.createTransport({
+            host: process.env.HOSTMAIL,
+            port: 465,
+            secure: true,
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.PASS
+            }
+        });
     }
 
-    const transporter = nodemailer.createTransport({
-        host: process.env.HOSTMAIL,
-        port: Number.parseInt(process.env.PORTMAIL),
-        secure: true,
-        auth: {
-            user: process.env.EMAIL,
-            pass: process.env.PASS
+    async sendMail(username: string, email: string) {
+        try {
+            await this.transporter.sendMail({
+                from: '"FAP" <' + process.env.EMAIL + '>',
+                to: email,
+                subject: "Hola " + username + "!. bienvenido a FAP! ✔",
+                text: "Mira la información de tus jugadores, equipos y torneos favoritos, encontraras estadísticas relevantes con los ultimos algoritmos especializados que te darán probabilidades sumamente precisas." +
+                    "\n\nRegistrate como apostador en tu perfil y sumérgete en este mundo de fútbol apuestas! $" +
+                    "\n\nCon FAP, tus sueños están a un par de clics de distancia." +
+                    "!\n\n\nDesarrolladores: Jesus, Ricardo y Heberto"
+            });
+        } catch (err) {
+            console.error(err);
         }
-    });
-    // send mail with defined transport object
-    try {
-        await transporter.sendMail({
-            from: '"FAP" <' + process.env.EMAIL + '>',
-            to: email,
-            subject: "Hola " + username + "!. bienvenido a FAP! ✔",
-            text: "Mira la información de tus jugadores, equipos y torneos favoritos, encontraras estadísticas relevantes con los ultimos algoritmos especializados que te darán probabilidades sumamente precisas." +
-                "\n\nRegistrate como apostador en tu perfil y sumérgete en este mundo de fútbol apuestas! $" +
-                "\n\nCon FAP, tus sueños están a un par de clics de distancia." +
-                "!\n\n\nDesarrolladores: Jesus, Ricardo y Heberto"
-        });
-    } catch (err) {
-        console.error(err);
     }
 }
-
-export default Mail;

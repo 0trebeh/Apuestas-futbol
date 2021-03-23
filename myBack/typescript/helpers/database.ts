@@ -1,17 +1,21 @@
-import pg from 'pg';
+import pg, { Pool } from 'pg';
+import { DatabaseControllerObject } from './types/dbControllerType';
 
-const Pool = new pg.Pool({
-    connectionString: process.env.DBURI,
-    max: 20,
-    ssl: {
-        rejectUnauthorized: false
+export class DatabaseController extends DatabaseControllerObject {
+    pool: Pool;
+
+    constructor() {
+        super();
+        this.pool = new pg.Pool({
+            connectionString: process.env.DBURI,
+            max: 20,
+            ssl: {
+                rejectUnauthorized: false
+            }
+        })
     }
-});
 
-const getClient = () => {
-    return Pool.connect();
-}
-
-export = {
-    getClient
+    getClient() {
+        return this.pool.connect();
+    }
 }

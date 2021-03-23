@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
-import db from '../helpers/database';
 import query from '../helpers/query';
 import bcrypt from 'bcrypt';
-import Mail from '../helpers/mailer';
 import jwt from 'jsonwebtoken';
+
+import { dbController as db } from '../helpers';
+
+import { mailer, tokenController } from '../helpers';
 
 import { CrudController } from './crudController';
 import { SessionController } from './sessionController';
@@ -24,7 +26,7 @@ export class UserController extends CrudController {
                 content: 'Usuario registrado!'
             };
             res.status(200).json(resBody);
-            Mail(name, email);
+            mailer.sendMail(name, email);
         } catch (err) {
             console.error(err);
             const resBody: DefaultResponse = {
@@ -105,6 +107,30 @@ export class UserSession extends SessionController {
     }
 
     async signOut(req: Request, res: Response) {
-
+        const token = req.headers.authorization;
+        if (!token) {
+            const resBody: DefaultResponse = {
+                title: 'Error',
+                content: 'Token missing'
+            }
+            res.status(400).json(resBody);
+        }
+        else {
+            const invalidated = await tokenController.invalidateToken(token);
+            if (invalidated) {
+                const resBody: DefaultResponse = {
+                    title: 'Success',
+                    content: 'Sesion cerrada exitosamente.'
+                }
+                res.status(200).json(resBody);
+            }
+            else {
+                const resBody: DefaultResponse = {
+                    title: 'Error',
+                    content: 'Error eliminando la sesion. Por favor, intente mas tarde.'
+                }
+                res.status(500).json(resBody);
+            }
+        }
     }
 }
