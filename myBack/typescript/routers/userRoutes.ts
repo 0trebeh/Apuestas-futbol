@@ -13,3 +13,7 @@ Router.post('/', (req: Request, res: Response) => {
 Router.post('/login', (req: Request, res: Response) => {
     userSession.signIn(req, res);
 });
+
+Router.get('/logout', (req: Request, res: Response) => {
+    userSession.signOut(req, res);
+});

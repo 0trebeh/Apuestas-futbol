@@ -33,7 +33,7 @@ export class UserController extends CrudController {
                 title: 'Error',
                 content: 'No se pudo registrar el usuario. Por favor, intente mas tarde.'
             };
-            res.status(503).json(resBody);
+            res.status(403).json(resBody);
         } finally {
             client.release(true);
         }
