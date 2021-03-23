@@ -1,4 +1,5 @@
 export const SAVE_SESSION_DATA = 'SAVE_SESSION_DATA';
+export const CLEAR_SESSION_DATA = 'CLEAR_SESSION_DATA';
 
 export interface Session {
     username: string,
@@ -15,4 +16,8 @@ interface SaveSessionAction {
     data: Session
 }
 
-export type SessionActionTypes = SaveSessionAction
+interface ClearSessionAction {
+    type: typeof CLEAR_SESSION_DATA,
+}
+
+export type SessionActionTypes = SaveSessionAction | ClearSessionAction;

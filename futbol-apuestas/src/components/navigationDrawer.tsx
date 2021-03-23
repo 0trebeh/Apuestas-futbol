@@ -1,6 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Drawer, Typography, Menu } from 'antd';
+import { Drawer, Typography, Menu, notification } from 'antd';
+import { connect, ConnectedProps } from 'react-redux';
+import axios from 'axios';
+
+import type { RootState } from '../state-store/reducer.root';
 
 type menuOptions = {
     name: string,
@@ -8,7 +12,19 @@ type menuOptions = {
     type: string
 }
 
-type Props = {
+const mapDispatchToProps = {
+    reduxClearState: () => ({ type: 'CLEAR_SESSION_DATA' })
+}
+
+const mapStateToProps = (state: RootState) => ({
+    token: state.session.session.token
+})
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type Props = PropsFromRedux & {
     menuVisible: boolean,
     setMenuVisible: () => void,
     setLoginVisible: () => void,
@@ -20,8 +36,29 @@ const NavigationDrawer = (props: Props) => {
 
     const history = useHistory();
 
-    const logout = () => {
-
+    const logout = async () => {
+        notification.info({
+            placement: 'topLeft',
+            message: 'Cerrando sesion...'
+        })
+        try{
+            let response = await axios.get('/users/logout', {
+                headers: {
+                    'authorization': props.token
+                },
+            });
+            props.reduxClearState();
+            notification.success({
+                message: response.data.content,
+                placement: 'topRight'
+            });
+        }catch(err) {
+            notification.error({
+                message: err.response.data.content,
+                placement: 'topRight'
+            })
+            console.error(err);
+        }
     }
 
     const menuOptions: menuOptions[] = [
@@ -109,4 +146,4 @@ const NavigationDrawer = (props: Props) => {
     )
 }
 
-export default NavigationDrawer;
+export default connector(NavigationDrawer);

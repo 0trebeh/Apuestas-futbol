@@ -30,27 +30,22 @@ const LoginPage = (props: Props) => {
         setSaving(true);
         setTitle('Verificando...');
         try {
-            let response = await axios.post('https://fap-api.herokuapp.com/api/users/login', {
-                name: name,
+            let response = await axios.post('https://fap-api.herokuapp.com/users/login', {
+                username: name,
                 password: password
             });
-            if (response.status === 200) {
-                notification.success({
-                    message: 'Inicio de sesion exitoso!',
-                    placement: 'topRight'
-                });
-                console.log('Login');
-            }
-            else {
-                notification.error({
-                    message: 'Error iniciando sesion. Por favor intenta mas tarde.',
-                    placement: 'topRight'
-                });
-                console.error(JSON.stringify(response));
-            }
+            notification.success({
+                message: 'Inicio de sesion exitoso!',
+                placement: 'topRight'
+            });
+            props.reduxSession({
+                isSessionActive: true,
+                token: response.data.token,
+                username: name
+            });
         } catch (err) {
             notification.error({
-                message: 'Error iniciando sesion. Por favor intenta mas tarde.',
+                message: err.response.data.content,
                 placement: 'topRight'
             });
             console.error(err);
