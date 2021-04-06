@@ -60,6 +60,11 @@ const NavigationDrawer = (props: Props) => {
 
   const menuOptions: menuOptions[] = [
     {
+      name: 'Pagina principal',
+      action: () => history.push('/'),
+      type: 'global',
+    },
+    {
       name: 'Apuestas',
       action: () => history.push('/apuestas'),
       type: 'global',
@@ -91,7 +96,7 @@ const NavigationDrawer = (props: Props) => {
     },
     {
       name: 'Perfil',
-      action: () => history.push('/registrarse'),
+      action: () => history.push('/profile'),
       type: 'session',
     },
     {

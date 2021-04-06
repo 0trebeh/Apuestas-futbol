@@ -6,6 +6,7 @@ import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/es/integration/react';
 import {persistor, store} from './state-store/store';
 import axios from 'axios';
+import Profile from './pages/profile';
 
 axios.defaults.baseURL = 'http://192.168.0.101:8000';
 
@@ -17,6 +18,9 @@ function App() {
           <Switch>
             <Route exact path={'/'}>
               <Home />
+            </Route>
+            <Route exact path={'/profile'}>
+              <Profile />
             </Route>
           </Switch>
         </BrowserRouter>
