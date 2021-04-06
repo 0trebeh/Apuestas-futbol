@@ -10,26 +10,27 @@ export class UserSession extends SessionController {
     if (!process.env.JWT_SECRET) {
       return next('Token secret undefined');
     } else {
-      const {username, password}: UserLogin = req.body;
+      const {email, password}: UserLogin = req.body;
       const client = await db.getClient();
       try {
-        let results = await client.query(query.login, [username]);
+        let results = await client.query(query.login, [email.toLowerCase()]);
         if (results.rowCount > 0) {
           const same = await bcrypt.compare(password, results.rows[0].password);
           if (same) {
             const payload: TokenPayload = {
               id: results.rows[0].user_id,
-              username: username,
+              username: results.rows[0].username,
             };
             const token = jwt.sign(payload, process.env.JWT_SECRET);
             res.status(200).json({
               token: token,
+              name: results.rows[0].username,
             });
           } else {
             next({custom: 'Contraseña incorrecta.', status: 403});
           }
         } else {
-          next({custom: 'Nombre de usuario no existe.', status: 404});
+          next({custom: 'Correo no existe.', status: 404});
         }
       } catch (err) {
         next(err);

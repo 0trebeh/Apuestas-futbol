@@ -14,7 +14,11 @@ export class UserController extends CrudController {
     try {
       const salt = await bcrypt.genSalt();
       password = await bcrypt.hash(password, salt);
-      await client.query(query.registerUser, [name, email, password]);
+      await client.query(query.registerUser, [
+        name,
+        email.toLowerCase(),
+        password,
+      ]);
       res.sendStatus(201);
       mailer.sendMail(name, email);
     } catch (err) {

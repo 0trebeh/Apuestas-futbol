@@ -6,8 +6,8 @@ export const Router = express.Router({
   strict: true,
 });
 
-Router.post('/', (req: Request, res: Response, next: NextFunction) => {
-    userController.create(req, res, next);
+Router.post('/user', (req: Request, res: Response, next: NextFunction) => {
+  userController.create(req, res, next);
 });
 
 Router.post('/login', (req: Request, res: Response, next: NextFunction) => {

@@ -1,5 +1,5 @@
-require('dotenv').config();
-
+import dotenv from 'dotenv';
+dotenv.config();
 import express, {Request, Response, NextFunction} from 'express';
 import {logger} from './helpers';
 import cors from 'cors';
