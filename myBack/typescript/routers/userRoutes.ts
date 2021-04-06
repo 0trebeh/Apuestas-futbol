@@ -1,19 +1,19 @@
-import express, {Request, Response} from 'express';
+import express, {NextFunction, Request, Response} from 'express';
 
 import {userController, userSession} from '../controllers';
 
 export const Router = express.Router({
-    strict: true
+  strict: true,
 });
 
-Router.post('/', (req: Request, res: Response) => {
-    userController.create(req, res);
+Router.post('/', (req: Request, res: Response, next: NextFunction) => {
+    userController.create(req, res, next);
 });
 
-Router.post('/login', (req: Request, res: Response) => {
-    userSession.signIn(req, res);
+Router.post('/login', (req: Request, res: Response, next: NextFunction) => {
+  userSession.signIn(req, res, next);
 });
 
-Router.get('/logout', (req: Request, res: Response) => {
-    userSession.signOut(req, res);
+Router.get('/logout', (req: Request, res: Response, next: NextFunction) => {
+  userSession.signOut(req, res, next);
 });
