@@ -19,12 +19,12 @@ export class UserSession extends SessionController {
           if (same) {
             const payload: TokenPayload = {
               id: results.rows[0].user_id,
-              username: results.rows[0].username,
+              username: results.rows[0].name,
             };
             const token = jwt.sign(payload, process.env.JWT_SECRET);
             res.status(200).json({
               token: token,
-              name: results.rows[0].username,
+              name: results.rows[0].name,
             });
           } else {
             next({custom: 'Contraseña incorrecta.', status: 403});

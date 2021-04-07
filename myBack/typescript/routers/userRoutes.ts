@@ -10,6 +10,10 @@ Router.post('/user', (req: Request, res: Response, next: NextFunction) => {
   userController.create(req, res, next);
 });
 
+Router.get('/user', (req: Request, res: Response, next: NextFunction) => {
+  userController.read(req, res, next);
+});
+
 Router.post('/login', (req: Request, res: Response, next: NextFunction) => {
   userSession.signIn(req, res, next);
 });

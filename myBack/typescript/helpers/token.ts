@@ -23,8 +23,8 @@ export class TokenController extends TokenControllerObject {
     }
   }
 
-  async getPayload(token: string): Promise<TokenPayload | null> {
-    if (!process.env.JWT_SECRET) {
+  async getPayload(token: string | undefined): Promise<TokenPayload | null> {
+    if (!process.env.JWT_SECRET || !token) {
       return null;
     } else {
       let invalid = await this.invalidToken(token);

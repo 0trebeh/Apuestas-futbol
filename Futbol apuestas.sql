@@ -29,35 +29,29 @@ CREATE TABLE bill (
   created timestamptz
 );
 
-CREATE TABLE user_roles (
-  role_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
-  user_id uuid,
-  role_name varchar(30)
-);
-
 CREATE TABLE country (
   country_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
   name varchar(30),
   code varchar(30)
 );
 
-CREATE TABLE tournament_locations (
-  location_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
-  country_id uuid,
-  tournament_id uuid
-);
-
 CREATE TABLE tournament (
   tournament_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
   name varchar(30),
-  start_date timestamp,
-  end_date timestamp
+  type varchar(30),
+  location uuid;
+);
+
+CREATE TABLE tournament_season (
+  season_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
+  tournament_id uuid,
+  start_date TIMESTAMP,
+  end_date TIMESTAMP
 );
 
 CREATE TABLE match (
   match_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
-  tournament_id uuid,
-  work_day_id uuid,
+  season_id uuid,
   date timestamp,
   playing boolean,
   duration float,
@@ -122,19 +116,15 @@ CREATE TABLE user_balance (
   balance float
 );
 
+ALTER TABLE tournament_season ADD FOREIGN KEY (season_id) REFERENCES tournament (tournament_id) ON DELETE CASCADE ON UPDATE CASCADE;
+
 ALTER TABLE payment ADD FOREIGN KEY (user_id) REFERENCES users (user_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE bill ADD FOREIGN KEY (payment_id) REFERENCES payment (payment_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE bill ADD FOREIGN KEY (bet_id) REFERENCES bet (bet_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
-ALTER TABLE user_roles ADD FOREIGN KEY (user_id) REFERENCES users (user_id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-ALTER TABLE tournament_locations ADD FOREIGN KEY (country_id) REFERENCES country (country_id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-ALTER TABLE tournament_locations ADD FOREIGN KEY (tournament_id) REFERENCES tournament (tournament_id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-ALTER TABLE match ADD FOREIGN KEY (tournament_id) REFERENCES tournament (tournament_id) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE match ADD FOREIGN KEY (season_id) REFERENCES tournament_season (season_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE match_teams ADD FOREIGN KEY (team_id) REFERENCES teams (team_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
@@ -169,24 +159,3 @@ AFTER INSERT
 ON users
 FOR EACH ROW
 EXECUTE PROCEDURE new_user();
-
-CREATE OR REPLACE FUNCTION role_upgrade()
-RETURNS TRIGGER
-LANGUAGE PLPGSQL
-AS
-$$
-DECLARE actual_role user_roles.role_name%type
-BEGIN
-SELECT role_name INTO actual_role FROM user_roles WHERE user_id = NEW.user_id;
-IF actual_role = 'CASUAL' THEN
-UPDATE TABLE user_roles SET role_name = 'BETTOR' WHERE user_id = NEW.user_id;
-END IF;
-RETURN NEW;
-END;
-$$;
-
-CREATE TRIGGER user_balance_changed
-AFTER UPDATE
-ON user_balance
-FOR EACH ROW
-EXECUTE PROCEDURE role_upgrade();

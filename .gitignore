@@ -3,3 +3,4 @@ package-lock.json
 .env
 dist
 logs
+private-key.pem
