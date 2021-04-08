@@ -1,21 +1,21 @@
 type UserRegister = {
-    name: string,
-    email: string,
-    password: string
-}
+  name: string;
+  last_name?: string;
+  email: string;
+  phone?: string;
+  address?: string;
+  password: string;
+  document?: string;
+};
 
 type UserLogin = {
-    username: string,
-    password: string
-}
+  email: string;
+  password: string;
+};
 
 type TokenPayload = {
-    id: number,
-    username: string,
-}
+  id: number;
+  username: string;
+};
 
-export type {
-    UserRegister,
-    UserLogin,
-    TokenPayload
-}
+export type {UserRegister, UserLogin, TokenPayload};
