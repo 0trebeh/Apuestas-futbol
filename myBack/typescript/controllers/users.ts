@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import {dbController as db, encrypt, tokenController as jwt} from '../helpers';
 import {mailer} from '../helpers';
 import {CrudController} from './types/crudController';
+import fse from 'fs';
 
 import type {UserRegister} from '../types/userTypes';
 
