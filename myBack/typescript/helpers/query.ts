@@ -7,4 +7,13 @@ export = {
   getProfile:
     'SELECT u.name, u.email, b.balance FROM users u INNER JOIN user_balance b USING(user_id) WHERE u.user_id = $1',
   getUserBets: 'SELECT * FROM bet WHERE user_id = $1',
+  getTournamentIds: 'SELECT tournament_id AS id FROM tournament',
+  deleteSeasons: 'DELETE FROM tournament_season',
+  insertSeason:
+    'INSERT INTO tournament_season(season_id, tournament_id, start_date, end_date, winner)',
+  deleteCountries: 'DELETE FROM country',
+  inserCountries: 'INSERT INTO country(country_id, name, code) VALUES',
+  getCountries: 'SELECT country_id AS id FROM country',
+  inserTeams:
+    'INSERT INTO teams(team_id, name, country_id, colors, address, phone, website, email)',
 };
