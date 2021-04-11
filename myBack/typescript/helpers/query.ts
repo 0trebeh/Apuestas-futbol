@@ -16,4 +16,10 @@ export = {
   getCountries: 'SELECT country_id AS id FROM country',
   inserTeams:
     'INSERT INTO teams(team_id, name, country_id, colors, address, phone, website, email)',
+  getTeamsIDs: 'SELECT team_id AS id FROM teams',
+  insertPlayers: 'INSERT INTO players VALUES',
+  insertMatch: 'INSERT INTO match VALUES',
+  insertTeamPlayer: 'INSERT INTO team_players(team_id, player_id) VALUES',
+  filterMatchByStatus: 'SELECT * FROM match WHERE playing NOT LIKE $1',
+  updateMatchStatus: 'UPDATE match SET playing = $1 WHERE match_id = $2',
 };

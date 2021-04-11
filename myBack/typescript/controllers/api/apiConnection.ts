@@ -1,38 +1,10 @@
-import axios from 'axios';
+import axios, {AxiosResponse} from 'axios';
 import {dbController as db, logger, query as queries} from '../../helpers';
+import type {Country, Match, PlayersRequest, Season, Team} from './types';
 
 axios.defaults.baseURL = 'https://api.football-data.org';
 axios.defaults.headers = {'X-Auth-Token': process.env.SOCCER_API_TOKEN};
 
-type Season = {
-  id: number;
-  startDate: string;
-  endDate: string;
-  winner:
-    | {
-        id: number;
-      }
-    | undefined;
-};
-
-type Country = {
-  id: number;
-  name: string;
-  countryCode: string;
-};
-
-type Team = {
-  id: number;
-  area: {
-    id: number;
-  };
-  name: string;
-  address: string;
-  phone: string;
-  email: string;
-  website: string;
-  clubColors: string;
-};
 export default class ApiConnection {
   private tournamentParams(id: number, data: Season[]): any[] {
     let params = [];
@@ -93,7 +65,129 @@ export default class ApiConnection {
     }
   }
 
-  async fetchMatchData() {}
+  private matchParams(data: Match[]): any[] {
+    let params = [];
+    for (let i = 0; i < data.length; i++) {
+      params.push(
+        data[i].id,
+        data[i].season.id,
+        data[i].utcDate,
+        data[i].status
+      );
+    }
+    return params;
+  }
+
+  async fetchMatchData() {
+    const client = await db.getClient();
+    try {
+      const responses = await Promise.all([
+        axios.get('/v2/competitions/CL/matches'),
+        axios.get('/v2/competitions/WC/matches'),
+        axios.get('/v2/competitions/PD/matches'),
+      ]);
+      const matches = [
+        ...responses[0].data.matches,
+        ...responses[1].data.matches,
+        ...responses[2].data.matches,
+      ];
+      let query = `${queries.insertMatch}${db.generateValues(
+        matches.length,
+        4
+      )}`;
+      let params = this.matchParams(matches);
+      await client.query('BEGIN');
+      await client.query(query, params);
+      await client.query('COMMIT');
+    } catch (err) {
+      await client.query('ROLLBACK');
+      logger.logger.error(err);
+    } finally {
+      client.release(true);
+    }
+  }
+
+  private playerParams(data: PlayersRequest): any[] {
+    let params: any[] = [];
+    for (let i = 0; i < data.squad.length; i++) {
+      params.push(
+        data.squad[i].id,
+        data.squad[i].name,
+        data.squad[i].dateOfBirth,
+        data.squad[i].position,
+        data.squad[i].shirtNumber,
+        data.squad[i].countryOfBirth,
+        data.squad[i].nacionality
+      );
+    }
+    return params;
+  }
+
+  private playerTeamParams(team_id: number, data: {player_id: number}[]) {
+    let params = [];
+    for (let i = 0; i < data.length; i++) {
+      params.push(team_id, data[i].player_id);
+    }
+    return params;
+  }
+
+  async insertPlayers(data: AxiosResponse<PlayersRequest>, team_id: number) {
+    if (data.data.squad.length === 0) {
+      return;
+    }
+    const client = await db.getClient();
+    try {
+      await client.query('BEGIN');
+      let params = this.playerParams(data.data);
+      let query = `${queries.insertPlayers}${db.generateValues(
+        data.data.squad.length,
+        7
+      )} RETURNING player_id`;
+      const player_id = await client.query(query, params);
+      query = `${queries.insertTeamPlayer}${db.generateValues(
+        player_id.rowCount,
+        2
+      )}`;
+      params = this.playerTeamParams(team_id, player_id.rows);
+      await client.query(query, params);
+      await client.query('COMMIT');
+    } catch (err) {
+      logger.logger.error(err);
+      await client.query('ROLLBACK');
+    } finally {
+      client.release(true);
+    }
+  }
+
+  async fetchPlayersData() {
+    const client = await db.getClient();
+    try {
+      const requests = await Promise.all([
+        axios.get('/v2/competitions/CL/teams'),
+        axios.get('/v2/competitions/WC/teams'),
+        axios.get('/v2/competitions/PD/teams'),
+      ]);
+      const teams: Team[] = [
+        ...requests[0].data.teams,
+        ...requests[1].data.teams,
+        ...requests[2].data.teams,
+      ];
+      for (let i = 0; i < teams.length; i++) {
+        setTimeout(
+          async (id: number) => {
+            const response = await axios.get(`/v2/teams/${id}`);
+            this.insertPlayers(response, id);
+          },
+          30000 * (i + 1),
+          teams[i].id
+        );
+      }
+    } catch (err) {
+      logger.logger.error(err);
+    } finally {
+      client.release(true);
+    }
+  }
 
   private teamsParams(data: Team[]): any[] {
     let params = [];
@@ -166,16 +260,45 @@ export default class ApiConnection {
     }
   }
 
+  private async updateMatches() {
+    const client = await db.getClient();
+    try {
+      const responses = await Promise.all([
+        axios.get('/v2/competitions/CL/matches'),
+        axios.get('/v2/competitions/WC/matches'),
+        axios.get('/v2/competitions/PD/matches'),
+      ]);
+      const matches: Match[] = [
+        ...responses[0].data.matches,
+        ...responses[1].data.matches,
+        ...responses[2].data.matches,
+      ];
+      await client.query('BEGIN');
+      const savedMatches = await client.query(queries.filterMatchByStatus, [
+        'FINISHED',
+      ]);
+      let match: Match;
+      for (let i = 0; i < savedMatches.rowCount; i++) {
+        match = matches.filter(
+          value => value.id === savedMatches.rows[i].match_id
+        )[0];
+        if (match.status === savedMatches.rows[i].playing) {
+          continue;
+        }
+        await client.query(queries.updateMatchStatus, [match.status, match.id]);
+      }
+      await client.query('COMMIT');
+    } catch (err) {
+      await client.query('ROLLBACK');
+      logger.logger.error(err);
+    } finally {
+      client.release(true);
+    }
+  }
+
   async fetchCycle() {
-    await this.fetchCountryData();
-    await this.fetchSeasonData();
-    await this.fetchTeamsData();
-    await this.fetchMatchData();
     setInterval(() => {
-      this.fetchTeamsData();
-    }, 86400000);
-    setInterval(() => {
-      this.fetchMatchData();
-    }, 3600000);
+      this.updateMatches();
+    }, 900000);
   }
 }
