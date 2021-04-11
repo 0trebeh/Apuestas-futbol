@@ -6,6 +6,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import multer from 'multer';
 import {UserRouter} from './routers';
+import {apiConnection} from './controllers';
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -33,4 +34,5 @@ app.use(
 
 app.listen(port, () => {
   console.log(`Running at port ${port}`);
+  apiConnection.fetchCycle();
 });

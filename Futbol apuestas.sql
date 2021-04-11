@@ -30,28 +30,28 @@ CREATE TABLE bill (
 );
 
 CREATE TABLE country (
-  country_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
+  country_id INT PRIMARY KEY,
   name varchar(30),
   code varchar(30)
 );
 
 CREATE TABLE tournament (
-  tournament_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
+  tournament_id INT PRIMARY KEY,
   name varchar(30),
   type varchar(30),
-  location uuid;
+  location INT
 );
 
 CREATE TABLE tournament_season (
-  season_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
-  tournament_id uuid,
+  season_id INT PRIMARY KEY,
+  tournament_id INT,
   start_date TIMESTAMP,
   end_date TIMESTAMP
 );
 
 CREATE TABLE match (
-  match_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
-  season_id uuid,
+  match_id INT PRIMARY KEY,
+  season_id INT,
   date timestamp,
   playing boolean,
   duration float,
@@ -60,8 +60,8 @@ CREATE TABLE match (
 
 CREATE TABLE match_teams (
   id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
-  team_id uuid,
-  match_id uuid,
+  team_id INT,
+  match_id INT,
   goals integer,
   winner boolean,
   loser boolean,
@@ -69,9 +69,9 @@ CREATE TABLE match_teams (
 );
 
 CREATE TABLE teams (
-  team_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
+  team_id INT PRIMARY KEY,
   name varchar(30),
-  country_id uuid,
+  country_id INT,
   foundation timestamp,
   colors varchar(30),
   address varchar(30),
@@ -81,26 +81,26 @@ CREATE TABLE teams (
 );
 
 CREATE TABLE players (
-  player_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
+  player_id INT PRIMARY KEY,
   name varchar(50),
   birth_date timestamp,
   positopm varchar(30),
   number integer,
-  birth_country_id uuid,
-  nacionality uuid
+  birth_country_id INT,
+  nacionality INT
 );
 
 CREATE TABLE team_players (
   id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
-  team_id uuid,
-  player_id uuid
+  team_id INT,
+  player_id INT
 );
 
 CREATE TABLE bet (
   bet_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
   user_id uuid,
-  match_id uuid,
-  team_id uuid,
+  match_id INT,
+  team_id INT,
   bet_type_id uuid
 );
 
@@ -116,7 +116,9 @@ CREATE TABLE user_balance (
   balance float
 );
 
-ALTER TABLE tournament_season ADD FOREIGN KEY (season_id) REFERENCES tournament (tournament_id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE tournament_season ADD FOREIGN KEY (tournament_id) REFERENCES tournament (tournament_id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE tournament_season ADD FOREIGN KEY (winner) REFERENCES teams(team_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE payment ADD FOREIGN KEY (user_id) REFERENCES users (user_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
