@@ -65,7 +65,8 @@ CREATE TABLE match_teams (
   goals integer,
   winner boolean,
   loser boolean,
-  draw boolean
+  draw boolean,
+  side varchar
 );
 
 CREATE TABLE teams (
@@ -162,6 +163,17 @@ ON users
 FOR EACH ROW
 EXECUTE PROCEDURE new_user();
 
+CREATE OR REPLACE FUNCTION winner_count(
+  p_match_id INT
+) RETURN INT
+LANGUAGE PLPGSQL
+AS
+$$
+BEGIN
+  
+END;
+$$;
+
 CREATE OR REPLACE PROCEDURE wire_money(
     p_match_id VARCHAR,
     p_user_id VARCHAR,
@@ -173,106 +185,141 @@ DECLARE winners user_bet %rowtype;
 bet_pool user_bet %rowtype;
 curr_balance user_balance %rowtype;
 BEGIN
-SELECT SUM(ammount)
-FROM user_bet INTO bet_pool
-WHERE match_id = p_match_id;
-SELECT balance
-FROM user_balance INTO curr_balance
-WHERE user_id = p_user_id;
-IF p_bet_type = '1' THEN
-SELECT COUNT(*)
-FROM user_bet INTO winners
-WHERE bet_type_name = '1'
-  AND side = 'HOME_TEAM'
-  AND match_id = p_match_id;
-UPDATE user_balance
-SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
-WHERE user_id = p_user_id;
-ELSIF p_bet_type = '2' THEN
-SELECT COUNT(*)
-FROM user_bet INTO winners
-WHERE bet_type_name = '2'
-  AND side = 'AWAY_TEAM'
-  AND match_id = p_match_id;
-UPDATE user_balance
-SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
-WHERE user_id = p_user_id;
-ELSIF p_bet_type = 'X' THEN
-SELECT COUNT(*)
-FROM user_bet INTO winners
-WHERE bet_type_name = 'X'
-  AND match_id = p_match_id;
-UPDATE user_balance
-SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
-WHERE user_id = p_match_id;
-END IF;
-COMMIT;
-EXCEPTION
-WHEN OTHERS THEN RAISE NOTICE 'Error wiring money to user %. There was an exception',
-p_user_id;
-RAISE NOTICE '% %',
-SQLERRM,
-SQLSTATE;
-ROLLBACK;
+  SELECT balance FROM user_balance INTO curr_balance
+  WHERE user_id = p_user_id;
+  IF p_bet_type = '1' THEN
+    SELECT SUM(ammount) FROM user_bet INTO bet_pool
+    WHERE match_id = p_match_id AND bet_type_name = '1' OR bet_type_name = '2'
+    OR bet_type_name = 'X';
+
+    SELECT COUNT(*) FROM user_bet INTO winners
+    WHERE bet_type_name = '1'
+    AND side = 'HOME_TEAM'
+    AND match_id = p_match_id;
+
+    UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
+    WHERE user_id = p_user_id;
+  ELSIF p_bet_type = '2' THEN
+    SELECT SUM(ammount) FROM user_bet INTO bet_pool
+    WHERE match_id = p_match_id AND bet_type_name = '1' OR bet_type_name = '2'
+    OR bet_type_name = 'X';
+
+    SELECT COUNT(*) FROM user_bet INTO winners
+    WHERE bet_type_name = '2'
+    AND side = 'AWAY_TEAM'
+    AND match_id = p_match_id;
+
+    UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
+    WHERE user_id = p_user_id;
+  ELSIF p_bet_type = 'X' THEN
+    SELECT SUM(ammount) FROM user_bet INTO bet_pool
+    WHERE match_id = p_match_id AND bet_type_name = '1' OR bet_type_name = '2'
+    OR bet_type_name = 'X';
+
+    SELECT COUNT(*) FROM user_bet INTO winners
+    WHERE bet_type_name = 'X'
+    AND match_id = p_match_id;
+
+    UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
+    WHERE user_id = p_match_id;
+  ELSIF p_bet_type = 'CORRECT SCORE' THEN
+    SELECT SUM(ammount) FROM user_bet INTO bet_pool
+    WHERE match_id = p_match_id AND bet_type_name = 'CORRECT SCORE';
+
+    SELECT COUNT(*) FROM user_bet INTO winners
+    WHERE 
+  END IF;
+  COMMIT;
+  EXCEPTION
+    WHEN OTHERS THEN RAISE NOTICE 'Error wiring money to user %. There was an exception',
+      p_user_id;
+      RAISE NOTICE '% %', SQLERRM, SQLSTATE;
+  ROLLBACK;
 END;
 $$;
+
 CREATE OR REPLACE FUNCTION update_bet() RETURNS TRIGGER LANGUAGE PLPGSQL AS $$
-DECLARE bet record;
-BEGIN FOR bet IN
-SELECT *
-FROM user_bet
-WHERE match_id = NEW.match_id;
-LOOP IF bet.bet_type_name = '1' THEN IF bet.side = 'HOME_TEAM' THEN IF bet.winner = true THEN CALL wire_money(
-  NEW.match_id,
-  bet.user_id,
-  bet.bet_type_name,
-  '',
-  bet.ammount
-);
-END IF;
-END IF;
-ELSIF bet.bet_type_name = 'X' THEN IF bet.draw = true THEN CALL wire_money(
-  NEW.match_id,
-  bet.user_id,
-  bet.bet_type_name,
-  '',
-  bet.ammount
-);
-END IF;
-ELSIF bet.bet_type_name '2' THEN IF bet.winner = true THEN CALL wire_money(
-  NEW.match_id,
-  bet.user_id,
-  bet.bet_type_name,
-  '',
-  bet.ammount
-);
-END IF;
-ELSIF bet.bet_type_name = '1X' THEN IF bet.side = 'HOME_TEAM' THEN IF bet.winner = true THEN CALL wire_money(
-  NEW.match_id,
-  bet.user_id,
-  bet.bet_type_name,
-  '',
-  bet.ammount
-);
-END IF;
-ELSIF bet.draw = true THEN CALL wire_money(
-  NEW.match_id,
-  bet.user_id,
-  bet.bet_type_name,
-  '',
-  bet.ammount
-);
-END IF;
-END IF;
-END LOOP;
-RETURN NEW;
+DECLARE 
+  bet record;
+  away_goals INT;
+  prediction_home_goals INT;
+  prediction_away_goals INT;
+  home_goals bet_match_teams%rowtype;
+  away_goals bet_match_teams%rowtype;
+BEGIN 
+  FOR bet IN SELECT * FROM user_bet
+  WHERE match_id = NEW.match_id;
+
+  LOOP 
+    IF bet.bet_type_name = '1' THEN 
+      IF bet.side = 'HOME_TEAM' AND bet.winner = true THEN
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+      END IF;
+    ELSIF bet.bet_type_name = 'X' AND bet.draw = true THEN 
+      CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+    ELSIF bet.bet_type_name '2' THEN 
+      IF bet.side = 'AWAY_TEAM' AND bet.winner = true THEN 
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+      END IF;
+    ELSIF bet.bet_type_name = '1X' THEN 
+      IF bet.side = 'HOME_TEAM' AND bet.winner = true THEN
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+      ELSIF bet.draw = true THEN 
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+      END IF;
+    ELSIF bet.bet_type_name = 'X2' THEN
+      IF bet.side = 'AWAY_TEAM' AND bet.winner = true THEN
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+      ELSIF bet.draw = true THEN
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+      END IF;
+    ELSIF bet.bet_type_name = 'CORRECT SCORE' THEN
+      SELECT goals FROM bet_match_teams INTO home_goals
+      WHERE match_id = NEW.match_id AND side = 'HOME_TEAM';
+
+      SELECT goals FROM bet_match_teams INTO away_goals
+      WHERE match_id = NEW.match_id AND side = 'AWAY_TEAM';
+
+      SELECT LEFT(bet.prediction, 1) INTO prediction_home_goals::INT;
+
+      SELECT RIGHT(bet.prediction, 1) INTO prediction_away_goals::INT;
+
+      IF away_goals.goals = prediction_away_goals AND home_goals.goals = prediction_home_goals THEN
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+      END IF;
+    ELSE IF bet.bet_type_name = 'under' THEN
+      SELECT goals FROM bet_match_teams INTO home_goals
+      WHERE match_id = NEW.match_id AND side = 'HOME_TEAM';
+
+      SELECT goals FROM bet_match_teams INTO away_goals
+      WHERE match_id = NEW.match_id AND side = 'AWAY_TEAM';
+
+      IF home_goals.goals + away_goals.goals > bet.prediction::INT THEN
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+      END IF;
+    ELSE IF bet.bet_type_name = 'over' THEN
+      SELECT goals FROM bet_match_teams INTO home_goals
+      WHERE match_id = NEW.match_id AND side = 'HOME_TEAM';
+
+      SELECT goals FROM bet_match_teams INTO away_goals
+      WHERE match_id = NEW.match_id AND side = 'AWAY_TEAM';
+
+      IF home_goals.goals + away_goals.goals < bet.prediction::INT THEN
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+      END IF;
+    END IF;
+  END LOOP;
+  RETURN NEW;
 END;
 $$;
+
 CREATE TRIGGER match_updated
 AFTER
 UPDATE ON match FOR EACH ROW EXECUTE PROCEDURE update_bet();
+
 CREATE VIEW user_bet AS
-SELECT m.match_id,
+SELECT
+  m.match_id,
   mt.winner,
   mt.loser,
   mt.draw,
@@ -282,9 +329,19 @@ SELECT m.match_id,
   b.team_id,
   b.prediction,
   bt.name,
-  bl.ammount AS bet_type_name
+  bl.ammount AS bet_type_name,
 FROM bet b
   INNER JOIN match m USING(match_id)
   INNER JOIN match_teams mt ON mt.team_id = b.team_id
   INNER JOIN bet_types bt ON b.bet_type_id = bt.bet_type_id
   INNER JOIN bill bl ON bl.bet_id = b.bet_id;
+
+CREATE VIEW bet_match_teams AS
+SELECT
+  b.bet_id,
+  mt.team_id,
+  mt.goals,
+  b.match_id,
+  mt.side
+FROM bet b
+  INNER JOIN match_teams mt USING(match_id);
