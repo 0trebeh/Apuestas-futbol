@@ -163,30 +163,153 @@ ON users
 FOR EACH ROW
 EXECUTE PROCEDURE new_user();
 
-CREATE OR REPLACE FUNCTION winner_count(
+CREATE OR REPLACE FUNCTION check_under(
+  p_prediction VARCHAR,
   p_match_id INT
-) RETURN INT
+) RETURNS BOOLEAN
 LANGUAGE PLPGSQL
 AS
 $$
+DECLARE
+  away_goals INT;
+  home_goals INT;
 BEGIN
+  SELECT goals FROM bet_match_teams INTO home_goals
+  WHERE match_id = p_match_id AND side = 'HOME_TEAM';
+
+  SELECT goals FROM bet_match_teams INTO away_goals
+  WHERE match_id = p_match_id AND side = 'AWAY_TEAM';
+
+  RETURN home_goals.goals + away_goals.goals > p_prediction::INT;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION check_over(
+  p_prediction VARCHAR,
+  p_match_id INT
+) RETURNS BOOLEAN
+LANGUAGE PLPGSQL
+AS 
+$$
+DECLARE
+  away_goals INT;
+  home_goals INT;
+BEGIN
+  SELECT goals FROM bet_match_teams INTO home_goals
+  WHERE match_id = p_match_id AND side = 'HOME_TEAM';
+
+  SELECT goals FROM bet_match_teams INTO away_goals
+  WHERE match_id = p_match_id AND side = 'AWAY_TEAM';
+
+  RETURN home_goals.goals + away_goals.goals < p_prediction::INT;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION check_correct_score(
+  p_prediction VARCHAR,
+  p_match_id INT,
+) RETURNS BOOLEAN
+LANGUAGE PLPGSQL
+AS
+$$
+DECLARE
+  prediction_home_goals INT;
+  prediction_away_goals INT;
+  home_goals bet_match_teams %rowtype;
+  away_goals bet_match_teams %rowtype;
+BEGIN
+  SELECT goals FROM bet_match_teams INTO home_goals
+  WHERE match_id = p_match_id AND side = 'HOME_TEAM';
+
+  SELECT goals FROM bet_match_teams INTO away_goals
+  WHERE match_id = p_match_id AND side = 'AWAY_TEAM';
+
+  SELECT LEFT(p_prediction, 1) INTO prediction_home_goals::INT;
+  SELECT RIGHT(p_prediction, 1) INTO prediction_away_goals::INT;
+
+  RETURN away_goals.goals = prediction_away_goals AND home_goals.goals = prediction_home_goals;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION under_over_winner_count(
+  p_match_id INT
+) RETURNS INT
+LANGUAGE PLPGSQL
+AS
+$$
+DECLARE
+  winner_count INT := 0;
+  bet record;
+  is_valid BOOLEAN;
+BEGIN
+  FOR bet IN SELECT prediction, bet_type_name FROM user_bet WHERE match_id = p_match_id
+  AND bet_type_name = 'under' OR bet_type_name = 'over'
+
+  LOOP
+    IF bet.bet_type_name = 'under' THEN
+      SELECT check_under(p_match_id, bet.prediction) INTO is_valid;
+      
+      IF is_valid = true THEN
+        winner_count = winner_count + 1;
+      END IF;
+    ELSIF bet.bet_type_name = 'over' THEN
+      SELECT check_over(p_match_id, bet.prediction) INTO is_valid;
+
+      IF is_valid = true THEN
+        winner_count = winner_count + 1;
+      END IF;
+    END IF;
+  END LOOP;
+
+  RETURN winner_count;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION correct_score_winner_count(
+  p_match_id INT
+) RETURNS INT
+LANGUAGE PLPGSQL
+AS
+$$
+DECLARE
+  winner_count INT := 0;
+  bet record;
+  is_valid BOOLEAN;
+BEGIN
+  FOR bet IN SELECT prediction FROM user_bet WHERE match_id = p_match_id 
+  AND bet_type_name = 'CORRECT SCORE'
+
+  LOOP
+    SELECT check_correct_score(p_match_id, bet.prediction) INTO is_valid;
+
+    IF is_valid = true THEN
+      winner_count = winner_count + 1;
+    END IF;
+  END LOOP;
   
+  RETURN winner_count;
 END;
 $$;
 
 CREATE OR REPLACE PROCEDURE wire_money(
-    p_match_id VARCHAR,
-    p_user_id VARCHAR,
-    p_bet_type VARCHAR,
-    p_prediction VARCHAR,
-    p_ammout FLOAT
-  ) LANGUAGE PLPGSQL AS $$
-DECLARE winners user_bet %rowtype;
-bet_pool user_bet %rowtype;
-curr_balance user_balance %rowtype;
+  p_match_id VARCHAR,
+  p_user_id VARCHAR,
+  p_bet_type VARCHAR,
+  p_prediction VARCHAR,
+  p_ammout FLOAT
+)
+LANGUAGE PLPGSQL 
+AS 
+$$
+DECLARE 
+  winners user_bet %rowtype;
+  bet_pool user_bet %rowtype;
+  curr_balance user_balance %rowtype;
+  winner_count INT;
 BEGIN
   SELECT balance FROM user_balance INTO curr_balance
   WHERE user_id = p_user_id;
+
   IF p_bet_type = '1' THEN
     SELECT SUM(ammount) FROM user_bet INTO bet_pool
     WHERE match_id = p_match_id AND bet_type_name = '1' OR bet_type_name = '2'
@@ -221,37 +344,50 @@ BEGIN
     AND match_id = p_match_id;
 
     UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
-    WHERE user_id = p_match_id;
+    WHERE user_id = p_user_id;
   ELSIF p_bet_type = 'CORRECT SCORE' THEN
     SELECT SUM(ammount) FROM user_bet INTO bet_pool
     WHERE match_id = p_match_id AND bet_type_name = 'CORRECT SCORE';
 
-    SELECT COUNT(*) FROM user_bet INTO winners
-    WHERE 
+    SELECT correct_score_winner_count(p_match_id) INTO winner_count;
+
+    UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
+    WHERE user_id = p_user_id;
+  ELSIF p_bet_type = 'under' OR p_bet_type = 'over' THEN
+    SELECT SUM(ammount) FROM user_bet INTO bet_pool
+    WHERE match_id = p_match_id 
+    AND bet_type_name = 'under' OR bet_type_name = 'over';
+
+    SELECT under_over_winner_count(p_match_id) INTO winner_count;
+
+    UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
+    WHERE user_id = p_user_id;
   END IF;
+
   COMMIT;
+
   EXCEPTION
-    WHEN OTHERS THEN RAISE NOTICE 'Error wiring money to user %. There was an exception',
-      p_user_id;
+    WHEN OTHERS THEN 
+      RAISE NOTICE 'Error wiring money to user %. There was an exception', p_user_id;
       RAISE NOTICE '% %', SQLERRM, SQLSTATE;
   ROLLBACK;
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION update_bet() RETURNS TRIGGER LANGUAGE PLPGSQL AS $$
-DECLARE 
+CREATE OR REPLACE FUNCTION update_bet() 
+RETURNS TRIGGER 
+LANGUAGE PLPGSQL 
+AS
+$$
+DECLARE
   bet record;
-  away_goals INT;
-  prediction_home_goals INT;
-  prediction_away_goals INT;
-  home_goals bet_match_teams%rowtype;
-  away_goals bet_match_teams%rowtype;
+  is_valid BOOLEAN;
 BEGIN 
   FOR bet IN SELECT * FROM user_bet
-  WHERE match_id = NEW.match_id;
+  WHERE match_id = NEW.match_id
 
-  LOOP 
-    IF bet.bet_type_name = '1' THEN 
+  LOOP
+    IF bet.bet_type_name = '1' THEN
       IF bet.side = 'HOME_TEAM' AND bet.winner = true THEN
         CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
       END IF;
@@ -274,37 +410,21 @@ BEGIN
         CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
       END IF;
     ELSIF bet.bet_type_name = 'CORRECT SCORE' THEN
-      SELECT goals FROM bet_match_teams INTO home_goals
-      WHERE match_id = NEW.match_id AND side = 'HOME_TEAM';
+      SELECT check_correct_score(bet.prediction, NEW.match_id) INTO is_valid;
 
-      SELECT goals FROM bet_match_teams INTO away_goals
-      WHERE match_id = NEW.match_id AND side = 'AWAY_TEAM';
-
-      SELECT LEFT(bet.prediction, 1) INTO prediction_home_goals::INT;
-
-      SELECT RIGHT(bet.prediction, 1) INTO prediction_away_goals::INT;
-
-      IF away_goals.goals = prediction_away_goals AND home_goals.goals = prediction_home_goals THEN
+      IF is_valid = true THEN
         CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
       END IF;
-    ELSE IF bet.bet_type_name = 'under' THEN
-      SELECT goals FROM bet_match_teams INTO home_goals
-      WHERE match_id = NEW.match_id AND side = 'HOME_TEAM';
+    ELSIF bet.bet_type_name = 'under' THEN
+      SELECT check_under(bet.prediction, NEW.match_id) INTO is_valid;
 
-      SELECT goals FROM bet_match_teams INTO away_goals
-      WHERE match_id = NEW.match_id AND side = 'AWAY_TEAM';
-
-      IF home_goals.goals + away_goals.goals > bet.prediction::INT THEN
+      IF is_valid = true THEN
         CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
       END IF;
-    ELSE IF bet.bet_type_name = 'over' THEN
-      SELECT goals FROM bet_match_teams INTO home_goals
-      WHERE match_id = NEW.match_id AND side = 'HOME_TEAM';
+    ELSIF bet.bet_type_name = 'over' THEN
+      SELECT check_over(bet.prediction, NEW.match_id) INTO is_valid;
 
-      SELECT goals FROM bet_match_teams INTO away_goals
-      WHERE match_id = NEW.match_id AND side = 'AWAY_TEAM';
-
-      IF home_goals.goals + away_goals.goals < bet.prediction::INT THEN
+      IF is_valid = true THEN
         CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
       END IF;
     END IF;
