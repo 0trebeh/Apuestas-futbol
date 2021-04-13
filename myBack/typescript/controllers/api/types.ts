@@ -50,4 +50,29 @@ export type Match = {
   };
   utcDate: string;
   status: string;
+  score: {
+    winner: string;
+    fullTime: {
+      homeTeam: number;
+      awayTeam: number;
+    };
+    halfTime: {
+      homeTeam: number;
+      awayTeam: number;
+    };
+    extraTime: {
+      homeTeam: number;
+      awayTeam: number;
+    };
+    penalties: {
+      homeTeam: number;
+      awayTeam: number;
+    };
+  };
+  homeTeam: {
+    id: number;
+  };
+  awayTeam: {
+    id: number;
+  };
 };

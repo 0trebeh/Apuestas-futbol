@@ -4,3 +4,203 @@
 2021-04-05 20:44:13:4413 [31merror[39m: [31masdasdasd[39m
 2021-04-05 20:45:52:4552 [31merror[39m: [31m{ msg: 'TROLOLOL' }[39m
 2021-04-05 20:52:14:5214 [31merror[39m: [31m{ msg: 'TROLOLOL' }[39m
+2021-04-05 21:44:32:4432 [31merror[39m: [31m{ custom: 'Nombre de usuario no existe.', status: 404 }[39m
+2021-04-05 21:48:16:4816 [31merror[39m: [31m{ custom: 'Nombre de usuario no existe.', status: 404 }[39m
+2021-04-05 21:50:01:501 [31merror[39m: [31m{ custom: 'Nombre de usuario no existe.', status: 404 }[39m
+2021-04-05 21:50:11:5011 [31merror[39m: [31m{ custom: 'Nombre de usuario no existe.', status: 404 }[39m
+2021-04-05 21:51:41:5141 [31merror[39m: [31mduplicate key value violates unique constraint "email_unique"[39m
+2021-04-05 21:52:19:5219 [31merror[39m: [31m{ custom: 'Nombre de usuario no existe.', status: 404 }[39m
+2021-04-05 22:01:44:144 [31merror[39m: [31m{ custom: 'Nombre de usuario no existe.', status: 404 }[39m
+2021-04-05 22:03:12:312 [31merror[39m: [31mduplicate key value violates unique constraint "email_unique"[39m
+2021-04-05 22:30:09:309 [31merror[39m: [31m{ custom: 'Correo no existe.', status: 404 }[39m
+2021-04-05 22:30:16:3016 [31merror[39m: [31m{ custom: 'Contraseña incorrecta.', status: 403 }[39m
+2021-04-05 22:33:28:3328 [31merror[39m: [31mduplicate key value violates unique constraint "email_unique"[39m
+2021-04-06 18:51:44:5144 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-06 19:21:22:2122 [31merror[39m: [31mvalue too long for type character varying(200)[39m
+2021-04-06 19:22:23:2223 [31merror[39m: [31mvalue too long for type character varying(500)[39m
+2021-04-06 19:25:55:2555 [31merror[39m: [31mduplicate key value violates unique constraint "unique_email"[39m
+2021-04-06 20:25:54:2554 [31merror[39m: [31mvalue too long for type character varying(500)[39m
+2021-04-06 20:31:14:3114 [31merror[39m: [31m{ custom: 'Correo no existe.', status: 404 }[39m
+2021-04-06 22:37:22:3722 [31merror[39m: [31m{ custom: 'Correo no existe.', status: 404 }[39m
+2021-04-06 22:53:09:539 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-06 22:53:13:5313 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-07 15:39:31:3931 [31merror[39m: [31m{ custom: 'Correo no existe.', status: 404 }[39m
+2021-04-09 22:27:12:2712 [31merror[39m: [31mRequest failed with status code 403[39m
+2021-04-09 22:28:28:2828 [31merror[39m: [31msyntax error at or near "$1"[39m
+2021-04-09 22:29:15:2915 [31merror[39m: [31msyntax error at or near "$1"[39m
+2021-04-09 22:29:51:2951 [31merror[39m: [31minvalid input syntax for type uuid: "{"id":"4ca8ecd4-5509-426c-b63e-05640b0cf52e"}"[39m
+2021-04-09 22:30:39:3039 [31merror[39m: [31minvalid input syntax for type uuid: "{"id":86,"name":"Real Madrid CF","shortName":"Real Madrid","tla":"RMA","crestUrl":"https://crests.football-data.org/86.svg"}"[39m
+2021-04-09 22:31:58:3158 [31merror[39m: [31minvalid input syntax for type uuid: "{"id":86,"name":"Real Madrid CF","shortName":"Real Madrid","tla":"RMA","crestUrl":"https://crests.football-data.org/86.svg"}"[39m
+2021-04-09 22:32:34:3234 [31merror[39m: [31minvalid input syntax for type uuid: "{"id":86,"name":"Real Madrid CF","shortName":"Real Madrid","tla":"RMA","crestUrl":"https://crests.football-data.org/86.svg"}"[39m
+2021-04-10 00:14:37:1437 [31merror[39m: [31mCannot read property 'id' of undefined[39m
+2021-04-10 00:19:55:1955 [31merror[39m: [31mCannot read property 'id' of undefined[39m
+2021-04-10 00:57:51:5751 [31merror[39m: [31mvalue too long for type character varying(30)[39m
+2021-04-10 00:59:11:5911 [31merror[39m: [31mvalue too long for type character varying(30)[39m
+2021-04-10 00:59:32:5932 [31merror[39m: [31mvalue too long for type character varying(30)[39m
+2021-04-10 01:09:11:911 [31merror[39m: [31mcolumn "winner" of relation "tournament_season" does not exist[39m
+2021-04-10 01:09:21:921 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 01:11:25:1125 [31merror[39m: [31minvalid input syntax for type integer: "{"id":86,"name":"Real Madrid CF","shortName":"Real Madrid","tla":"RMA","crestUrl":"https://crests.football-data.org/86.svg"}"[39m
+2021-04-10 01:11:35:1135 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 01:14:23:1423 [31merror[39m: [31minvalid input syntax for type integer: "{"id":86,"name":"Real Madrid CF","shortName":"Real Madrid","tla":"RMA","crestUrl":"https://crests.football-data.org/86.svg"}"[39m
+2021-04-10 01:14:34:1434 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 01:14:40:1440 [31merror[39m: [31mnull value in column "season_id" of relation "tournament_season" violates not-null constraint[39m
+2021-04-10 01:14:52:1452 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 01:18:40:1840 [31merror[39m: [31mduplicate key value violates unique constraint "tournament_season_pkey"[39m
+2021-04-10 01:18:50:1850 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 01:20:54:2054 [31merror[39m: [31mduplicate key value violates unique constraint "tournament_season_pkey"[39m
+2021-04-10 01:21:04:214 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 01:21:30:2130 [31merror[39m: [31minsert or update on table "tournament_season" violates foreign key constraint "tournament_season_season_id_fkey"[39m
+2021-04-10 01:21:42:2142 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 01:25:22:2522 [31merror[39m: [31minsert or update on table "tournament_season" violates foreign key constraint "tournament_season_season_id_fkey"[39m
+2021-04-10 01:25:32:2532 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 01:28:38:2838 [31merror[39m: [31minsert or update on table "tournament_season" violates foreign key constraint "tournament_season_season_id_fkey"[39m
+2021-04-10 01:28:52:2852 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 01:28:58:2858 [31merror[39m: [31minsert or update on table "tournament_season" violates foreign key constraint "tournament_season_season_id_fkey"[39m
+2021-04-10 01:29:40:2940 [31merror[39m: [31mRequest failed with status code 429[39m
+2021-04-10 01:38:19:3819 [31merror[39m: [31minsert or update on table "tournament_season" violates foreign key constraint "tournament_season_season_id_fkey"[39m
+2021-04-10 01:38:31:3831 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 01:44:03:443 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 14:13:00:130 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 14:23:45:2345 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 14:39:16:3916 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 15:09:47:947 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 15:19:03:193 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 15:19:26:1926 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 15:19:28:1928 [31merror[39m: [31mRequest failed with status code 429[39m
+2021-04-10 15:31:57:3157 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 15:31:59:3159 [31merror[39m: [31mRequest failed with status code 429[39m
+2021-04-10 15:49:13:4913 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 15:49:21:4921 [31merror[39m: [31mRequest failed with status code 429[39m
+2021-04-10 16:02:34:234 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 16:19:00:190 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 16:45:21:4521 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 16:57:35:5735 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 17:10:18:1018 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 17:26:39:2639 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 17:51:51:5151 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 17:53:21:5321 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 17:58:21:5821 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 18:00:04:04 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 18:00:22:022 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 18:03:33:333 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 18:06:21:621 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 18:08:34:834 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 18:09:52:952 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 18:10:31:1031 [31merror[39m: [31mduplicate key value violates unique constraint "match_pkey"[39m
+2021-04-10 18:11:04:114 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 18:16:34:1634 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 18:17:21:1721 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 18:18:00:180 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 18:19:51:1951 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 18:20:57:2057 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 18:22:03:223 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 18:23:05:235 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 18:26:05:265 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 18:32:22:3222 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 18:32:51:3251 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 18:38:21:3821 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 18:38:35:3835 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 18:40:09:409 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 18:40:19:4019 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 18:41:51:4151 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 18:42:21:4221 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 18:42:51:4251 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 18:43:22:4322 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 18:44:04:444 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 18:46:21:4621 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 18:49:34:4934 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 18:49:48:4948 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 18:50:28:5028 [31merror[39m: [31mRequest failed with status code 429[39m
+2021-04-10 18:51:26:5126 [31merror[39m: [31mduplicate key value violates unique constraint "teams_pkey"[39m
+2021-04-10 18:52:57:5257 [31merror[39m: [31mRequest failed with status code 429[39m
+2021-04-10 19:00:44:044 [31merror[39m: [31minvalid input syntax for type integer: "{"4"}"[39m
+2021-04-10 19:01:14:114 [31merror[39m: [31minvalid input syntax for type integer: "{"5"}"[39m
+2021-04-10 19:01:43:143 [31merror[39m: [31minvalid input syntax for type integer: "{"18"}"[39m
+2021-04-10 19:02:13:213 [31merror[39m: [31minvalid input syntax for type integer: "{"61"}"[39m
+2021-04-10 19:02:43:243 [31merror[39m: [31minvalid input syntax for type integer: "{"64"}"[39m
+2021-04-10 19:03:14:314 [31merror[39m: [31minvalid input syntax for type integer: "{"65"}"[39m
+2021-04-10 19:03:43:343 [31merror[39m: [31minvalid input syntax for type integer: "{"66"}"[39m
+2021-04-10 19:04:14:414 [31merror[39m: [31minvalid input syntax for type integer: "{"78"}"[39m
+2021-04-10 19:04:44:444 [31merror[39m: [31minvalid input syntax for type integer: "{"81"}"[39m
+2021-04-10 19:05:14:514 [31merror[39m: [31minvalid input syntax for type integer: "{"86"}"[39m
+2021-04-10 19:05:44:544 [31merror[39m: [31minvalid input syntax for type integer: "{"102"}"[39m
+2021-04-10 19:06:13:613 [31merror[39m: [31minvalid input syntax for type integer: "{"108"}"[39m
+2021-04-10 19:06:44:644 [31merror[39m: [31minvalid input syntax for type integer: "{"109"}"[39m
+2021-04-10 19:07:14:714 [31merror[39m: [31minvalid input syntax for type integer: "{"110"}"[39m
+2021-04-10 19:07:43:743 [31merror[39m: [31minvalid input syntax for type integer: "{"503"}"[39m
+2021-04-10 19:08:14:814 [31merror[39m: [31minvalid input syntax for type integer: "{"516"}"[39m
+2021-04-10 19:08:43:843 [31merror[39m: [31minvalid input syntax for type integer: "{"524"}"[39m
+2021-04-10 19:09:13:913 [31merror[39m: [31minvalid input syntax for type integer: "{"529"}"[39m
+2021-04-10 19:09:52:952 [31merror[39m: [31minvalid input syntax for type integer: "{"4"}"[39m
+2021-04-10 19:10:22:1022 [31merror[39m: [31minvalid input syntax for type integer: "{"5"}"[39m
+2021-04-10 19:10:52:1052 [31merror[39m: [31minvalid input syntax for type integer: "{"18"}"[39m
+2021-04-10 19:11:22:1122 [31merror[39m: [31minvalid input syntax for type integer: "{"61"}"[39m
+2021-04-10 19:11:52:1152 [31merror[39m: [31minvalid input syntax for type integer: "{"64"}"[39m
+2021-04-10 19:12:22:1222 [31merror[39m: [31minvalid input syntax for type integer: "{"65"}"[39m
+2021-04-10 19:12:52:1252 [31merror[39m: [31minvalid input syntax for type integer: "{"66"}"[39m
+2021-04-10 19:13:22:1322 [31merror[39m: [31minvalid input syntax for type integer: "{"78"}"[39m
+2021-04-10 19:13:52:1352 [31merror[39m: [31minvalid input syntax for type integer: "{"81"}"[39m
+2021-04-10 19:14:22:1422 [31merror[39m: [31minvalid input syntax for type integer: "{"86"}"[39m
+2021-04-10 19:14:52:1452 [31merror[39m: [31minvalid input syntax for type integer: "{"102"}"[39m
+2021-04-10 19:15:22:1522 [31merror[39m: [31minvalid input syntax for type integer: "{"108"}"[39m
+2021-04-10 19:16:05:165 [31merror[39m: [31minvalid input syntax for type integer: "{"4"}"[39m
+2021-04-10 19:16:35:1635 [31merror[39m: [31minvalid input syntax for type integer: "{"5"}"[39m
+2021-04-10 19:17:05:175 [31merror[39m: [31minvalid input syntax for type integer: "{"18"}"[39m
+2021-04-10 19:17:35:1735 [31merror[39m: [31minvalid input syntax for type integer: "{"61"}"[39m
+2021-04-10 19:18:05:185 [31merror[39m: [31minvalid input syntax for type integer: "{"64"}"[39m
+2021-04-10 19:18:35:1835 [31merror[39m: [31minvalid input syntax for type integer: "{"65"}"[39m
+2021-04-10 19:19:05:195 [31merror[39m: [31minvalid input syntax for type integer: "{"66"}"[39m
+2021-04-10 19:19:35:1935 [31merror[39m: [31minvalid input syntax for type integer: "{"78"}"[39m
+2021-04-10 19:20:05:205 [31merror[39m: [31minvalid input syntax for type integer: "{"81"}"[39m
+2021-04-10 19:20:35:2035 [31merror[39m: [31minvalid input syntax for type integer: "{"86"}"[39m
+2021-04-10 19:21:05:215 [31merror[39m: [31minvalid input syntax for type integer: "{"102"}"[39m
+2021-04-10 19:21:35:2135 [31merror[39m: [31minvalid input syntax for type integer: "{"108"}"[39m
+2021-04-10 19:22:05:225 [31merror[39m: [31minvalid input syntax for type integer: "{"109"}"[39m
+2021-04-10 19:22:35:2235 [31merror[39m: [31minvalid input syntax for type integer: "{"110"}"[39m
+2021-04-10 19:23:05:235 [31merror[39m: [31minvalid input syntax for type integer: "{"503"}"[39m
+2021-04-10 19:23:35:2335 [31merror[39m: [31minvalid input syntax for type integer: "{"516"}"[39m
+2021-04-10 19:24:05:245 [31merror[39m: [31minvalid input syntax for type integer: "{"524"}"[39m
+2021-04-10 19:24:35:2435 [31merror[39m: [31minvalid input syntax for type integer: "{"529"}"[39m
+2021-04-10 19:25:05:255 [31merror[39m: [31minvalid input syntax for type integer: "{"559"}"[39m
+2021-04-10 19:33:43:3343 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 19:34:51:3451 [31merror[39m: [31msyntax error at or near "("[39m
+2021-04-10 19:35:21:3521 [31merror[39m: [31msyntax error at or near "("[39m
+2021-04-10 19:35:51:3551 [31merror[39m: [31msyntax error at or near "("[39m
+2021-04-10 19:36:21:3621 [31merror[39m: [31msyntax error at or near "("[39m
+2021-04-10 19:36:51:3651 [31merror[39m: [31msyntax error at or near "("[39m
+2021-04-10 19:37:27:3727 [31merror[39m: [31msyntax error at or near "("[39m
+2021-04-10 19:37:57:3757 [31merror[39m: [31msyntax error at or near "("[39m
+2021-04-10 19:46:38:4638 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 19:56:40:5640 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 19:59:09:599 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 20:14:44:1444 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 20:19:51:1951 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 20:22:45:2245 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 20:27:15:2715 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 20:27:46:2746 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 20:34:39:3439 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 20:35:39:3539 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 20:37:08:378 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 20:38:12:3812 [31merror[39m: [31mduplicate key value violates unique constraint "match_pkey"[39m
+2021-04-10 20:43:39:4339 [31merror[39m: [31mduplicate key value violates unique constraint "players_pkey"[39m
+2021-04-10 20:59:10:5910 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-10 21:38:22:3822 [31merror[39m: [31mduplicate key value violates unique constraint "match_pkey"[39m
+2021-04-10 22:38:21:3821 [31merror[39m: [31mduplicate key value violates unique constraint "match_pkey"[39m
+2021-04-10 23:38:14:3814 [31merror[39m: [31mduplicate key value violates unique constraint "match_pkey"[39m
+2021-04-11 00:23:43:2343 [31merror[39m: [31mRequest failed with status code 429[39m
+2021-04-11 00:23:58:2358 [31merror[39m: [31mRequest failed with status code 429[39m
+2021-04-11 00:24:13:2413 [31merror[39m: [31mRequest failed with status code 429[39m
+2021-04-11 00:24:28:2428 [31merror[39m: [31mRequest failed with status code 429[39m
+2021-04-11 00:24:42:2442 [31merror[39m: [31mRequest failed with status code 429[39m
+2021-04-11 12:04:42:442 [31merror[39m: [31mCannot read property 'id' of undefined[39m
+2021-04-11 12:47:51:4751 [31merror[39m: [31mINSERT has more target columns than expressions[39m
+2021-04-11 14:42:03:423 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-11 15:10:43:1043 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-11 15:55:06:556 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-11 16:11:10:1110 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-11 18:26:33:2633 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-11 18:55:11:5511 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-11 19:26:29:2629 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-11 19:41:28:4128 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-11 19:56:29:5629 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-11 20:40:43:4043 [31merror[39m: [31mread ETIMEDOUT[39m

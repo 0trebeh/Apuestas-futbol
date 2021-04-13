@@ -22,4 +22,8 @@ export = {
   insertTeamPlayer: 'INSERT INTO team_players(team_id, player_id) VALUES',
   filterMatchByStatus: 'SELECT * FROM match WHERE playing NOT LIKE $1',
   updateMatchStatus: 'UPDATE match SET playing = $1 WHERE match_id = $2',
+  insertMatchTeam:
+    'INSERT INTO match_teams(team_id, match_id, goals, winner, loser, draw, side) VALUES($1, $2, $3, $4, $5, $6, $7)',
+  updateMatchTeam:
+    'UPDATE match_teams SET goals = $1, winner = $2, loser = $3, draw = $4 WHERE match_id = $5 AND team_id = $6',
 };

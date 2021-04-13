@@ -86,7 +86,7 @@ export default class ApiConnection {
         axios.get('/v2/competitions/WC/matches'),
         axios.get('/v2/competitions/PD/matches'),
       ]);
-      const matches = [
+      const matches: Match[] = [
         ...responses[0].data.matches,
         ...responses[1].data.matches,
         ...responses[2].data.matches,
@@ -98,6 +98,54 @@ export default class ApiConnection {
       let params = this.matchParams(matches);
       await client.query('BEGIN');
       await client.query(query, params);
+      for (let i = 0; i < matches.length; i++) {
+        await client.query(queries.insertMatchTeam, [
+          matches[i].awayTeam.id,
+          matches[i].id,
+          matches[i].score.fullTime.awayTeam +
+            matches[i].score.halfTime.awayTeam +
+            matches[i].score.extraTime.awayTeam,
+          matches[i].score.winner
+            ? matches[i].score.winner === 'AWAY_TEAM'
+              ? true
+              : false
+            : null,
+          matches[i].score.winner
+            ? matches[i].score.winner === 'HOME_TEAM'
+              ? true
+              : false
+            : null,
+          matches[i].score.winner
+            ? matches[i].score.winner === 'DRAW'
+              ? true
+              : false
+            : null,
+          'AWAY_TEAM',
+        ]);
+        await client.query(queries.insertMatchTeam, [
+          matches[i].homeTeam.id,
+          matches[i].id,
+          matches[i].score.fullTime.homeTeam +
+            matches[i].score.halfTime.homeTeam +
+            matches[i].score.extraTime.homeTeam,
+          matches[i].score.winner
+            ? matches[i].score.winner === 'HOME_TEAM'
+              ? true
+              : false
+            : null,
+          matches[i].score.winner
+            ? matches[i].score.winner === 'AWAY_TEAM'
+              ? true
+              : false
+            : null,
+          matches[i].score.winner
+            ? matches[i].score.winner === 'DRAW'
+              ? true
+              : false
+            : null,
+          'HOME_TEAM',
+        ]);
+      }
       await client.query('COMMIT');
     } catch (err) {
       await client.query('ROLLBACK');
@@ -286,6 +334,50 @@ export default class ApiConnection {
           continue;
         }
         await client.query(queries.updateMatchStatus, [match.status, match.id]);
+        await client.query(queries.updateMatchTeam, [
+          match.score.fullTime.awayTeam +
+            match.score.halfTime.awayTeam +
+            match.score.extraTime.awayTeam,
+          match.score.winner
+            ? match.score.winner === 'AWAY_TEAM'
+              ? true
+              : false
+            : null,
+          match.score.winner
+            ? match.score.winner === 'HOME_TEAM'
+              ? true
+              : false
+            : null,
+          match.score.winner
+            ? match.score.winner === 'DRAW'
+              ? true
+              : false
+            : null,
+          match.id,
+          match.awayTeam.id,
+        ]);
+        await client.query(queries.updateMatchTeam, [
+          match.score.fullTime.homeTeam +
+            match.score.halfTime.homeTeam +
+            match.score.extraTime.homeTeam,
+          match.score.winner
+            ? match.score.winner === 'HOME_TEAM'
+              ? true
+              : false
+            : null,
+          match.score.winner
+            ? match.score.winner === 'AWAY_TEAM'
+              ? true
+              : false
+            : null,
+          match.score.winner
+            ? match.score.winner === 'DRAW'
+              ? true
+              : false
+            : null,
+          match.id,
+          match.homeTeam.id,
+        ]);
       }
       await client.query('COMMIT');
     } catch (err) {
