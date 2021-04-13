@@ -174,7 +174,7 @@ export default class ApiConnection {
         data.squad[i].position,
         data.squad[i].shirtNumber,
         data.squad[i].countryOfBirth,
-        data.squad[i].nacionality
+        data.squad[i].nationality
       );
     }
     return params;
@@ -408,6 +408,9 @@ export default class ApiConnection {
           data[i].player.id,
           data[i].team.id,
         ]);
+        if (result.rowCount === 0) {
+          continue;
+        }
         await client.query(queries.insertScorer, [
           seasonId,
           result.rows[0].id,
