@@ -452,7 +452,6 @@ export default class ApiConnection {
   }
 
   async fetchCycle() {
-    this.get_top_scores();
     setInterval(() => {
       this.updateMatches();
       this.get_top_scores();
