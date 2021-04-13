@@ -26,4 +26,11 @@ export = {
     'INSERT INTO match_teams(team_id, match_id, goals, winner, loser, draw, side) VALUES($1, $2, $3, $4, $5, $6, $7)',
   updateMatchTeam:
     'UPDATE match_teams SET goals = $1, winner = $2, loser = $3, draw = $4 WHERE match_id = $5 AND team_id = $6',
+  insertScorer:
+    'INSERT INTO(season_id, team_players_id, number_goals) VALUES($1, $2, $3)',
+  getTeamPlayerID:
+    'SELECT id FROM team_players WHERE player_id = $1 AND team_id = $2',
+  getScorerPlayerID:
+    'SELECT tp.player_id, tp.team_id FROM scorers s INNER JOIN team_players tp ON tp.id = s.team_players_id WHERE s.season_id = $1',
+  deleteScorers: 'DELETE FROM scorers WHERE season_id = $1',
 };

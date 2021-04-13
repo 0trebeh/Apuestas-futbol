@@ -76,3 +76,23 @@ export type Match = {
     id: number;
   };
 };
+
+export type Scorer = {
+  player: {
+    id: number;
+  };
+  team: {
+    id: number;
+  };
+  numberOfGoals: number;
+};
+
+export type Season_scorers = {
+  competition: {
+    id: number;
+  };
+  season: {
+    id: number;
+  };
+  scorers: Scorer[];
+};
