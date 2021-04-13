@@ -45,6 +45,21 @@ CREATE TABLE tournament (
   location INT
 );
 
+CREATE TABLE scorers (
+  scorers_id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+  season_id integer,
+  team_players_id uuid,
+  number_goals integer,
+  FOREIGN KEY (season_id)
+    REFERENCES tournament_season (season_id)
+      ON UPDATE CASCADE 
+      ON DELETE CASCADE,
+  FOREIGN KEY (team_players_id)
+    REFERENCES team_players (id)
+      ON UPDATE CASCADE 
+      ON DELETE CASCADE
+);
+
 CREATE TABLE tournament_season (
   season_id INT PRIMARY KEY,
   tournament_id INT,
