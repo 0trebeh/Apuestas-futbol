@@ -27,7 +27,7 @@ export = {
   updateMatchTeam:
     'UPDATE match_teams SET goals = $1, winner = $2, loser = $3, draw = $4 WHERE match_id = $5 AND team_id = $6',
   insertScorer:
-    'INSERT INTO(season_id, team_players_id, number_goals) VALUES($1, $2, $3)',
+    'INSERT INTO scorers(season_id, team_players_id, number_goals) VALUES($1, $2, $3)',
   getTeamPlayerID:
     'SELECT id FROM team_players WHERE player_id = $1 AND team_id = $2',
   getScorerPlayerID:
