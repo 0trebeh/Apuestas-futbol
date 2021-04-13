@@ -13,9 +13,6 @@
     "deploy": "git add . && git commit -m Heroku && git push heroku master",
     "dev": "ts-node-dev --respawn --transpile-only myBack/typescript/app.ts"
   },
-  "engines": {
-    "node": "15.12.0"
-  },
   "author": "",
   "license": "MIT",
   "dependencies": {

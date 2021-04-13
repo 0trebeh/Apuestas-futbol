@@ -1,21 +1,24 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+Alter table users alter column id_document type varchar(512); // Aumentar el tama;o
+
 CREATE TABLE users (
   user_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
   name varchar(30),
   last_name varchar(30),
-  id_document varchar(20),
+  id_document varchar(512),
   email varchar(50),
-  phone varchar(20),
-  address varchar(100)
+  phone varchar(512),
+  password varchar(512),
+  address varchar(512)
 );
 
 CREATE TABLE payment (
   payment_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
   user_id uuid,
-  account_number varchar(30),
-  bank varchar(30),
-  ref_number varchar(30),
+  account_number varchar(512),
+  bank varchar(512),
+  ref_number varchar(512),
   ammount float,
   state varchar(30),
   payment_date timestamptz
@@ -115,6 +118,12 @@ CREATE TABLE user_balance (
   balance_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
   user_id uuid,
   balance float
+);
+
+CREATE TABLE user_roles (
+  rol_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
+  user_id uuid,
+  role_name varchar(30)
 );
 
 ALTER TABLE tournament_season ADD FOREIGN KEY (tournament_id) REFERENCES tournament (tournament_id) ON DELETE CASCADE ON UPDATE CASCADE;

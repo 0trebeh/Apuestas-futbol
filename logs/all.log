@@ -9,3 +9,8 @@
 2021-04-05 20:54:08:548 [33mwarn[39m: [33m[33mwarn[33m[39m
 2021-04-05 20:54:14:5414 [33mwarn[39m: [33m[33mwarn[33m[39m
 2021-04-05 20:54:42:5442 [33mwarn[39m: [33masd[39m
+2021-04-13 01:11:38:1138 [31merror[39m: [31mcolumn "password" of relation "users" does not exist[39m
+2021-04-13 01:15:43:1543 [31merror[39m: [31mvalue too long for type character varying(20)[39m
+2021-04-13 01:18:37:1837 [31merror[39m: [31mvalue too long for type character varying(20)[39m
+2021-04-13 01:20:04:204 [31merror[39m: [31mvalue too long for type character varying(20)[39m
+2021-04-13 01:34:52:3452 [31merror[39m: [31mrelation "user_roles" does not exist[39m

@@ -204,3 +204,8 @@
 2021-04-11 19:41:28:4128 [31merror[39m: [31mread ETIMEDOUT[39m
 2021-04-11 19:56:29:5629 [31merror[39m: [31mread ETIMEDOUT[39m
 2021-04-11 20:40:43:4043 [31merror[39m: [31mread ETIMEDOUT[39m
+2021-04-13 01:11:38:1138 [31merror[39m: [31mcolumn "password" of relation "users" does not exist[39m
+2021-04-13 01:15:43:1543 [31merror[39m: [31mvalue too long for type character varying(20)[39m
+2021-04-13 01:18:37:1837 [31merror[39m: [31mvalue too long for type character varying(20)[39m
+2021-04-13 01:20:04:204 [31merror[39m: [31mvalue too long for type character varying(20)[39m
+2021-04-13 01:34:52:3452 [31merror[39m: [31mrelation "user_roles" does not exist[39m
