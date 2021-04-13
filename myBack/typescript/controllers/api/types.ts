@@ -33,7 +33,7 @@ export type Player = {
   name: string;
   position: string;
   countryOfBirth: string;
-  nacionality: string;
+  nationality: string;
   shirtNumber: number;
   dateOfBirth: string;
 };
