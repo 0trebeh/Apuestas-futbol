@@ -52,6 +52,7 @@ function LoginPage(props: Props) {
     } finally {
       setSaving(false);
       setTitle('Iniciar sesion');
+      props.onClose();
     }
   };
   const showFailedNotification = () => {

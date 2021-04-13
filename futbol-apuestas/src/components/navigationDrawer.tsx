@@ -48,6 +48,7 @@ const NavigationDrawer = (props: Props) => {
         message: 'Sesion terminada.',
         placement: 'topRight',
       });
+      history.push('/');
     } catch (err) {
       notification.error({
         message: 'Error cerrando sesion.',

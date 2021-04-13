@@ -8,7 +8,7 @@ import {persistor, store} from './state-store/store';
 import axios from 'axios';
 import Profile from './pages/profile';
 
-axios.defaults.baseURL = 'http://192.168.0.101:8000';
+axios.defaults.baseURL = 'https://fap-api.herokuapp.com';
 
 function App() {
   return (

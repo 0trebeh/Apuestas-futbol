@@ -46,6 +46,7 @@ const RegisterPage = (props: Props) => {
         message: 'Cuenta creada exitosamente!',
         placement: 'topRight',
       });
+      props.onClose();
     } catch (err) {
       notification.error({
         message: 'Error creando la cuenta.',
