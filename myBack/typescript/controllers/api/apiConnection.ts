@@ -1,6 +1,15 @@
 import axios, {AxiosResponse} from 'axios';
+import {QueryResult} from 'pg';
 import {dbController as db, logger, query as queries} from '../../helpers';
-import type {Country, Match, PlayersRequest, Season, Team} from './types';
+import type {
+  Country,
+  Match,
+  PlayersRequest,
+  Season,
+  Team,
+  Season_scorers,
+  Scorer,
+} from './types';
 
 axios.defaults.baseURL = 'https://api.football-data.org';
 axios.defaults.headers = {'X-Auth-Token': process.env.SOCCER_API_TOKEN};
@@ -388,9 +397,62 @@ export default class ApiConnection {
     }
   }
 
+  private async insertScorers(seasonId: number, data: Scorer[]) {
+    const client = await db.getClient();
+    let result: QueryResult<{id: string}>;
+    try {
+      await client.query('BEGIN');
+      await client.query(queries.deleteScorers, [seasonId]);
+      for (let i = 0; i < data.length; i++) {
+        result = await client.query(queries.getTeamPlayerID, [
+          data[i].player.id,
+          data[i].team.id,
+        ]);
+        await client.query(queries.insertScorer, [
+          seasonId,
+          result.rows[0].id,
+          data[i].numberOfGoals,
+        ]);
+      }
+      await client.query('COMMIT');
+    } catch (err) {
+      logger.logger.error(err);
+      await client.query('ROLLBACK');
+    } finally {
+      client.release(true);
+    }
+  }
+
+  private async get_top_scores(update?: boolean) {
+    try {
+      const requests: Promise<AxiosResponse<Season_scorers>>[] = [
+        axios.get('/v2/competitions/PD/scorers', {
+          params: {limit: 100},
+        }),
+        axios.get('/v2/competitions/CL/scorers', {
+          params: {limit: 100},
+        }),
+        axios.get('/v2/competitions/WC/scorers', {
+          params: {limit: 100},
+        }),
+      ];
+      const responses = await Promise.all(requests);
+      for (let i = 0; i < responses.length; i++) {
+        this.insertScorers(
+          responses[i].data.season.id,
+          responses[i].data.scorers
+        );
+      }
+    } catch (err) {
+      logger.logger.error(err);
+    }
+  }
+
   async fetchCycle() {
+    this.get_top_scores();
     setInterval(() => {
       this.updateMatches();
+      this.get_top_scores();
     }, 900000);
   }
 }

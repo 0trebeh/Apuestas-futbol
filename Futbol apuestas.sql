@@ -126,6 +126,21 @@ CREATE TABLE user_roles (
   role_name varchar(30)
 );
 
+CREATE TABLE scorers (
+  scorers_id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+  season_id integer,
+  team_players_id uuid,
+  number_goals integer,
+  FOREIGN KEY (season_id)
+    REFERENCES tournament_season (season_id)
+      ON UPDATE CASCADE 
+      ON DELETE CASCADE,
+  FOREIGN KEY (team_players_id)
+    REFERENCES team_players (id)
+      ON UPDATE CASCADE 
+      ON DELETE CASCADE
+);
+
 ALTER TABLE tournament_season ADD FOREIGN KEY (tournament_id) REFERENCES tournament (tournament_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE tournament_season ADD FOREIGN KEY (winner) REFERENCES teams(team_id) ON UPDATE CASCADE ON DELETE CASCADE;
