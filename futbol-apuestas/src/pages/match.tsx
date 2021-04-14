@@ -2,7 +2,6 @@ import React from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import MenuComponent from '../components/pageHeader';
 import {Card} from 'antd';
-//import {LoadingOutlined} from '@ant-design/icons';
 
 import type {RootState} from '../state-store/reducer.root';
 import type {Session} from '../state-store/session/session.types';
@@ -22,7 +21,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = PropsFromRedux;
 
-function Partidos(props: Props) {
+function Match(props: Props) {
   return (
     <div>
       <MenuComponent sessionActive={props.sessionActive} />
@@ -36,4 +35,4 @@ function Partidos(props: Props) {
   );
 }
 
-export default connector(Partidos);
+export default connector(Match);

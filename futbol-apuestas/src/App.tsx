@@ -8,12 +8,12 @@ import axios from 'axios';
 
 import Home from './pages/home';
 import Profile from './pages/profile';
-import Apuestas from './pages/apuestas';
-import Estadisticas from './pages/estisticas';
-import Predicciones from './pages/predicciones';
-import Partidos from './pages/partidos';
+import Stats from './pages/stats';
+import Predictions from './pages/predictions';
+import Match from './pages/match';
+import Bets from './pages/bets';
 
-axios.defaults.baseURL = 'https://fap-api.herokuapp.com';
+axios.defaults.baseURL = 'http://localhost:8000';
 
 function App() {
   return (
@@ -28,16 +28,16 @@ function App() {
               <Profile />
             </Route>
             <Route exact path={'/apuestas'}>
-              <Apuestas />
+              <Bets />
             </Route>
             <Route exact path={'/estadisticas'}>
-              <Estadisticas />
+              <Stats />
             </Route>
             <Route exact path={'/predicciones'}>
-              <Predicciones />
+              <Predictions />
             </Route>
             <Route exact path={'/partidos'}>
-              <Partidos />
+              <Match />
             </Route>
           </Switch>
         </BrowserRouter>

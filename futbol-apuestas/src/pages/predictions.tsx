@@ -2,7 +2,6 @@ import React from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import MenuComponent from '../components/pageHeader';
 import {Card} from 'antd';
-//import {LoadingOutlined} from '@ant-design/icons';
 
 import type {RootState} from '../state-store/reducer.root';
 import type {Session} from '../state-store/session/session.types';
@@ -22,18 +21,18 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = PropsFromRedux;
 
-function Apuestas(props: Props) {
+function Predictions(props: Props) {
   return (
     <div>
       <MenuComponent sessionActive={props.sessionActive} />
         <Card.Meta
-            title={'Apuetas'}
+            title={'Predicciones'}
             description={
-                'Apuetas'
+                'Predicciones'
             }
         />
     </div>
   );
 }
 
-export default connector(Apuestas);
+export default connector(Predictions);
