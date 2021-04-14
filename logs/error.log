@@ -209,3 +209,6 @@
 2021-04-13 01:18:37:1837 [31merror[39m: [31mvalue too long for type character varying(20)[39m
 2021-04-13 01:20:04:204 [31merror[39m: [31mvalue too long for type character varying(20)[39m
 2021-04-13 01:34:52:3452 [31merror[39m: [31mrelation "user_roles" does not exist[39m
+2021-04-14 00:32:52:3252 [31merror[39m: [31mCannot read property 'toLowerCase' of undefined[39m
+2021-04-14 01:06:19:619 [31merror[39m: [31minvalid input syntax for type integer: "a471816a-0550-455f-91ff-eb280b316fce"[39m
+2021-04-14 01:08:08:88 [31merror[39m: [31minvalid input syntax for type integer: "a471816a-0550-455f-91ff-eb280b316fce"[39m

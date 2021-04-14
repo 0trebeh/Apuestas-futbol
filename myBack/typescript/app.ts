@@ -5,7 +5,7 @@ import {logger} from './helpers';
 import cors from 'cors';
 import helmet from 'helmet';
 import multer from 'multer';
-import {UserRouter} from './routers';
+import {UserRouter, StatRouter} from './routers';
 import {apiConnection} from './controllers';
 
 const app = express();
@@ -18,6 +18,7 @@ app.use(express.json());
 app.use(form.none());
 
 app.use('/users', UserRouter);
+app.use('/stats', StatRouter);
 
 app.use(
   (err: any | undefined, req: Request, res: Response, next: NextFunction) => {
