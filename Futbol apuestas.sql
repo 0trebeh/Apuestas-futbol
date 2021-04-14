@@ -1,4 +1,5 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+SET client_encoding TO 'UTF8';
 
 Alter table users alter column id_document type varchar(512); // Aumentar el tama;o
 
