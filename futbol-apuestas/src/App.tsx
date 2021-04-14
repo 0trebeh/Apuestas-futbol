@@ -7,8 +7,9 @@ import {PersistGate} from 'redux-persist/es/integration/react';
 import {persistor, store} from './state-store/store';
 import axios from 'axios';
 import Profile from './pages/profile';
+import Matches from './pages/matches';
 
-axios.defaults.baseURL = 'https://fap-api.herokuapp.com';
+axios.defaults.baseURL = 'http://192.168.0.101:8000';
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
             </Route>
             <Route exact path={'/profile'}>
               <Profile />
+            </Route>
+            <Route exact path={'/matches'}>
+              <Matches />
             </Route>
           </Switch>
         </BrowserRouter>
