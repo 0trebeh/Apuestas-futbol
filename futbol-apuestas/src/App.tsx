@@ -1,15 +1,21 @@
 import React from 'react';
 import './App.css';
-import Home from './pages/home';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/es/integration/react';
 import {persistor, store} from './state-store/store';
 import axios from 'axios';
+
+import Home from './pages/home';
 import Profile from './pages/profile';
 import Matches from './pages/matches';
 
 axios.defaults.baseURL = 'http://192.168.0.101:8000';
+
+import Stats from './pages/stats';
+import Predictions from './pages/predictions';
+import Match from './pages/match';
+import Bets from './pages/bets';
 
 function App() {
   return (
@@ -25,6 +31,15 @@ function App() {
             </Route>
             <Route exact path={'/matches'}>
               <Matches />
+            </Route>
+            <Route exact path={'/apuestas'}>
+              <Bets />
+            </Route>
+            <Route exact path={'/estadisticas'}>
+              <Stats />
+            </Route>
+            <Route exact path={'/predicciones'}>
+              <Predictions />
             </Route>
           </Switch>
         </BrowserRouter>

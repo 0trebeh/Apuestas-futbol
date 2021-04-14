@@ -100,7 +100,7 @@ class Profile extends React.Component<Props, State> {
           size={'large'}
           dataSource={this.state.bets}
           itemLayout={'horizontal'}
-          header={<b>Apuestas</b>}
+          header={<b>Mis Apuestas</b>}
           renderItem={this._listItem.bind(this)}
         />
       </div>
