@@ -77,7 +77,7 @@ class Profile extends React.Component<Props, State> {
   render() {
     return (
       <div>
-        <MenuComponent sessionActive={this.props.sessionActive} />
+        <MenuComponent sessionActive={this.props.sessionActive} title={'Perfil'}/>
         <Descriptions layout={'vertical'} bordered title={'Perfil'}>
           <Descriptions.Item label={'Nombre'}>
             <Skeleton active loading={this.state.loading} paragraph={{rows: 0}}>

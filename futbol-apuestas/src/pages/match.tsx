@@ -24,7 +24,7 @@ type Props = PropsFromRedux;
 function Match(props: Props) {
   return (
     <div>
-      <MenuComponent sessionActive={props.sessionActive} />
+      <MenuComponent sessionActive={props.sessionActive} title={'Jugadores'}/>
         <Card.Meta
             title={'Partidos'}
             description={

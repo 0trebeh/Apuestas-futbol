@@ -6,7 +6,8 @@ import Register from './register';
 import NavDrawer from './navigationDrawer';
 
 type Props = {
-    sessionActive: boolean
+    sessionActive: boolean,
+    title: string,
 }
 
 function MenuComponent(props: Props) {
@@ -19,7 +20,7 @@ function MenuComponent(props: Props) {
         <div>
             <PageHeader
                 title={'FAP'}
-                subTitle={'Futbol APuestas'}
+                subTitle={props.title}
                 ghost={false}
                 style={{
                     backgroundColor: '#dbd8e3'

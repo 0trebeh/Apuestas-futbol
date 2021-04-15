@@ -24,7 +24,7 @@ type Props = PropsFromRedux;
 function Predictions(props: Props) {
   return (
     <div>
-      <MenuComponent sessionActive={props.sessionActive} />
+      <MenuComponent sessionActive={props.sessionActive} title={'Predicciones'}/>
         <Card.Meta
             title={'Predicciones'}
             description={

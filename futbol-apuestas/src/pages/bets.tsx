@@ -24,7 +24,7 @@ type Props = PropsFromRedux;
 function Bets(props: Props) {
   return (
     <div>
-      <MenuComponent sessionActive={props.sessionActive} />
+      <MenuComponent sessionActive={props.sessionActive} title={'Apuestas'}/>
         <Card.Meta
             title={'Apuestas'}
             description={

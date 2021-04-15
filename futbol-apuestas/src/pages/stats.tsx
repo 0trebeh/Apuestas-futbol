@@ -1,10 +1,10 @@
 import React from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import MenuComponent from '../components/pageHeader';
-import {Table, Card, message} from 'antd';
+import {Table, message, Button} from 'antd';
 
 import type {RootState} from '../state-store/reducer.root';
-import type {Scorer} from '../types/scorers';
+import type {Scorer, TopTeams} from '../types/scorers';
 import axios from 'axios';
 
 const mapStateToProps = (state: RootState) => ({
@@ -18,8 +18,9 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = PropsFromRedux;
 type State = {
   top: Scorer[];
+  topTeam: TopTeams[];
   loading: boolean;
-  season: number;
+  loading2: boolean;
 };
 
 class Stats extends React.Component<Props, State> {
@@ -28,31 +29,35 @@ class Stats extends React.Component<Props, State> {
     
     this.state = {
       top: [],
+      topTeam: [],
       loading: true,
-      season: 635,
+      loading2: true,
     };
     this.getData.bind(this);
   }
 
-  private async getData() {
+  private async getData(season: string) {
     try {
       this.setState({
         ...this.state,
         loading: true,
+        loading2: true,
       });
-      const response = await axios.get('/stats/'+this.state.season, {
+      const response = await axios.get('/stats/topScore/'+ season, {
         headers: {authorization: this.props.token},
       });
-      let list = [];
-      for (let i = 0; i < response.data.length; i++) {
-        let object = Object.assign({top: i+1}, response.data[i]);
-        list.push(object);
-      }
-      console.log(list);
       this.setState({
         ...this.state,
-        top: list,
+        top: response.data,
         loading: false,
+      });
+      const responseTeam = await axios.get('/stats/topTeams/'+ season, {
+        headers: {authorization: this.props.token},
+      });
+      this.setState({
+        ...this.state,
+        topTeam: responseTeam.data,
+        loading2: false,
       });
     } catch (err) {
       message.error('Error al obtener Estadisticas :(');
@@ -60,7 +65,7 @@ class Stats extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.getData();
+    this.getData('635');
   }
 
   render() {
@@ -71,32 +76,85 @@ class Stats extends React.Component<Props, State> {
         key: 'top',
       },
       {
-        title: 'Team',
+        title: 'Equipo',
         dataIndex: 'team',
         key: 'team',
       },
       {
-        title: 'Name',
+        title: 'Jugador',
         dataIndex: 'player',
         key: 'player',
+        render: (name: string) => <a href={`https://www.google.com/search?q=${name}+futbol`} target="_blank" rel="noreferrer">{name}</a>,
       },
       {
-        title: 'Goals',
+        title: 'Goles',
         dataIndex: 'number_goals',
         key: 'number_goals',
       },
     ];
+
+    const columnsTopTeams = [
+      {
+        title: 'Top',
+        dataIndex: 'top',
+        key: 'top',
+      },
+      {
+        title: 'Equipo',
+        dataIndex: 'team_name',
+        key: 'team_name',
+        render: (name: string) => <a href={`https://www.google.com/search?q=${name}+futbol`} target="_blank" rel="noreferrer">{name}</a>,
+      },
+      {
+        title: 'Total de Goles',
+        dataIndex: 'total_goals',
+        key: 'total_goals',
+      },
+      {
+        title: 'Total de Victorias',
+        dataIndex: 'total_winner',
+        key: 'total_winner',
+      },
+      {
+        title: 'Total de Derrotas',
+        dataIndex: 'total_loser',
+        key: 'total_loser',
+      },
+      {
+        title: 'Total de Empates',
+        dataIndex: 'total_draw',
+        key: 'total_draw',
+      },
+    ];
+
     return (
       <div>
-        <MenuComponent sessionActive={this.props.sessionActive} />
-        <Card.Meta
-          title={'Estadisticas'}
-          description={'Scorers'}
-        />
-        <Table dataSource={this.state.top} columns={columns}/>
+        <MenuComponent sessionActive={this.props.sessionActive} title={'Estadisticas'} />
+        <div style={labelStyle}>{'\t'}
+          <Button onClick={() => this.getData('635')}>
+            Primera división (LaLiga)
+          </Button>{'\t'}
+          <Button onClick={() => this.getData('1')}>
+            Copa mundial (Fifa world cup)
+          </Button>{'\t'}
+          <Button onClick={() => this.getData('642')}>
+            Eurocopa (Champions league)
+          </Button>
+        </div>
+        <h2>Top de Goleadores:</h2>
+        <Table dataSource={this.state.top} columns={columns} size="small" loading={this.state.loading}/>
+
+        <h2 style={{ marginTop: 10 }}>Top de Equipos: </h2>
+        <Table dataSource={this.state.topTeam} columns={columnsTopTeams} size="small" loading={this.state.loading2}/>
       </div>
     );
   }
 }
+
+const labelStyle: React.CSSProperties = {
+  flexDirection: "row",
+  padding: "16px 10px 10px",
+  background: "#F6F6F6",
+};
 
 export default connector(Stats);

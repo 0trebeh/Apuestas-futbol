@@ -25,7 +25,7 @@ type Props = PropsFromRedux;
 function Home(props: Props) {
   return (
     <div>
-      <MenuComponent sessionActive={props.sessionActive} />
+      <MenuComponent sessionActive={props.sessionActive} title={'Futbol APuestas'}/>
       <Carousel
         autoplay={true}
         draggable={true}
