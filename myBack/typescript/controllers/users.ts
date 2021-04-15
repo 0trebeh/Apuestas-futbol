@@ -67,4 +67,46 @@ export class UserController extends CrudController {
 
   update(req: Request, res: Response) {}
   delete(req: Request, res: Response) {}
+
+  async setBalance(req: Request, res: Response, next: NextFunction) {
+    const {authorization} = req.headers;
+    const payload = await jwt.getPayload(authorization);
+    if (!payload) {
+      return next({status: 403, custom: 'Invalid auth token'});
+    }
+    const client = await db.getClient();
+    try {
+      let {bank, ref, acc_number, date, balance} = req.body;
+      let results = await client.query(query.paymentByRef, [ref]);
+      if (results.rowCount > 0) {
+        return next({
+          status: 400,
+          custom: 'Numero de referencia ya registrado!',
+        });
+      }
+      await client.query('BEGIN');
+      await client.query(query.insertPayment, [
+        payload.id,
+        encrypt.encrypt(acc_number),
+        bank,
+        ref,
+        Number.parseFloat(balance),
+        date,
+      ]);
+      results = await client.query(query.currentBalance, [payload.id]);
+      results = await client.query(query.updateBalance, [
+        results.rows[0].balance + Number.parseFloat(balance),
+        payload.id,
+      ]);
+      await client.query('COMMIT');
+      res.status(200).json({
+        balance: results.rows[0].balance,
+      });
+    } catch (err) {
+      await client.query('ROLLBACK');
+      next(err);
+    } finally {
+      client.release(true);
+    }
+  }
 }

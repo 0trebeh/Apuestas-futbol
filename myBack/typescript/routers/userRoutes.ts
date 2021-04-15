@@ -21,3 +21,10 @@ Router.post('/login', (req: Request, res: Response, next: NextFunction) => {
 Router.get('/logout', (req: Request, res: Response, next: NextFunction) => {
   userSession.signOut(req, res, next);
 });
+
+Router.post(
+  '/user/balance',
+  (req: Request, res: Response, next: NextFunction) => {
+    userController.setBalance(req, res, next);
+  }
+);
