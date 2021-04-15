@@ -5,7 +5,7 @@ import {logger} from './helpers';
 import cors from 'cors';
 import helmet from 'helmet';
 import multer from 'multer';
-import {UserRouter, StatRouter} from './routers';
+import {UserRouter, StatRouter, TournamentRouter} from './routers';
 import {apiConnection} from './controllers';
 
 const app = express();
@@ -18,6 +18,7 @@ app.use(express.json());
 app.use(form.none());
 
 app.use('/users', UserRouter);
+app.use('/tournaments', TournamentRouter);
 app.use('/stats', StatRouter);
 
 app.use(

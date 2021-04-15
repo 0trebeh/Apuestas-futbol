@@ -33,6 +33,9 @@ export = {
   getScorerPlayerID:
     'SELECT tp.player_id, tp.team_id FROM scorers s INNER JOIN team_players tp ON tp.id = s.team_players_id WHERE s.season_id = $1',
   deleteScorers: 'DELETE FROM scorers WHERE season_id = $1',
+  lastestSeasonId:
+    'SELECT * FROM tournament INNER JOIN tournament_season USING(tournament_id) WHERE name = $1 ORDER BY season_id DESC',
+  tournamentMatches: 'SELECT * FROM tournament_matches WHERE season_id = $1',
   getTopScorers:'SELECT number_goals, p.player_id, p.name AS player, t.name AS team FROM scorers s JOIN team_players tp ON tp.id = s.team_players_id JOIN players p ON p.player_id = tp.player_id JOIN teams t ON t.team_id = tp.team_id AND season_id = $1 ORDER BY number_goals DESC LIMIT 15',
   // total de goles de cada equipo en una temporada y total de victorias, empates y derrotas de cada equipo en una temporada
   getTopTeams: `SELECT tm1.team_id, g.team_name, g.total_goals, tm1.total_winner, tm2.total_loser, tm3.total_draw FROM 

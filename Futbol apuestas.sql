@@ -490,3 +490,23 @@ SELECT
   mt.side
 FROM bet b
   INNER JOIN match_teams mt USING(match_id);
+
+CREATE VIEW tournament_matches AS
+SELECT
+  t.name AS tournament_name,
+  ts.season_id,
+  m.match_id,
+  m.date,
+  m.playing AS match_status,
+  tm.team_id,
+  tm.name AS team_name,
+  mt.side,
+  mt.winner,
+  mt.loser,
+  mt.draw,
+  mt.goals
+FROM tournament t
+  INNER JOIN tournament_season ts USING (tournament_id)
+  INNER JOIN match m USING (season_id)
+  INNER JOIN match_teams mt USING (match_id)
+  INNER JOIN teams tm USING (team_id)
