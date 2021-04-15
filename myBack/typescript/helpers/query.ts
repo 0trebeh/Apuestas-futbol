@@ -33,4 +33,7 @@ export = {
   getScorerPlayerID:
     'SELECT tp.player_id, tp.team_id FROM scorers s INNER JOIN team_players tp ON tp.id = s.team_players_id WHERE s.season_id = $1',
   deleteScorers: 'DELETE FROM scorers WHERE season_id = $1',
+  lastestSeasonId:
+    'SELECT * FROM tournament INNER JOIN tournament_season USING(tournament_id) WHERE name = $1 ORDER BY season_id DESC',
+  tournamentMatches: 'SELECT * FROM tournament_matches WHERE season_id = $1',
 };
