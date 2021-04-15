@@ -6,6 +6,10 @@ export const StatRouter = express.Router({
   strict: true,
 });
 
-StatRouter.get('/:id', (req: Request, res: Response, next: NextFunction) => {
-    statsController.read(req, res, next);
+StatRouter.get('/topScore/:id', (req: Request, res: Response, next: NextFunction) => {
+    statsController.getTopScorers(req, res, next);
+});
+
+StatRouter.get('/topTeams/:id', (req: Request, res: Response, next: NextFunction) => {
+  statsController.getTopTeams(req, res, next);
 });
