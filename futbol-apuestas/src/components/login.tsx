@@ -43,6 +43,7 @@ function LoginPage(props: Props) {
         isSessionActive: true,
         token: response.data.token,
         username: response.data.name,
+        balance: response.data.balance,
       });
     } catch (err) {
       notification.error({
