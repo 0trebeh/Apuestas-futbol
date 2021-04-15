@@ -8,12 +8,14 @@ import axios from 'axios';
 
 import Home from './pages/home';
 import Profile from './pages/profile';
+import Matches from './pages/matches';
+
+axios.defaults.baseURL = 'http://192.168.0.101:8000';
+
 import Stats from './pages/stats';
 import Predictions from './pages/predictions';
 import Match from './pages/match';
 import Bets from './pages/bets';
-
-axios.defaults.baseURL = 'http://localhost:8000';
 
 function App() {
   return (
@@ -27,6 +29,9 @@ function App() {
             <Route exact path={'/profile'}>
               <Profile />
             </Route>
+            <Route exact path={'/matches'}>
+              <Matches />
+            </Route>
             <Route exact path={'/apuestas'}>
               <Bets />
             </Route>
@@ -35,9 +40,6 @@ function App() {
             </Route>
             <Route exact path={'/predicciones'}>
               <Predictions />
-            </Route>
-            <Route exact path={'/partidos'}>
-              <Match />
             </Route>
           </Switch>
         </BrowserRouter>

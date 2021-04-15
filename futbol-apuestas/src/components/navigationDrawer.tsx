@@ -82,7 +82,7 @@ const NavigationDrawer = (props: Props) => {
     },
     {
       name: 'Partidos',
-      action: () => history.push('/partidos'),
+      action: () => history.push('/matches'),
       type: 'global',
     },
     {
