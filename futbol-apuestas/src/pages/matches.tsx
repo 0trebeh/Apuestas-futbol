@@ -154,7 +154,7 @@ class Matches extends React.Component<Props, State> {
   render() {
     return (
       <>
-        <Header sessionActive={this.props.sessionActive} />
+        <Header sessionActive={this.props.sessionActive} title={'Apuestas'}/>
         <Tabs
           defaultActiveKey={'PD'}
           centered

@@ -9,13 +9,11 @@ import axios from 'axios';
 import Home from './pages/home';
 import Profile from './pages/profile';
 import Matches from './pages/matches';
-
-axios.defaults.baseURL = 'http://192.168.0.101:8000';
-
 import Stats from './pages/stats';
 import Predictions from './pages/predictions';
-import Match from './pages/match';
 import Bets from './pages/bets';
+
+axios.defaults.baseURL = 'http://localhost:8000';
 
 function App() {
   return (
