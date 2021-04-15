@@ -1,4 +1,5 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+SET client_encoding TO 'UTF8';
 
 Alter table users alter column id_document type varchar(512); // Aumentar el tama;o
 
@@ -43,6 +44,21 @@ CREATE TABLE tournament (
   name varchar(30),
   type varchar(30),
   location INT
+);
+
+CREATE TABLE scorers (
+  scorers_id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+  season_id integer,
+  team_players_id uuid,
+  number_goals integer,
+  FOREIGN KEY (season_id)
+    REFERENCES tournament_season (season_id)
+      ON UPDATE CASCADE 
+      ON DELETE CASCADE,
+  FOREIGN KEY (team_players_id)
+    REFERENCES team_players (id)
+      ON UPDATE CASCADE 
+      ON DELETE CASCADE
 );
 
 CREATE TABLE tournament_season (
@@ -124,21 +140,6 @@ CREATE TABLE user_roles (
   rol_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
   user_id uuid,
   role_name varchar(30)
-);
-
-CREATE TABLE scorers (
-  scorers_id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
-  season_id integer,
-  team_players_id uuid,
-  number_goals integer,
-  FOREIGN KEY (season_id)
-    REFERENCES tournament_season (season_id)
-      ON UPDATE CASCADE 
-      ON DELETE CASCADE,
-  FOREIGN KEY (team_players_id)
-    REFERENCES team_players (id)
-      ON UPDATE CASCADE 
-      ON DELETE CASCADE
 );
 
 ALTER TABLE tournament_season ADD FOREIGN KEY (tournament_id) REFERENCES tournament (tournament_id) ON DELETE CASCADE ON UPDATE CASCADE;
