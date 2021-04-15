@@ -1,12 +1,14 @@
 export = {
   registerUser:
     'INSERT INTO users(name, last_name, id_document, email, phone, address, password) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING name, user_id',
-  login: 'SELECT user_id, password, name FROM users WHERE email = $1',
+  login:
+    'SELECT user_id, password, name, balance FROM users INNER JOIN user_balance USING(user_id) WHERE email = $1',
   invalidToken: 'SELECT token FROM invalidTokens WHERE token = $1',
   invalidateToken: 'INSERT INTO invalidTokens(token) VALUES($1)',
   getProfile:
     'SELECT u.name, u.email, b.balance FROM users u INNER JOIN user_balance b USING(user_id) WHERE u.user_id = $1',
-  getUserBets: 'SELECT * FROM bet WHERE user_id = $1',
+  getUserBets:
+    'SELECT b.bet_id AS bet, b.status, b.team_id AS team, b.prediction, bl.ammount, t.name As team_name, bt.name AS bet_name  FROM bet b INNER JOIN bill bl USING(bet_id) INNER JOIN teams t USING(team_id) INNER JOIN bet_types bt USING(bet_type_id) WHERE user_id = $1',
   getTournamentIds: 'SELECT tournament_id AS id FROM tournament',
   deleteSeasons: 'DELETE FROM tournament_season',
   insertSeason:
@@ -36,6 +38,19 @@ export = {
   lastestSeasonId:
     'SELECT * FROM tournament INNER JOIN tournament_season USING(tournament_id) WHERE name = $1 ORDER BY season_id DESC',
   tournamentMatches: 'SELECT * FROM tournament_matches WHERE season_id = $1',
+  insertPayment:
+    "INSERT INTO payment(user_id, account_number, bank, ref_number, ammount, state, payment_date) VALUES($1, $2, $3, $4, $5, 'FINISHED', $6)",
+  paymentByRef: 'SELECT * FROM payment WHERE ref_number = $1',
+  updateBalance:
+    'UPDATE user_balance SET balance = $1 WHERE user_id = $2 RETURNING balance',
+  currentBalance: 'SELECT balance FROM user_balance WHERE user_id = $1',
+  getBetTypeID: 'SELECT bet_type_id AS id FROM bet_types WHERE name = $1',
+  insertBet:
+    "INSERT INTO bet(user_id, match_id, team_id, bet_type_id, prediction, status) VALUES($1, $2, $3, $4, $5, 'PENDING') RETURNING bet_id",
+  insertBill:
+    'INSERT INTO bill(bet_id, ammount, created) VALUES($1, $2, NOW())',
+  deleteBet: 'DELETE FROM bet WHERE bet_id = $1',
+  getBetAmmount: 'SELECT ammount FROM bill WHERE bet_id = $1',
   getTopScorers:'SELECT number_goals, p.player_id, p.name AS player, t.name AS team FROM scorers s JOIN team_players tp ON tp.id = s.team_players_id JOIN players p ON p.player_id = tp.player_id JOIN teams t ON t.team_id = tp.team_id AND season_id = $1 ORDER BY number_goals DESC LIMIT 15',
   // total de goles de cada equipo en una temporada y total de victorias, empates y derrotas de cada equipo en una temporada
   getTopTeams: `SELECT tm1.team_id, g.team_name, g.total_goals, tm1.total_winner, tm2.total_loser, tm3.total_draw FROM 

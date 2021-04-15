@@ -25,6 +25,7 @@ export class UserSession extends SessionController {
             res.status(200).json({
               token: token,
               name: results.rows[0].name,
+              balance: results.rows[0].balance,
             });
           } else {
             next({custom: 'Contraseña incorrecta.', status: 403});
