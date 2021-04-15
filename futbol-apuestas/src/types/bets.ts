@@ -1,7 +1,11 @@
 export type Bet = {
-  status: 'En espera' | 'Terminada';
+  status: string;
   team: string;
-  id: string;
+  team_name: string;
+  bet_name: string;
+  bet: string;
   ammount: number;
   result?: string;
+  name: string;
+  prediction: string;
 };

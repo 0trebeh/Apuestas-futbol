@@ -1,19 +1,26 @@
 import {
-    SAVE_SESSION_DATA,
-    CLEAR_SESSION_DATA,
-    Session,
-    SessionActionTypes
+  SAVE_SESSION_DATA,
+  CLEAR_SESSION_DATA,
+  Session,
+  SessionActionTypes,
 } from './session.types';
 
 export function saveData(sessionData: Session): SessionActionTypes {
-    return {
-        type: SAVE_SESSION_DATA,
-        data: sessionData
-    }
+  return {
+    type: SAVE_SESSION_DATA,
+    data: sessionData,
+  };
 }
 
 export function clearData(): SessionActionTypes {
-    return {
-        type: CLEAR_SESSION_DATA
-    }
+  return {
+    type: CLEAR_SESSION_DATA,
+  };
+}
+
+export function setBalance(balance: number): SessionActionTypes {
+  return {
+    type: 'SET_USER_BALANCE',
+    balance: balance,
+  };
 }

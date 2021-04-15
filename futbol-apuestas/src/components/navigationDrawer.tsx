@@ -16,7 +16,7 @@ const mapDispatchToProps = {
   reduxClearState: () => ({type: 'CLEAR_SESSION_DATA'}),
 };
 const mapStateToProps = (state: RootState) => ({
-  token: state.session.session.token,
+  token: state.session.token,
 });
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
