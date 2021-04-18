@@ -3,7 +3,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import MenuComponent from '../components/pageHeader';
 import {message, Table, Input, Button, Space, Tabs} from 'antd';
 import Highlighter from 'react-highlight-words';
-import { SearchOutlined } from '@ant-design/icons';
+import {SearchOutlined} from '@ant-design/icons';
 
 import type {RootState} from '../state-store/reducer.root';
 import type {Scorer, TopTeams} from '../types/scorers';
@@ -23,14 +23,14 @@ type State = {
   topTeam: TopTeams[];
   loading: boolean;
   loading2: boolean;
-  searchText: string,
-  searchedColumn: string,
+  searchText: string;
+  searchedColumn: string;
 };
 
 class Stats extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    
+
     this.state = {
       top: [],
       topTeam: [],
@@ -50,7 +50,7 @@ class Stats extends React.Component<Props, State> {
         loading: true,
         loading2: true,
       });
-      const response = await axios.get('/stats/topScore/'+ season, {
+      const response = await axios.get('/stats/topScore/' + season, {
         headers: {authorization: this.props.token},
       });
       this.setState({
@@ -58,7 +58,7 @@ class Stats extends React.Component<Props, State> {
         top: response.data,
         loading: false,
       });
-      const responseTeam = await axios.get('/stats/topTeams/'+ season, {
+      const responseTeam = await axios.get('/stats/topTeams/' + season, {
         headers: {authorization: this.props.token},
       });
       this.setState({
@@ -83,53 +83,68 @@ class Stats extends React.Component<Props, State> {
   }
 
   getColumnSearchProps = (dataIndex: any) => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: any) => (
-      <div style={{ padding: 8 }}>
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }: any) => (
+      <div style={{padding: 8}}>
         <Input
           placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
-          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
+          onChange={e =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() =>
+            this.handleSearch(selectedKeys, confirm, dataIndex)
+          }
+          style={{width: 188, marginBottom: 8, display: 'block'}}
         />
         <Space>
           <Button
-            type="primary"
+            type='primary'
             onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
             icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
+            size='small'
+            style={{width: 90}}>
             Search
           </Button>
-          <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+          <Button
+            onClick={() => this.handleReset(clearFilters)}
+            size='small'
+            style={{width: 90}}>
             Reset
           </Button>
           <Button
-            type="link"
-            size="small"
+            type='link'
+            size='small'
             onClick={() => {
-              confirm({ closeDropdown: false });
+              confirm({closeDropdown: false});
               this.setState({
                 searchText: selectedKeys[0],
                 searchedColumn: dataIndex,
               });
-            }}
-          >
+            }}>
             Filter
           </Button>
         </Space>
       </div>
     ),
-    filterIcon: (filtered: any) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    filterIcon: (filtered: any) => (
+      <SearchOutlined style={{color: filtered ? '#1890ff' : undefined}} />
+    ),
     onFilter: (value: any, record: any) =>
       record[dataIndex]
-        ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+        ? record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : '',
     render: (text: any) =>
       this.state.searchedColumn === dataIndex ? (
         <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          highlightStyle={{backgroundColor: '#ffc069', padding: 0}}
           searchWords={[this.state.searchText]}
           autoEscape
           textToHighlight={text ? text.toString() : ''}
@@ -149,7 +164,7 @@ class Stats extends React.Component<Props, State> {
 
   handleReset = (clearFilters: any) => {
     clearFilters();
-    this.setState({ searchText: '' });
+    this.setState({searchText: ''});
   };
 
   render() {
@@ -170,7 +185,14 @@ class Stats extends React.Component<Props, State> {
         dataIndex: 'player',
         key: 'player',
         ...this.getColumnSearchProps('player'),
-        render: (name: string) => <a href={`https://www.google.com/search?q=${name}+futbol`} target="_blank" rel="noreferrer">{name}</a>,
+        render: (name: string) => (
+          <a
+            href={`https://www.google.com/search?q=${name}+futbol`}
+            target='_blank'
+            rel='noreferrer'>
+            {name}
+          </a>
+        ),
       },
       {
         title: 'Goles',
@@ -190,7 +212,14 @@ class Stats extends React.Component<Props, State> {
         dataIndex: 'team_name',
         key: 'team_name',
         ...this.getColumnSearchProps('team_name'),
-        render: (name: string) => <a href={`https://www.google.com/search?q=${name}+futbol`} target="_blank" rel="noreferrer">{name}</a>,
+        render: (name: string) => (
+          <a
+            href={`https://www.google.com/search?q=${name}+futbol`}
+            target='_blank'
+            rel='noreferrer'>
+            {name}
+          </a>
+        ),
       },
       {
         title: 'Total de Goles',
@@ -227,10 +256,20 @@ class Stats extends React.Component<Props, State> {
           <Tabs.TabPane tab={'Copa mundial'} key={'642'} />
         </Tabs>
         <h2>Top de Goleadores:</h2>
-        <Table dataSource={this.state.top} columns={columns} size="small" loading={this.state.loading}/>
+        <Table
+          dataSource={this.state.top}
+          columns={columns}
+          size='small'
+          loading={this.state.loading}
+        />
 
-        <h2 style={{ marginTop: 10 }}>Top de Equipos: </h2>
-        <Table dataSource={this.state.topTeam} columns={columnsTopTeams} size="small" loading={this.state.loading2}/>
+        <h2 style={{marginTop: 10}}>Top de Equipos: </h2>
+        <Table
+          dataSource={this.state.topTeam}
+          columns={columnsTopTeams}
+          size='small'
+          loading={this.state.loading2}
+        />
       </div>
     );
   }
