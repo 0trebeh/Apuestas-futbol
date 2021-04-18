@@ -464,7 +464,7 @@ UPDATE ON match FOR EACH ROW EXECUTE PROCEDURE update_bet();
 
 CREATE VIEW user_bet AS
 SELECT
-  m.match_id,
+  b.match_id,
   mt.winner,
   mt.loser,
   mt.draw,
@@ -474,12 +474,11 @@ SELECT
   b.team_id,
   b.prediction,
   bt.name,
-  bl.ammount AS bet_type_name,
+  bl.ammount AS bet_type_name
 FROM bet b
-  INNER JOIN match m USING(match_id)
-  INNER JOIN match_teams mt ON mt.team_id = b.team_id
-  INNER JOIN bet_types bt ON b.bet_type_id = bt.bet_type_id
-  INNER JOIN bill bl ON bl.bet_id = b.bet_id;
+  INNER JOIN match_teams mt USING(match_id, team_id)
+  INNER JOIN bet_types bt USING(bet_type_id)
+  INNER JOIN bill bl USING(bet_id)
 
 CREATE VIEW bet_match_teams AS
 SELECT
