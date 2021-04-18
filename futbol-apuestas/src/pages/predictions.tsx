@@ -7,8 +7,8 @@ import type {RootState} from '../state-store/reducer.root';
 import type {Session} from '../state-store/session/session.types';
 
 const mapStateToProps = (state: RootState) => ({
-  username: state.session.session.username,
-  sessionActive: state.session.session.isSessionActive,
+  username: state.session.username,
+  sessionActive: state.session.isSessionActive,
 });
 const mapDispatchToProps = {
   setData: (data: Session) => ({
@@ -24,13 +24,11 @@ type Props = PropsFromRedux;
 function Predictions(props: Props) {
   return (
     <div>
-      <MenuComponent sessionActive={props.sessionActive} title={'Predicciones'}/>
-        <Card.Meta
-            title={'Predicciones'}
-            description={
-                'Predicciones'
-            }
-        />
+      <MenuComponent
+        sessionActive={props.sessionActive}
+        title={'Predicciones'}
+      />
+      <Card.Meta title={'Predicciones'} description={'Predicciones'} />
     </div>
   );
 }

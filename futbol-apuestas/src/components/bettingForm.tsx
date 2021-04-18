@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {Form, Button, Modal, Input, message, Select, Typography} from 'antd';
 import axios from 'axios';
@@ -46,11 +46,16 @@ interface FormValues {
 function BettingForm(props: Props) {
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('Submit');
-  const [bet_type, setBet_type] = useState('');
+  const [bet_type, setBet_type] = useState<string | undefined>();
   const [team, setTeam] = useState<undefined | number>();
 
-  const verify = (values: FormValues) => {
-    switch (values.bet_type) {
+  const verify = (select_val: string | undefined) => {
+    setBet_type(select_val);
+    if (!select_val) {
+      setTeam(undefined);
+      return;
+    }
+    switch (select_val) {
       case '1': {
         setTeam(props.match?.home_team_id);
         break;
@@ -67,17 +72,23 @@ function BettingForm(props: Props) {
         setTeam(props.match?.away_team_id);
         break;
       }
-    }
-    if (values.ammount > props.balance) {
-      throw new Error('Saldo insuficiente');
+      default: {
+        setTeam(props.match?.home_team_id);
+        break;
+      }
     }
   };
 
   const onSubmit = async (values: FormValues) => {
     try {
-      verify(values);
+      if (!bet_type) {
+        throw new Error('Seleccione un tipo de apuesta!');
+      }
+      if (values.ammount > props.balance) {
+        throw new Error('Saldo insuficiente');
+      }
       setLoading(true);
-      setTitle('');
+      setTitle('Guardando apuesta');
       const response = await axios.post(
         '/bets/bet',
         {
@@ -90,6 +101,7 @@ function BettingForm(props: Props) {
         }
       );
       props.reduxSetBalance(response.data.balance);
+      values.bet_type = undefined;
       message.success('Operacion exitosa!');
     } catch (err) {
       message.error('No se pudo procesar la transaccion.');
@@ -98,6 +110,11 @@ function BettingForm(props: Props) {
       setTitle('Submit');
     }
   };
+
+  useEffect(() => {
+    setBet_type(undefined);
+    setTeam(undefined);
+  }, [props.visible]);
 
   return (
     <Modal visible={props.visible} onCancel={props.onCancel} footer={null}>
@@ -115,7 +132,7 @@ function BettingForm(props: Props) {
               message: 'Seleccione un tipo de apuesta!',
             },
           ]}>
-          <Select onChange={value => setBet_type(value.toString())}>
+          <Select allowClear onChange={value => verify(value?.toString())}>
             <Select.Option value='1'>Casa gana</Select.Option>
             <Select.Option value='2'>Visitante gana</Select.Option>
             <Select.Option value='X'>Empate</Select.Option>
