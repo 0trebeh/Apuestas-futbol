@@ -109,7 +109,10 @@ function LoginPage(props: Props) {
                 message: 'Introduce una contraseña!',
               },
             ]}>
-            <Input.Password onChange={e => setPassword(e.target.value)} />
+            <Input.Password
+              type={'password'}
+              onChange={e => setPassword(e.target.value)}
+            />
           </Form.Item>
           <Form.Item>
             <Button
