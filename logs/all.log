@@ -31,3 +31,7 @@
 2021-04-14 19:46:34:4634 [31merror[39m: [31mbind message supplies 1 parameters, but prepared statement "" requires 2[39m
 2021-04-14 19:46:40:4640 [31merror[39m: [31mbind message supplies 1 parameters, but prepared statement "" requires 2[39m
 2021-04-14 19:46:51:4651 [31merror[39m: [31mbind message supplies 1 parameters, but prepared statement "" requires 2[39m
+2021-04-17 19:11:24:1124 [31merror[39m: [31mgetaddrinfo ENOTFOUND api.football-data.org[39m
+2021-04-18 04:28:40:2840 [31merror[39m: [31mread ECONNRESET[39m
+2021-04-18 04:28:47:2847 [31merror[39m: [31mread ECONNRESET[39m
+2021-04-18 04:28:47:2847 [31merror[39m: [31mgetaddrinfo ENOTFOUND api.football-data.org[39m
