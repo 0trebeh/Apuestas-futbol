@@ -168,7 +168,7 @@ class Matches extends React.Component<Props, State> {
 
   render() {
     return (
-      <>
+      <div>
         <Header sessionActive={this.props.sessionActive} title={'Apuestas'}/>
         <Tabs
           defaultActiveKey={'PD'}
@@ -190,7 +190,7 @@ class Matches extends React.Component<Props, State> {
           match={this.state.match}
           onCancel={() => this.setState({...this.state, visibile: false})}
         />
-      </>
+      </div>
     );
   }
 }

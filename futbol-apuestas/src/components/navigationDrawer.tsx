@@ -66,11 +66,6 @@ const NavigationDrawer = (props: Props) => {
       type: 'global',
     },
     {
-      name: 'Apuestas',
-      action: () => history.push('/apuestas'),
-      type: 'global',
-    },
-    {
       name: 'Estadisticas',
       action: () => history.push('/estadisticas'),
       type: 'global',

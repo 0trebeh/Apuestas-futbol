@@ -3,6 +3,8 @@ import {connect, ConnectedProps} from 'react-redux';
 import MenuComponent from '../components/pageHeader';
 import BalanceForm from '../components/balanceForm';
 import {List, Descriptions, Popconfirm, message, Skeleton, Tag} from 'antd';
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import {PdfDocument} from '../components/bettingInformation'
 
 import type {RootState} from '../state-store/reducer.root';
 import type {Bet} from '../types/bets';
@@ -116,7 +118,12 @@ class Profile extends React.Component<Props, State> {
     return (
       <div>
         <MenuComponent sessionActive={this.props.sessionActive} title={'Perfil'}/>
-        <Descriptions layout={'vertical'} bordered title={'Perfil'}>
+        <div>
+          { 
+          this.state.email !== 'futbol.apuestas.v01@gmail.com' 
+          ?  
+        <div>
+          <Descriptions layout={'vertical'} bordered>
           <Descriptions.Item label={'Nombre'}>
             <Skeleton active loading={this.state.loading} paragraph={{rows: 0}}>
               {this.props.username}
@@ -152,7 +159,30 @@ class Profile extends React.Component<Props, State> {
         <BalanceForm
           visible={this.state.visible}
           onCancel={() => this.setState({...this.state, visible: false})}
-        />
+        /> 
+        </div>
+        : 
+        <div>
+          <PdfDocument />
+          <div>{'\n'}</div>
+          <PDFDownloadLink
+            document={<PdfDocument />}
+            fileName="Apuestas.pdf"
+            style={{
+              textDecoration: "none",
+              padding: "10px",
+              color: "#4a4a4a",
+              backgroundColor: "#f2f2f2",
+              border: "1px solid #4a4a4a"
+            }}
+          >
+            {({ blob, url, loading, error }) =>
+              loading ? "Loading document..." : "Download Pdf"
+            }
+          </PDFDownloadLink>
+        </div>
+        }
+        </div>
       </div>
     );
   }

@@ -115,7 +115,7 @@ function BettingForm(props: Props) {
               message: 'Seleccione un tipo de apuesta!',
             },
           ]}>
-          <Select onChange={value => setBet_type(value.toString())}>
+          <Select onChange={(value: any) => setBet_type(value.toString())}>
             <Select.Option value='1'>Casa gana</Select.Option>
             <Select.Option value='2'>Visitante gana</Select.Option>
             <Select.Option value='X'>Empate</Select.Option>

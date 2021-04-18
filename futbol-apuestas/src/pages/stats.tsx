@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import MenuComponent from '../components/pageHeader';
-import {message, Table, Input, Button, Space} from 'antd';
+import {message, Table, Input, Button, Space, Tabs} from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
@@ -10,9 +10,9 @@ import type {Scorer, TopTeams} from '../types/scorers';
 import axios from 'axios';
 
 const mapStateToProps = (state: RootState) => ({
-  username: state.session.session.username,
-  sessionActive: state.session.session.isSessionActive,
-  token: state.session.session.token,
+  username: state.session.username,
+  sessionActive: state.session.isSessionActive,
+  token: state.session.token,
 });
 const connector = connect(mapStateToProps, {});
 
@@ -40,6 +40,7 @@ class Stats extends React.Component<Props, State> {
       searchedColumn: '',
     };
     this.getData.bind(this);
+    this.tabChanged.bind(this);
   }
 
   private async getData(season: string) {
@@ -74,6 +75,13 @@ class Stats extends React.Component<Props, State> {
     this.getData('635');
   }
   
+  private tabChanged(
+    key: string,
+    e: React.MouseEvent<Element, Event> | React.KeyboardEvent<Element>
+  ) {
+    this.getData(key);
+  }
+
   getColumnSearchProps = (dataIndex: any) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: any) => (
       <div style={{ padding: 8 }}>
@@ -209,17 +217,15 @@ class Stats extends React.Component<Props, State> {
     return (
       <div>
         <MenuComponent sessionActive={this.props.sessionActive} title={'Estadisticas'} />
-        <div style={labelStyle}>{'\t'}
-          <Button onClick={() => this.getData('635')}>
-            Primera división (LaLiga)
-          </Button>{'\t'}
-          <Button onClick={() => this.getData('1')}>
-            Copa mundial (Fifa world cup)
-          </Button>{'\t'}
-          <Button onClick={() => this.getData('642')}>
-            Eurocopa (Champions league)
-          </Button>
-        </div>
+        <Tabs
+          defaultActiveKey={'635'}
+          centered
+          animated
+          onTabClick={this.tabChanged.bind(this)}>
+          <Tabs.TabPane tab={'Primera division'} key={'635'} />
+          <Tabs.TabPane tab={'Champions league'} key={'1'} />
+          <Tabs.TabPane tab={'Copa mundial'} key={'642'} />
+        </Tabs>
         <h2>Top de Goleadores:</h2>
         <Table dataSource={this.state.top} columns={columns} size="small" loading={this.state.loading}/>
 
@@ -229,11 +235,5 @@ class Stats extends React.Component<Props, State> {
     );
   }
 }
-
-const labelStyle: React.CSSProperties = {
-  flexDirection: "row",
-  padding: "16px 10px 10px",
-  background: "#F6F6F6",
-};
 
 export default connector(Stats);

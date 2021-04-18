@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import {Form, Button, Modal, Input, message} from 'antd';
+import {Form, Button, Modal, Input, message, Select} from 'antd';
 import axios from 'axios';
 import {LoadingOutlined} from '@ant-design/icons';
-
 import type {RootState} from '../state-store/reducer.root';
+
+const { Option } = Select;
 
 const mapDispatchToProps = {
   reduxSetBalance: (balance: number) => ({
@@ -34,6 +35,7 @@ interface FormValues {
 function BalanceForm(props: Props) {
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('Submit');
+  const [form] = Form.useForm();
 
   const onSubmit = async (values: FormValues) => {
     try {
@@ -52,23 +54,51 @@ function BalanceForm(props: Props) {
     }
   };
 
+  const onGenderChange = (value: any) => {
+    switch (value) {
+      case 'BOD':
+        form.setFieldsValue({
+          note: 'BOD',
+        });
+        return;
+
+      case 'Banesco':
+        form.setFieldsValue({
+          note: 'Banesco',
+        });
+        return;
+
+      case 'BA':
+        form.setFieldsValue({
+          note: 'Bank of America',
+        });
+        return;
+
+      case 'Provincial':
+        form.setFieldsValue({
+          note: 'Provincial',
+        });
+    }
+  };
+
   return (
     <Modal visible={props.visible} onCancel={props.onCancel} footer={null}>
       <Form layout={'vertical'} onFinish={onSubmit}>
+        
         <Form.Item
           label={'Banco'}
           name={'bank'}
-          hasFeedback
-          tooltip={'BOD, Banesco, Provincial o Bank of America'}
-          rules={[
-            {required: true, message: 'Introduce el nombre del banco'},
-            {
-              enum: ['BOD', 'Banesco', 'Provincial', 'Bank of America'],
-              message: 'Seleccione un banco',
-              type: 'enum',
-            },
-          ]}>
-          <Input type={'text'} />
+          hasFeedback>
+            <Select
+              placeholder="Select a option and change input text above"
+              onChange={onGenderChange}
+              allowClear
+            >
+              <Option value="BOD">BOD</Option>
+              <Option value="Banesco">Banesco</Option>
+              <Option value="Provincial">Provincial</Option>
+              <Option value="BA">Bank of America</Option>
+            </Select>
         </Form.Item>
         <Form.Item
           label={'Referencia'}
