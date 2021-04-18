@@ -21,6 +21,12 @@ export class UserController extends CrudController {
     }: UserRegister = req.body;
     const client = await db.getClient();
     try {
+      const emails = await client.query(query.emailExists, [
+        email.toLowerCase(),
+      ]);
+      if (emails.rowCount > 0) {
+        return next({status: 400, custom: 'Email already registered!'});
+      }
       const salt = await bcrypt.genSalt();
       address = address ? encrypt.encrypt(address) : undefined;
       phone = phone ? encrypt.encrypt(phone) : undefined;
