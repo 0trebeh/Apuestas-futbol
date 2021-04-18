@@ -11,7 +11,6 @@ import Profile from './pages/profile';
 import Matches from './pages/matches';
 import Stats from './pages/stats';
 import Predictions from './pages/predictions';
-import Bets from './pages/bets';
 
 axios.defaults.baseURL = 'http://localhost:8000';
 
@@ -29,9 +28,6 @@ function App() {
             </Route>
             <Route exact path={'/matches'}>
               <Matches />
-            </Route>
-            <Route exact path={'/apuestas'}>
-              <Bets />
             </Route>
             <Route exact path={'/estadisticas'}>
               <Stats />
