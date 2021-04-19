@@ -6,7 +6,7 @@ import Highlighter from 'react-highlight-words';
 import {SearchOutlined} from '@ant-design/icons';
 
 import type {RootState} from '../state-store/reducer.root';
-import type {Scorer, TopTeams} from '../types/scorers';
+import type {Scorer, TopTeams} from '../types/stats';
 import axios from 'axios';
 
 const mapStateToProps = (state: RootState) => ({
@@ -220,6 +220,11 @@ class Stats extends React.Component<Props, State> {
             {name}
           </a>
         ),
+      },
+      {
+        title: 'Jugados',
+        dataIndex: 'total_matches',
+        key: 'total_matches',
       },
       {
         title: 'Total de Goles',

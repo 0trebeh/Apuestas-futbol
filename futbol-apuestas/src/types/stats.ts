@@ -10,6 +10,7 @@ export type TopTeams = {
   top: number;
   team_id: number;
   team_name: string;
+  total_matches: number;
   total_goals: number;
   total_winner: number;
   total_loser: number;
