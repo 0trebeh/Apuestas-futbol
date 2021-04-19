@@ -85,7 +85,7 @@ export default class Tournaments {
     try {
       const id = parseInt(req.params.id);
       const prediction = await client.query(queries.getPrediction, [id]);
-      res.status(200).json(prediction);
+      res.status(200).json(prediction.rows);
     } catch (err) {
       next(err);
     } finally {
@@ -98,7 +98,7 @@ export default class Tournaments {
     try {
       const id = parseInt(req.params.id);
       const prediction = await client.query(queries.getPredictionMatches, [id]);
-      res.status(200).json(prediction);
+      res.status(200).json(prediction.rows);
     } catch (err) {
       next(err);
     } finally {
