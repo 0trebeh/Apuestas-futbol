@@ -35,3 +35,58 @@
 2021-04-18 04:28:40:2840 [31merror[39m: [31mread ECONNRESET[39m
 2021-04-18 04:28:47:2847 [31merror[39m: [31mread ECONNRESET[39m
 2021-04-18 04:28:47:2847 [31merror[39m: [31mgetaddrinfo ENOTFOUND api.football-data.org[39m
+2021-04-18 11:39:39:3939 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 11:54:42:5442 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 12:09:40:940 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 12:25:36:2536 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 12:40:01:401 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 12:55:07:557 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 13:09:42:942 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 13:24:49:2449 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 13:30:31:3031 [31merror[39m: [31mread ECONNRESET[39m
+2021-04-18 13:39:41:3941 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 13:54:46:5446 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 14:09:46:946 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 14:17:26:1726 [31merror[39m: [31mread ECONNRESET[39m
+2021-04-18 14:17:26:1726 [31merror[39m: [31mread ECONNRESET[39m
+2021-04-18 14:24:40:2440 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 14:48:26:4826 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 15:38:46:3846 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 15:54:02:542 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 16:08:57:857 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 16:23:44:2344 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 16:35:11:3511 [31merror[39m: [31m{ custom: 'Contraseña incorrecta.', status: 403 }[39m
+2021-04-18 16:35:22:3522 [31merror[39m: [31m{ custom: 'Contraseña incorrecta.', status: 403 }[39m
+2021-04-18 16:38:49:3849 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 16:53:45:5345 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 17:09:05:95 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 17:15:50:1550 [31merror[39m: [31m{ status: 400, custom: 'Numero de referencia ya registrado!' }[39m
+2021-04-18 17:23:25:2325 [31merror[39m: [31m{ custom: 'Contraseña incorrecta.', status: 403 }[39m
+2021-04-18 17:23:49:2349 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 17:38:46:3846 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 17:53:48:5348 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 18:09:08:98 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 18:24:05:245 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 18:38:54:3854 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 18:55:04:554 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 19:09:30:930 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 19:24:46:2446 [31merror[39m: [31mConnection terminated unexpectedly[39m
+2021-04-18 20:29:39:2939 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 20:57:35:5735 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 21:26:08:268 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 21:40:59:4059 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 21:56:01:561 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 22:10:57:1057 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 22:32:54:3254 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 22:47:48:4748 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 23:02:48:248 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 23:32:52:3252 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-18 23:47:47:4747 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 00:02:46:246 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 00:17:46:1746 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 02:56:28:5628 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 03:28:10:2810 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 03:45:17:4517 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 04:00:17:017 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 04:39:19:3919 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 05:07:11:711 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m

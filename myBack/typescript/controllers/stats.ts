@@ -1,13 +1,8 @@
 import {NextFunction, Request, Response} from 'express';
 import query from '../helpers/query';
-import bcrypt from 'bcrypt';
-import {dbController as db, encrypt, tokenController as jwt} from '../helpers';
-import {mailer} from '../helpers';
-import {StatController} from './types/statsControllers';
-import fse from 'fs';
+import {dbController as db, tokenController as jwt} from '../helpers';
 
-export class StatsController extends StatController {
-
+export default class StatsController{
   async getTopScorers(req: Request, res: Response, next: NextFunction) {
     const {authorization} = req.headers;
     const payload = await jwt.getPayload(authorization);

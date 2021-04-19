@@ -2,14 +2,14 @@ import express, {NextFunction, Request, Response} from 'express';
 
 import {statsController} from '../controllers';
 
-export const StatRouter = express.Router({
+export const Router = express.Router({
   strict: true,
 });
 
-StatRouter.get('/topScore/:id', (req: Request, res: Response, next: NextFunction) => {
+Router.get('/topScore/:id', (req: Request, res: Response, next: NextFunction) => {
     statsController.getTopScorers(req, res, next);
 });
 
-StatRouter.get('/topTeams/:id', (req: Request, res: Response, next: NextFunction) => {
+Router.get('/topTeams/:id', (req: Request, res: Response, next: NextFunction) => {
   statsController.getTopTeams(req, res, next);
 });

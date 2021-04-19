@@ -1,4 +1,4 @@
-import {dbController, query as queries} from '../helpers';
+import {dbController as db, query as queries} from '../helpers';
 import {NextFunction, Request, Response} from 'express';
 import {SeasonMatches} from './types/queryReturnTypes';
 import {MatchInfo} from './types/operationTypes';
@@ -42,7 +42,7 @@ export default class Tournaments {
 
   async getMatches(req: Request, res: Response, next: NextFunction) {
     const {tournament} = req.params;
-    const client = await dbController.getClient();
+    const client = await db.getClient();
     try {
       let trnmntName: string;
       switch (tournament) {
@@ -73,6 +73,32 @@ export default class Tournaments {
       res.status(200).json({
         matches: this.orderMatches(seasonMatches.rows),
       });
+    } catch (err) {
+      next(err);
+    } finally {
+      client.release(true);
+    }
+  }
+
+  async getPrediction(req: Request, res: Response, next: NextFunction) {
+    const client = await db.getClient();
+    try {
+      const id = parseInt(req.params.id);
+      const prediction = await client.query(queries.getPrediction, [id]);
+      res.status(200).json(prediction);
+    } catch (err) {
+      next(err);
+    } finally {
+      client.release(true);
+    }
+  }
+
+  async getPredictionMatches(req: Request, res: Response, next: NextFunction) {
+    const client = await db.getClient();
+    try {
+      const id = parseInt(req.params.id);
+      const prediction = await client.query(queries.getPredictionMatches, [id]);
+      res.status(200).json(prediction);
     } catch (err) {
       next(err);
     } finally {
