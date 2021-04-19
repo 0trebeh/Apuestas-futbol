@@ -83,4 +83,6 @@ export = {
   JOIN ( SELECT team_id, COUNT(loser) AS total_loser FROM tournament_matches WHERE season_id = $1 AND loser = true GROUP BY team_id ) tm6 ON tm6.team_id = tm4.team_2  
   JOIN ( SELECT team_id, COUNT(draw) AS total_draw FROM tournament_matches WHERE season_id = $1 AND draw = true GROUP BY team_id ) tm7 ON tm7.team_id = tm4.team_2
   ORDER BY tm4.date DESC`,
+
+  emailExists: 'SELECT email FROM users WHERE email = $1',
 };
