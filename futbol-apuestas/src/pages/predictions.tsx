@@ -8,6 +8,7 @@ import {SearchOutlined} from '@ant-design/icons';
 import type {RootState} from '../state-store/reducer.root';
 import type {Prediction, PredictionMatches} from '../types/predictions';
 import axios from 'axios';
+import {ColumnsType} from 'antd/lib/table';
 
 const mapStateToProps = (state: RootState) => ({
   username: state.session.username,
@@ -50,6 +51,7 @@ class Predictions extends React.Component<Props, State> {
         loading: true,
         loading2: true,
       });
+      message.info('asd');
       const response = await axios.get('/tournaments/prediction/' + season, {
         headers: {authorization: this.props.token},
       });
@@ -58,9 +60,12 @@ class Predictions extends React.Component<Props, State> {
         prediction: response.data,
         loading: false,
       });
-      const responseMatchs = await axios.get('tournaments/prediction/matches/' + season, {
-        headers: {authorization: this.props.token},
-      });
+      const responseMatchs = await axios.get(
+        'tournaments/prediction/matches/' + season,
+        {
+          headers: {authorization: this.props.token},
+        }
+      );
       this.setState({
         ...this.state,
         predictionMatches: responseMatchs.data,
@@ -74,7 +79,7 @@ class Predictions extends React.Component<Props, State> {
   componentDidMount() {
     this.getData('635');
   }
-  
+
   private tabChanged(
     key: string,
     e: React.MouseEvent<Element, Event> | React.KeyboardEvent<Element>
@@ -82,7 +87,7 @@ class Predictions extends React.Component<Props, State> {
     this.getData(key);
   }
 
-  getColumnSearchProps = (dataIndex: any) => ({
+  getColumnSearchProps = (dataIndex: string) => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -191,7 +196,7 @@ class Predictions extends React.Component<Props, State> {
       },
     ];
 
-    const columnsMatches = [
+    const columnsMatches: ColumnsType<PredictionMatches> = [
       {
         title: 'Equipo 1',
         dataIndex: 'name1',
@@ -257,7 +262,10 @@ class Predictions extends React.Component<Props, State> {
 
     return (
       <div>
-        <MenuComponent sessionActive={this.props.sessionActive} title={'Estadisticas'} />
+        <MenuComponent
+          sessionActive={this.props.sessionActive}
+          title={'Estadisticas'}
+        />
         <Tabs
           defaultActiveKey={'635'}
           centered
