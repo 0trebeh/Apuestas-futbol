@@ -90,3 +90,11 @@
 2021-04-19 04:00:17:017 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
 2021-04-19 04:39:19:3919 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
 2021-04-19 05:07:11:711 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 11:38:41:3841 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 12:02:12:212 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 12:50:08:508 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 13:21:44:2144 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 13:36:51:3651 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 13:38:02:382 [31merror[39m: [31mCannot read property 'winner' of undefined[39m
+2021-04-19 13:38:14:3814 [31merror[39m: [31mCannot read property 'winner' of undefined[39m
+2021-04-19 13:40:38:4038 [31merror[39m: [31mCannot read property 'winner' of undefined[39m

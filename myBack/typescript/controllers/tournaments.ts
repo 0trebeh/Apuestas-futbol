@@ -98,7 +98,37 @@ export default class Tournaments {
     try {
       const id = parseInt(req.params.id);
       const prediction = await client.query(queries.getPredictionMatches, [id]);
-      res.status(200).json(prediction.rows);
+
+      let matches = [];
+      for (let i = 0; i < prediction.rows.length; i++) {
+        var result: string = "";
+        if(prediction.rows[i].t1_winner){
+          result = 'Ganador 1'
+        }
+        if(prediction.rows[i].t1_winner === null){
+          result = 'Indefinido'
+        }
+        if(prediction.rows[i].draw){
+          result = 'Empate'
+        }
+        if(prediction.rows[i].t2_winner){
+          result = 'Ganador 2'
+        }
+        matches.push({
+          name1: prediction.rows[i].name1,
+          side1: prediction.rows[i].side1,
+          tm1_winner: prediction.rows[i].tm1_winner,
+          tm_draw: prediction.rows[i].tm_draw,
+          tm2_winner: prediction.rows[i].tm2_winner,
+          name2: prediction.rows[i].name2,
+          side2: prediction.rows[i].side2,
+          resultado: result,
+          match_status: prediction.rows[i].match_status,
+          date: prediction.rows[i].date.toUTCString(),
+        });
+      }
+
+      res.status(200).json(matches);
     } catch (err) {
       next(err);
     } finally {
