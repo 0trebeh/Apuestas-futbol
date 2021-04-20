@@ -51,7 +51,7 @@ export = {
     'INSERT INTO bill(bet_id, ammount, created) VALUES($1, $2, NOW())',
   deleteBet: 'DELETE FROM bet WHERE bet_id = $1',
   getBetAmmount: 'SELECT ammount FROM bill WHERE bet_id = $1',
-  getTopScorers:`SELECT number_goals, p.player_id, p.name AS player, t.name AS team FROM scorers s JOIN team_players tp ON tp.id = s.team_players_id JOIN players p ON p.player_id = tp.player_id 
+  getTopScorers:  `SELECT number_goals, p.player_id, p.name AS player, t.name AS team FROM scorers s JOIN team_players tp ON tp.id = s.team_players_id JOIN players p ON p.player_id = tp.player_id 
   JOIN teams t ON t.team_id = tp.team_id AND season_id = $1 ORDER BY number_goals DESC`,
   getTopTeams: `SELECT tm1.team_id, g.team_name, tm.total_matches, g.total_goals, tm1.total_winner, tm2.total_loser, tm3.total_draw FROM   
   ( SELECT team_id, team_name, SUM ( goals ) AS total_goals FROM tournament_matches WHERE season_id = $1 GROUP BY team_id, team_name ) g  
@@ -83,6 +83,6 @@ export = {
   JOIN ( SELECT team_id, COUNT(loser) AS total_loser FROM tournament_matches WHERE season_id = $1 AND loser = true GROUP BY team_id ) tm6 ON tm6.team_id = tm4.team_2  
   JOIN ( SELECT team_id, COUNT(draw) AS total_draw FROM tournament_matches WHERE season_id = $1 AND draw = true GROUP BY team_id ) tm7 ON tm7.team_id = tm4.team_2
   ORDER BY tm4.date DESC`,
-
   emailExists: 'SELECT email FROM users WHERE email = $1',
+  bet_report: `SELECT * FROM bets_report`,
 };
