@@ -415,46 +415,108 @@ BEGIN
     IF bet.bet_type_name = '1' THEN
       IF bet.side = 'HOME_TEAM' AND bet.winner = true THEN
         CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+        UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
+      ELSE
+        UPDATE bet SET status = 'LOSER' WHERE bet_id = bet.bet_id;
       END IF;
-    ELSIF bet.bet_type_name = 'X' AND bet.draw = true THEN 
-      CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+    ELSIF bet.bet_type_name = 'X' THEN
+      IF bet.draw = true THEN 
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+        UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
+      ELSE
+        UPDATE bet SET status = 'LOSER' WHERE bet_id = bet.bet_id;
+      END IF;
     ELSIF bet.bet_type_name '2' THEN 
       IF bet.side = 'AWAY_TEAM' AND bet.winner = true THEN 
         CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+        UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
+      ELSE
+        UPDATE bet SET status = 'LOSER' WHERE bet_id = bet.bet_id;
       END IF;
     ELSIF bet.bet_type_name = '1X' THEN 
       IF bet.side = 'HOME_TEAM' AND bet.winner = true THEN
         CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+        UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
       ELSIF bet.draw = true THEN 
         CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+        UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
+      ELSE
+        UPDATE bet SET status = 'LOSER' WHERE bet_id = bet.bet_id;
       END IF;
     ELSIF bet.bet_type_name = 'X2' THEN
       IF bet.side = 'AWAY_TEAM' AND bet.winner = true THEN
         CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+        UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
       ELSIF bet.draw = true THEN
         CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+        UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
+      ELSE
+        UPDATE bet SET status = 'LOSER' WHERE bet_id = bet.bet_id;
       END IF;
     ELSIF bet.bet_type_name = 'CORRECT SCORE' THEN
       SELECT check_correct_score(bet.prediction, NEW.match_id) INTO is_valid;
 
       IF is_valid = true THEN
-        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, bet.prediction, bet.ammount);
+        UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
+      ELSE
+        UPDATE bet SET status = 'LOSER' WHERE bet_id = bet.bet_id;
       END IF;
     ELSIF bet.bet_type_name = 'under' THEN
       SELECT check_under(bet.prediction, NEW.match_id) INTO is_valid;
 
       IF is_valid = true THEN
-        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, bet.prediction, bet.ammount);
+        UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
+      ELSE
+        UPDATE bet SET status = 'LOSER' WHERE bet_id = bet.bet_id;
       END IF;
     ELSIF bet.bet_type_name = 'over' THEN
       SELECT check_over(bet.prediction, NEW.match_id) INTO is_valid;
 
       IF is_valid = true THEN
-        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, bet.prediction, bet.ammount);
+        UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
+      ELSE
+        UPDATE bet SET status = 'LOSER' WHERE bet_id = bet.bet_id;
       END IF;
     END IF;
   END LOOP;
   RETURN NEW;
+
+  EXCEPTION
+    WHEN OTHERS THEN
+      RAISE EXCEPTION '% %', SQLERRM, SQLSTATE;
+      RETURN NULL;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION update_bet2() 
+RETURNS VARCHAR 
+LANGUAGE PLPGSQL 
+AS
+$$
+DECLARE
+  bet record;
+  is_valid BOOLEAN;
+BEGIN 
+  FOR bet IN SELECT * FROM user_bet
+
+  LOOP
+    IF bet.bet_type_name = '1' THEN
+      IF bet.side = 'HOME_TEAM' AND bet.winner = true THEN
+        RAISE NOTICE 'WIN';
+      ELSIF bet.side = 'HOME_TEAM' THEN
+        RAISE NOTICE 'LOSE';
+      END IF;
+    END IF;
+  END LOOP;
+  RETURN 'ASD';
+
+  EXCEPTION
+    WHEN OTHERS THEN
+      RAISE EXCEPTION '% %', SQLERRM, SQLSTATE;
+      RETURN 'ERROR';
 END;
 $$;
 
@@ -473,8 +535,8 @@ SELECT
   b.user_id,
   b.team_id,
   b.prediction,
-  bt.name,
-  bl.ammount AS bet_type_name
+  bt.name AS bet_type_name,
+  bl.ammount
 FROM bet b
   INNER JOIN match_teams mt USING(match_id, team_id)
   INNER JOIN bet_types bt USING(bet_type_id)
