@@ -37,6 +37,7 @@ export default class Bet {
       client.release(true);
     }
   }
+
   async Delete(req: Request, res: Response, next: NextFunction) {
     const {authorization} = req.headers;
     const payload = await jwt.getPayload(authorization);
@@ -63,6 +64,37 @@ export default class Bet {
       });
     } catch (err) {
       await client.query('ROLLBACK');
+      next(err);
+    } finally {
+      client.release(true);
+    }
+  }
+
+  calculateProfit(bets: any[]): number {
+    if (bets.length === 0) {
+      return 0;
+    }
+    let payments = 0;
+    for (let i = 0; i < bets.length; i++) {
+      payments += bets[i].ammount;
+    }
+    return payments * 0.1;
+  }
+
+  async Report(req: Request, res: Response, next: NextFunction) {
+    const {authorization} = req.headers;
+    const payload = await jwt.getPayload(authorization);
+    if (!payload) {
+      return next({status: 403, err: 'Token missing'});
+    }
+    const client = await dbController.getClient();
+    try {
+      const bets = await client.query(query.bet_report);
+      res.status(200).json({
+        bets: bets.rows,
+        profit: this.calculateProfit(bets.rows),
+      });
+    } catch (err) {
       next(err);
     } finally {
       client.release(true);
