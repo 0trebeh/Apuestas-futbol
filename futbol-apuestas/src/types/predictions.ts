@@ -14,9 +14,7 @@ export type PredictionMatches = {
     tm2_winner: any;
     name2: string;
     side2: string;
-    t1_winner: any;
-    draw: any;
-    t2_winner: any;
+    resultado: string; 
     match_status: string;
     date: string;
 }

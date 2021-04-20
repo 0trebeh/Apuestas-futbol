@@ -51,7 +51,6 @@ class Predictions extends React.Component<Props, State> {
         loading: true,
         loading2: true,
       });
-      message.info('asd');
       const response = await axios.get('/tournaments/prediction/' + season, {
         headers: {authorization: this.props.token},
       });
@@ -178,6 +177,7 @@ class Predictions extends React.Component<Props, State> {
         title: 'Equipo',
         dataIndex: 'team_name',
         key: 'team_name',
+        ...this.getColumnSearchProps('team_name'),
       },
       {
         title: 'Probabilidad de victoria',
@@ -204,7 +204,7 @@ class Predictions extends React.Component<Props, State> {
         ...this.getColumnSearchProps('name1'),
       },
       {
-        title: 'Jugando',
+        title: 'Jugando como',
         dataIndex: 'side1',
         key: 'side1',
       },
@@ -229,29 +229,27 @@ class Predictions extends React.Component<Props, State> {
         key: 'name2',
       },
       {
-        title: 'Jugando',
+        title: 'Jugando como',
         dataIndex: 'side2',
         key: 'side2',
       },
       {
-        title: 'gano 1',
-        dataIndex: 't1_winner',
-        key: 't1_winner',
-      },
-      {
-        title: 'empate x',
-        dataIndex: 'draw',
-        key: 'draw',
-      },
-      {
-        title: 'gano 2',
-        dataIndex: 't2_winner',
-        key: 't2_winner',
+        title: 'Resultado',
+        dataIndex: 'resultado',
+        key: 'resultado',
       },
       {
         title: 'Estado',
         dataIndex: 'match_status',
         key: 'match_status',
+        filters: [
+          {text: 'FINISHED', value: 'FINISHED'},
+          {text: 'SCHEDULED', value: 'SCHEDULED'},
+        ],
+        onFilter: (value, record) => record.match_status === value,
+        sortDirections: ['ascend', 'descend'],
+        sorter: (recordA, recordB) =>
+          recordA.match_status.length - recordB.match_status.length,
       },
       {
         title: 'Fecha',
