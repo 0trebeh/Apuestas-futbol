@@ -455,6 +455,6 @@ export default class ApiConnection {
     setInterval(() => {
       this.updateMatches();
       this.get_top_scores();
-    }, 120000);
+    }, 900000);
   }
 }
