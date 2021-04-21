@@ -321,7 +321,8 @@ CREATE OR REPLACE PROCEDURE wire_money(
   p_user_id VARCHAR,
   p_bet_type VARCHAR,
   p_prediction VARCHAR,
-  p_ammout FLOAT
+  p_ammout FLOAT,
+  p_bet_id INTEGER
 )
 LANGUAGE PLPGSQL 
 AS 
@@ -347,6 +348,8 @@ BEGIN
 
     UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
     WHERE user_id = p_user_id;
+
+    INSERT INTO notifications(bet_id, message) VALUES(p_bet_id, '+' || curr_balance + p_ammout + (bet_pool.sum / winners.count));
   ELSIF p_bet_type = '2' THEN
     SELECT SUM(ammount) FROM user_bet INTO bet_pool
     WHERE match_id = p_match_id AND bet_type_name = '1' OR bet_type_name = '2'
@@ -359,6 +362,8 @@ BEGIN
 
     UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
     WHERE user_id = p_user_id;
+
+    INSERT INTO notifications(bet_id, message) VALUES(p_bet_id, '+' || curr_balance + p_ammout + (bet_pool.sum / winners.count));
   ELSIF p_bet_type = 'X' THEN
     SELECT SUM(ammount) FROM user_bet INTO bet_pool
     WHERE match_id = p_match_id AND bet_type_name = '1' OR bet_type_name = '2'
@@ -370,6 +375,8 @@ BEGIN
 
     UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
     WHERE user_id = p_user_id;
+
+    INSERT INTO notifications(bet_id, message) VALUES(p_bet_id, '+' || curr_balance + p_ammout + (bet_pool.sum / winners.count));
   ELSIF p_bet_type = 'CORRECT SCORE' THEN
     SELECT SUM(ammount) FROM user_bet INTO bet_pool
     WHERE match_id = p_match_id AND bet_type_name = 'CORRECT SCORE';
@@ -378,6 +385,8 @@ BEGIN
 
     UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
     WHERE user_id = p_user_id;
+
+    INSERT INTO notifications(bet_id, message) VALUES(p_bet_id, '+' || curr_balance + p_ammout + (bet_pool.sum / winners.count));
   ELSIF p_bet_type = 'under' OR p_bet_type = 'over' THEN
     SELECT SUM(ammount) FROM user_bet INTO bet_pool
     WHERE match_id = p_match_id 
@@ -387,6 +396,8 @@ BEGIN
 
     UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
     WHERE user_id = p_user_id;
+
+    INSERT INTO notifications(bet_id, message) VALUES(p_bet_id, '+' || curr_balance + p_ammout + (bet_pool.sum / winners.count));
   END IF;
 
   COMMIT;
@@ -414,71 +425,79 @@ BEGIN
   LOOP
     IF bet.bet_type_name = '1' THEN
       IF bet.side = 'HOME_TEAM' AND bet.winner = true THEN
-        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount, bet.bet_id);
         UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
       ELSE
         UPDATE bet SET status = 'LOSER' WHERE bet_id = bet.bet_id;
+        INSERT INTO notifications(bet_id, message) VALUES(bet.bet_id, '-' || bet.ammount);
       END IF;
     ELSIF bet.bet_type_name = 'X' THEN
       IF bet.draw = true THEN 
-        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount, bet.bet_id);
         UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
       ELSE
         UPDATE bet SET status = 'LOSER' WHERE bet_id = bet.bet_id;
+        INSERT INTO notifications(bet_id, message) VALUES(bet.bet_id, '-' || bet.ammount);
       END IF;
     ELSIF bet.bet_type_name '2' THEN 
       IF bet.side = 'AWAY_TEAM' AND bet.winner = true THEN 
-        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount, bet.bet_id);
         UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
       ELSE
         UPDATE bet SET status = 'LOSER' WHERE bet_id = bet.bet_id;
+        INSERT INTO notifications(bet_id, message) VALUES(bet.bet_id, '-' || bet.ammount);
       END IF;
     ELSIF bet.bet_type_name = '1X' THEN 
       IF bet.side = 'HOME_TEAM' AND bet.winner = true THEN
-        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount, bet.bet_id);
         UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
       ELSIF bet.draw = true THEN 
-        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount, bet.bet_id);
         UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
       ELSE
         UPDATE bet SET status = 'LOSER' WHERE bet_id = bet.bet_id;
+        INSERT INTO notifications(bet_id, message) VALUES(bet.bet_id, '-' || bet.ammount);
       END IF;
     ELSIF bet.bet_type_name = 'X2' THEN
       IF bet.side = 'AWAY_TEAM' AND bet.winner = true THEN
-        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount, bet.bet_id);
         UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
       ELSIF bet.draw = true THEN
-        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount);
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, '', bet.ammount, bet.bet_id);
         UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
       ELSE
         UPDATE bet SET status = 'LOSER' WHERE bet_id = bet.bet_id;
+        INSERT INTO notifications(bet_id, message) VALUES(bet.bet_id, '-' || bet.ammount);
       END IF;
     ELSIF bet.bet_type_name = 'CORRECT SCORE' THEN
       SELECT check_correct_score(bet.prediction, NEW.match_id) INTO is_valid;
 
       IF is_valid = true THEN
-        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, bet.prediction, bet.ammount);
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, bet.prediction, bet.ammount, bet.bet_id);
         UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
       ELSE
         UPDATE bet SET status = 'LOSER' WHERE bet_id = bet.bet_id;
+        INSERT INTO notifications(bet_id, message) VALUES(bet.bet_id, '-' || bet.ammount);
       END IF;
     ELSIF bet.bet_type_name = 'under' THEN
       SELECT check_under(bet.prediction, NEW.match_id) INTO is_valid;
 
       IF is_valid = true THEN
-        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, bet.prediction, bet.ammount);
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, bet.prediction, bet.ammount, bet.bet_id);
         UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
       ELSE
         UPDATE bet SET status = 'LOSER' WHERE bet_id = bet.bet_id;
+        INSERT INTO notifications(bet_id, message) VALUES(bet.bet_id, '-' || bet.ammount);
       END IF;
     ELSIF bet.bet_type_name = 'over' THEN
       SELECT check_over(bet.prediction, NEW.match_id) INTO is_valid;
 
       IF is_valid = true THEN
-        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, bet.prediction, bet.ammount);
+        CALL wire_money(NEW.match_id, bet.user_id, bet.bet_type_name, bet.prediction, bet.ammount, bet.bet_id);
         UPDATE bet SET status = 'WINNER' WHERE bet_id = bet.bet_id;
       ELSE
         UPDATE bet SET status = 'LOSER' WHERE bet_id = bet.bet_id;
+        INSERT INTO notifications(bet_id, message) VALUES(bet.bet_id, '-' || bet.ammount);
       END IF;
     END IF;
   END LOOP;
@@ -488,35 +507,6 @@ BEGIN
     WHEN OTHERS THEN
       RAISE EXCEPTION '% %', SQLERRM, SQLSTATE;
       RETURN NULL;
-END;
-$$;
-
-CREATE OR REPLACE FUNCTION update_bet2() 
-RETURNS VARCHAR 
-LANGUAGE PLPGSQL 
-AS
-$$
-DECLARE
-  bet record;
-  is_valid BOOLEAN;
-BEGIN 
-  FOR bet IN SELECT * FROM user_bet
-
-  LOOP
-    IF bet.bet_type_name = '1' THEN
-      IF bet.side = 'HOME_TEAM' AND bet.winner = true THEN
-        RAISE NOTICE 'WIN';
-      ELSIF bet.side = 'HOME_TEAM' THEN
-        RAISE NOTICE 'LOSE';
-      END IF;
-    END IF;
-  END LOOP;
-  RETURN 'ASD';
-
-  EXCEPTION
-    WHEN OTHERS THEN
-      RAISE EXCEPTION '% %', SQLERRM, SQLSTATE;
-      RETURN 'ERROR';
 END;
 $$;
 
@@ -571,3 +561,54 @@ FROM tournament t
   INNER JOIN match m USING (season_id)
   INNER JOIN match_teams mt USING (match_id)
   INNER JOIN teams tm USING (team_id)
+
+CREATE OR REPLACE VIEW bets_report AS
+SELECT
+  u.name AS user_name,
+  u.last_name,
+  b.ammount,
+  b.created,
+  ub.bet_type_name,
+  ub.side,
+  ub.winner,
+  ub.loser,
+  ub.draw,
+  tr.name AS tournament_name,
+  ts.name AS team_name
+FROM user_bet ub
+  INNER JOIN bill b USING(bet_id)
+  INNER JOIN users u USING(user_id)
+  INNER JOIN match USING(match_id)
+  INNER JOIN tournament_season USING(season_id)
+  INNER JOIN tournament tr USING(tournament_id)
+  INNER JOIN teams ts USING(team_id)
+
+CREATE OR REPLACE VIEW user_notifications AS 
+SELECT 
+  b.user_id,
+  n.message,
+  b.status,
+  bt.name AS bet_type,
+  ht.name AS home_team,
+  at.name AS away_team,
+  tr.name AS tournament_name
+FROM notifications n
+  INNER JOIN bet b USING(bet_id)
+  INNER JOIN bet_types bt USING(bet_type_id)
+  INNER JOIN (SELECT 
+                t.name,
+                mt.match_id 
+              FROM match_teams mt
+                INNER JOIN teams t USING(team_id)
+              WHERE mt.side = 'HOME TEAM') 
+  ht USING(match_id) 
+  INNER JOIN (SELECT 
+                t.name,
+                mt.match_id 
+              FROM match_teams mt 
+                INNER JOIN teams t USING(team_id) 
+              WHERE mt.side = 'AWAY_TEAM') 
+  at USING(match_id) 
+  INNER JOIN match USING(match_id) 
+  INNER JOIN tournament_season USING(season_id)
+  INNER JOIN tournament tr USING(tournament_id);

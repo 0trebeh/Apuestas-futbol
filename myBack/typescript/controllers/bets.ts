@@ -100,4 +100,25 @@ export default class Bet {
       client.release(true);
     }
   }
+
+  async Notifications(req: Request, res: Response, next: NextFunction) {
+    const {authorization} = req.headers;
+    const payload = await jwt.getPayload(authorization);
+    if (!payload) {
+      return next({status: 403, err: 'Token missing'});
+    }
+    const client = await dbController.getClient();
+    try {
+      const notifications = await client.query(query.get_notifications, [
+        payload.id,
+      ]);
+      res.status(200).json({
+        notifications: notifications.rows,
+      });
+    } catch (err) {
+      next(err);
+    } finally {
+      client.release(true);
+    }
+  }
 }

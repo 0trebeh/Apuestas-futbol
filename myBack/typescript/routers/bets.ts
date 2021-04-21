@@ -12,3 +12,10 @@ Router.post('/bet', (req: Request, res: Response, next: NextFunction) => {
 Router.delete('/bet/:id', (req: Request, res: Response, next: NextFunction) => {
   bet.Delete(req, res, next);
 });
+
+Router.get(
+  '/notifications',
+  (req: Request, res: Response, next: NextFunction) => {
+    bet.Notifications(req, res, next);
+  }
+);
