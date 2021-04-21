@@ -4,7 +4,7 @@ import MenuComponent from '../components/pageHeader';
 import BalanceForm from '../components/balanceForm';
 import {List, Descriptions, Popconfirm, message, Skeleton, Tag} from 'antd';
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import {PdfDocument} from '../components/bettingInformation'
+import PdfDocument from '../components/bettingInformation';
 
 import type {RootState} from '../state-store/reducer.root';
 import type {Bet} from '../types/bets';
@@ -28,7 +28,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = PropsFromRedux;
 type State = {
   bets: Bet[];
-  loading: boolean;
+  load: boolean;
   email: string;
   visible: boolean;
 };
@@ -38,7 +38,7 @@ class Profile extends React.Component<Props, State> {
     super(props);
     this.state = {
       bets: [],
-      loading: true,
+      load: true,
       email: '',
       visible: false,
     };
@@ -50,7 +50,7 @@ class Profile extends React.Component<Props, State> {
     try {
       this.setState({
         ...this.state,
-        loading: true,
+        load: true,
       });
       const response = await axios.get('/users/user', {
         headers: {authorization: this.props.token},
@@ -58,7 +58,7 @@ class Profile extends React.Component<Props, State> {
       this.setState({
         ...this.state,
         email: response.data.profile.email,
-        loading: false,
+        load: false,
         bets: response.data.bets,
       });
       this.props.reduxSetBalance(response.data.profile.balance);
@@ -125,17 +125,17 @@ class Profile extends React.Component<Props, State> {
         <div>
           <Descriptions layout={'vertical'} bordered>
           <Descriptions.Item label={'Nombre'}>
-            <Skeleton active loading={this.state.loading} paragraph={{rows: 0}}>
+            <Skeleton active loading={this.state.load} paragraph={{rows: 0}}>
               {this.props.username}
             </Skeleton>
           </Descriptions.Item>
           <Descriptions.Item label={'Correo'}>
-            <Skeleton active loading={this.state.loading} paragraph={{rows: 0}}>
+            <Skeleton active loading={this.state.load} paragraph={{rows: 0}}>
               {this.state.email}
             </Skeleton>
           </Descriptions.Item>
           <Descriptions.Item label={'Saldo'} style={labelStyle}>
-            <Skeleton active loading={this.state.loading} paragraph={{rows: 0}}>
+            <Skeleton active loading={this.state.load} paragraph={{rows: 0}}>
               {`$${this.props.balance}`}
               {'  '}
               <Tag
@@ -148,7 +148,7 @@ class Profile extends React.Component<Props, State> {
           </Descriptions.Item>
         </Descriptions>
         <List
-          loading={this.state.loading}
+          loading={this.state.load}
           bordered
           size={'large'}
           dataSource={this.state.bets}

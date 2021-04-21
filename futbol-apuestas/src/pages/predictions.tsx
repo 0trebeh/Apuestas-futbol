@@ -1,9 +1,10 @@
 import React from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import MenuComponent from '../components/pageHeader';
-import {message, Table, Input, Button, Space, Tabs} from 'antd';
+import {message, Table, Input, Button, Space, Tabs, Calendar} from 'antd';
 import Highlighter from 'react-highlight-words';
 import {SearchOutlined} from '@ant-design/icons';
+import moment from 'moment';
 
 import type {RootState} from '../state-store/reducer.root';
 import type {Prediction, PredictionMatches} from '../types/predictions';
@@ -26,6 +27,7 @@ type State = {
   loading2: boolean;
   searchText: string;
   searchedColumn: string;
+  value: any;
 };
 
 class Predictions extends React.Component<Props, State> {
@@ -39,6 +41,7 @@ class Predictions extends React.Component<Props, State> {
       loading2: true,
       searchText: '',
       searchedColumn: '',
+      value: moment(new Date().getFullYear()+"-"+(new Date().getMonth() + 1)+"-"+new Date().getDate()),
     };
     this.getData.bind(this);
     this.tabChanged.bind(this);
@@ -86,7 +89,7 @@ class Predictions extends React.Component<Props, State> {
     this.getData(key);
   }
 
-  getColumnSearchProps = (dataIndex: string) => ({
+  getColumnSearchProps = (dataIndex: any) => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -97,14 +100,30 @@ class Predictions extends React.Component<Props, State> {
         <Input
           placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
-          onChange={e =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
           onPressEnter={() =>
             this.handleSearch(selectedKeys, confirm, dataIndex)
           }
+          onChange={e =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
           style={{width: 188, marginBottom: 8, display: 'block'}}
         />
+        <div style={{
+        width: '300px',
+        border: '1px solid #f0f0f0',
+        }}>
+          {dataIndex === 'date'?
+            <Calendar fullscreen={false} value={this.state.value} 
+            onSelect={e => {
+              let ee = e.toString();
+              setSelectedKeys(new Date(ee).toUTCString().substr(0,17) 
+              ? [new Date(ee).toUTCString().substr(0,17)] 
+              : []);
+              this.onSelect(e);
+            }} />
+            : null
+          }
+        </div>
         <Space>
           <Button
             type='primary'
@@ -158,6 +177,14 @@ class Predictions extends React.Component<Props, State> {
       ),
   });
 
+  onSelect = (value: any) => {
+    let date = new Date(value).toUTCString().substr(0,17);
+    this.setState({
+      value: value,
+      searchText: date
+    });
+  };
+
   handleSearch = (selectedKeys: any, confirm: any, dataIndex: any) => {
     confirm();
     this.setState({
@@ -209,17 +236,17 @@ class Predictions extends React.Component<Props, State> {
         key: 'side1',
       },
       {
-        title: '1',
+        title: 'Equipo 1 gana',
         dataIndex: 'tm1_winner',
         key: 'tm1_winner',
       },
       {
-        title: 'x',
+        title: 'Empatan',
         dataIndex: 'tm_draw',
         key: 'tm_draw',
       },
       {
-        title: '2',
+        title: 'Equipo 2 gana',
         dataIndex: 'tm2_winner',
         key: 'tm2_winner',
       },
@@ -255,6 +282,7 @@ class Predictions extends React.Component<Props, State> {
         title: 'Fecha',
         dataIndex: 'date',
         key: 'date',
+        ...this.getColumnSearchProps('date'),
       },
     ];
 
