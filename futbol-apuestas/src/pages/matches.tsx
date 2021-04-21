@@ -291,7 +291,7 @@ class Matches extends React.Component<Props, State> {
   render() {
     return (
       <div>
-        <Header sessionActive={this.props.sessionActive} title={'Partidos y Apuestas'}/>
+        <Header sessionActive={this.props.sessionActive} title={'Partidos y Apuestas'} />
         <Tabs
           defaultActiveKey={'PD'}
           centered

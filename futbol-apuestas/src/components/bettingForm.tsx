@@ -84,6 +84,9 @@ function BettingForm(props: Props) {
       if (!bet_type) {
         throw new Error('Seleccione un tipo de apuesta!');
       }
+      if (values.ammount <= 0) {
+        throw new Error('Inserte una cantidad valida');
+      }
       if (values.ammount > props.balance) {
         throw new Error('Saldo insuficiente');
       }
