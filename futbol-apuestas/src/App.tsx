@@ -10,6 +10,7 @@ import Home from './pages/home';
 import Profile from './pages/profile';
 import Matches from './pages/matches';
 import Stats from './pages/stats';
+import Notifications from './pages/notifications';
 import Predictions from './pages/predictions';
 
 axios.defaults.baseURL = 'http://localhost:8000';
@@ -34,6 +35,9 @@ function App() {
             </Route>
             <Route exact path={'/predicciones'}>
               <Predictions />
+            </Route>
+            <Route exact path={'/notifications'}>
+              <Notifications />
             </Route>
           </Switch>
         </BrowserRouter>

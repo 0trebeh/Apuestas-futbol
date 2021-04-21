@@ -81,6 +81,11 @@ const NavigationDrawer = (props: Props) => {
       type: 'global',
     },
     {
+      name: 'Notificaciones',
+      action: () => history.push('/notifications'),
+      type: 'session',
+    },
+    {
       name: 'Iniciar sesion',
       action: props.setLoginVisible,
       type: 'visit',
