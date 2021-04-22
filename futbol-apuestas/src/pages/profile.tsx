@@ -4,7 +4,7 @@ import MenuComponent from '../components/pageHeader';
 import BalanceForm from '../components/balanceForm';
 import {List, Descriptions, Popconfirm, message, Skeleton, Tag} from 'antd';
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import PdfDocument from '../components/bettingInformation';
+import {PdfDocument} from '../components/bettingInformation';
 
 import type {RootState} from '../state-store/reducer.root';
 import type {Bet} from '../types/bets';
@@ -163,23 +163,24 @@ class Profile extends React.Component<Props, State> {
         </div>
         : 
         <div>
-          <PdfDocument />
-          <div>{'\n'}</div>
+          <PdfDocument Props={this.props}/>
+          <div style={{ marginTop: 50, display: "flex", justifyContent: "center"}}>
           <PDFDownloadLink
-            document={<PdfDocument />}
-            fileName="Apuestas.pdf"
+            document={<PdfDocument Props={this.props}/>}
+            fileName={"Apuestas "+new Date().toUTCString().substr(0,16)+".pdf"}
             style={{
               textDecoration: "none",
               padding: "10px",
               color: "#4a4a4a",
               backgroundColor: "#f2f2f2",
-              border: "1px solid #4a4a4a"
+              border: "1px solid #4a4a4a",
             }}
           >
             {({ blob, url, loading, error }) =>
               loading ? "Loading document..." : "Download Pdf"
             }
           </PDFDownloadLink>
+          </div>
         </div>
         }
         </div>
