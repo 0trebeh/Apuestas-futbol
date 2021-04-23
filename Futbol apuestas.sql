@@ -327,85 +327,76 @@ LANGUAGE PLPGSQL
 AS 
 $$
 DECLARE 
-  winners user_bet %rowtype;
-  bet_pool user_bet %rowtype;
-  curr_balance user_balance %rowtype;
-  winner_count INT;
+  winners INTEGER;
+  bet_pool FLOAT;
+  curr_balance FLOAT;
+  winner_count INTEGER;
 BEGIN
-  SELECT balance FROM user_balance INTO curr_balance
-  WHERE user_id = p_user_id;
+  SELECT balance FROM user_balance INTO curr_balance WHERE user_id = p_user_id;
 
   IF p_bet_type = '1' THEN
     SELECT SUM(ammount) FROM user_bet INTO bet_pool
-    WHERE match_id = p_match_id AND bet_type_name = '1' OR bet_type_name = '2'
-    OR bet_type_name = 'X';
+    WHERE match_id = p_match_id AND (bet_type_name = '1' OR bet_type_name = '2'
+    OR bet_type_name = 'X');
 
     SELECT COUNT(*) FROM user_bet INTO winners
     WHERE bet_type_name = '1'
     AND side = 'HOME_TEAM'
     AND match_id = p_match_id;
 
-    UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
+    UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool / winners)
     WHERE user_id = p_user_id;
 
-    INSERT INTO notifications(bet_id, message) VALUES(p_bet_id, '+' || curr_balance + p_ammout + (bet_pool.sum / winners.count));
+    INSERT INTO notifications(bet_id, message) VALUES(p_bet_id, '+' || p_ammout + (bet_pool / winners));
   ELSIF p_bet_type = '2' THEN
     SELECT SUM(ammount) FROM user_bet INTO bet_pool
-    WHERE match_id = p_match_id AND bet_type_name = '1' OR bet_type_name = '2'
-    OR bet_type_name = 'X';
+    WHERE match_id = p_match_id AND (bet_type_name = '1' OR bet_type_name = '2'
+    OR bet_type_name = 'X');
 
     SELECT COUNT(*) FROM user_bet INTO winners
     WHERE bet_type_name = '2'
     AND side = 'AWAY_TEAM'
     AND match_id = p_match_id;
 
-    UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
+    UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool / winners)
     WHERE user_id = p_user_id;
 
-    INSERT INTO notifications(bet_id, message) VALUES(p_bet_id, '+' || curr_balance + p_ammout + (bet_pool.sum / winners.count));
+    INSERT INTO notifications(bet_id, message) VALUES(p_bet_id, '+' || p_ammout + (bet_pool / winners));
   ELSIF p_bet_type = 'X' THEN
     SELECT SUM(ammount) FROM user_bet INTO bet_pool
-    WHERE match_id = p_match_id AND bet_type_name = '1' OR bet_type_name = '2'
-    OR bet_type_name = 'X';
+    WHERE match_id = p_match_id AND (bet_type_name = '1' OR bet_type_name = '2'
+    OR bet_type_name = 'X');
 
     SELECT COUNT(*) FROM user_bet INTO winners
     WHERE bet_type_name = 'X'
     AND match_id = p_match_id;
 
-    UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
+    UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool / winners)
     WHERE user_id = p_user_id;
 
-    INSERT INTO notifications(bet_id, message) VALUES(p_bet_id, '+' || curr_balance + p_ammout + (bet_pool.sum / winners.count));
+    INSERT INTO notifications(bet_id, message) VALUES(p_bet_id, '+' || p_ammout + (bet_pool / winners));
   ELSIF p_bet_type = 'CORRECT SCORE' THEN
     SELECT SUM(ammount) FROM user_bet INTO bet_pool
     WHERE match_id = p_match_id AND bet_type_name = 'CORRECT SCORE';
 
     SELECT correct_score_winner_count(p_match_id) INTO winner_count;
 
-    UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
+    UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool / winners)
     WHERE user_id = p_user_id;
 
-    INSERT INTO notifications(bet_id, message) VALUES(p_bet_id, '+' || curr_balance + p_ammout + (bet_pool.sum / winners.count));
+    INSERT INTO notifications(bet_id, message) VALUES(p_bet_id, '+' || p_ammout + (bet_pool / winners));
   ELSIF p_bet_type = 'under' OR p_bet_type = 'over' THEN
     SELECT SUM(ammount) FROM user_bet INTO bet_pool
     WHERE match_id = p_match_id 
-    AND bet_type_name = 'under' OR bet_type_name = 'over';
+    AND (bet_type_name = 'under' OR bet_type_name = 'over');
 
     SELECT under_over_winner_count(p_match_id) INTO winner_count;
 
-    UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool.sum / winners.count)
+    UPDATE user_balance SET balance = curr_balance + p_ammout + (bet_pool / winners)
     WHERE user_id = p_user_id;
 
-    INSERT INTO notifications(bet_id, message) VALUES(p_bet_id, '+' || curr_balance + p_ammout + (bet_pool.sum / winners.count));
+    INSERT INTO notifications(bet_id, message) VALUES(p_bet_id, '+' || p_ammout + (bet_pool / winners));
   END IF;
-
-  COMMIT;
-
-  EXCEPTION
-    WHEN OTHERS THEN 
-      RAISE NOTICE 'Error wiring money to user %. There was an exception', p_user_id;
-      RAISE NOTICE '% %', SQLERRM, SQLSTATE;
-  ROLLBACK;
 END;
 $$;
 
@@ -443,8 +434,8 @@ BEGIN
         UPDATE bet SET status = 'LOSER' WHERE bet_id = bet_rec.bet_id;
         INSERT INTO notifications(bet_id, message) VALUES(bet_rec.bet_id, '-' || bet_rec.ammount);
       END IF;
-    ELSIF bet_rec.bet_type_name '2' THEN
-      IF bet_rec.side = 'AWAY_TEAM' AND (bet_rec.winner IS NOT NULL AND bet_rec.winner = true) THEN 
+    ELSIF bet_rec.bet_type_name = '2' THEN
+      IF bet_rec.side = 'AWAY_TEAM' AND (bet_rec.winner IS NOT NULL AND bet_rec.winner = true) THEN
         CALL wire_money(NEW.match_id, bet_rec.user_id, bet_rec.bet_type_name, bet_rec.ammount, bet_rec.bet_id);
         UPDATE bet SET status = 'WINNER' WHERE bet_id = bet_rec.bet_id;
       ELSE
@@ -506,11 +497,6 @@ BEGIN
     END IF;
   END LOOP;
   RETURN NEW;
-
-  EXCEPTION
-    WHEN OTHERS THEN
-      RAISE EXCEPTION '% %', SQLERRM, SQLSTATE;
-      RETURN NULL;
 END;
 $$;
 
