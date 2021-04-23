@@ -590,7 +590,7 @@ FROM notifications n
                 mt.match_id 
               FROM match_teams mt
                 INNER JOIN teams t USING(team_id)
-              WHERE mt.side = 'HOME TEAM') 
+              WHERE mt.side = 'HOME_TEAM') 
   ht USING(match_id) 
   INNER JOIN (SELECT 
                 t.name,
