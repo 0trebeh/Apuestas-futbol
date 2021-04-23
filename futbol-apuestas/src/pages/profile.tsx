@@ -2,11 +2,17 @@ import React from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import MenuComponent from '../components/pageHeader';
 import BalanceForm from '../components/balanceForm';
-import {List, Descriptions, Popconfirm, message, Skeleton, Tag} from 'antd';
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import {PdfDocument} from '../components/bettingInformation';
+import {List, Descriptions, Popconfirm, message, Skeleton, Tag, Table} from 'antd';
+import { 
+  PDFDownloadLink, 
+  Page,
+  Text,
+  View,
+  Document, 
+} from "@react-pdf/renderer";
 
 import type {RootState} from '../state-store/reducer.root';
+import type {Balance} from '../types/balanceInformation';
 import type {Bet} from '../types/bets';
 import axios from 'axios';
 
@@ -28,6 +34,8 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = PropsFromRedux;
 type State = {
   bets: Bet[];
+  Data: Balance[];
+  Profit: number;
   load: boolean;
   email: string;
   visible: boolean;
@@ -37,7 +45,9 @@ class Profile extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      Data: [],
       bets: [],
+      Profit: 0,
       load: true,
       email: '',
       visible: false,
@@ -55,6 +65,16 @@ class Profile extends React.Component<Props, State> {
       const response = await axios.get('/users/user', {
         headers: {authorization: this.props.token},
       });
+      if(response.data.profile.email === "futbol.apuestas.v01@gmail.com"){
+        const res = await axios.get('/bets/report', {
+          headers: {authorization: this.props.token},
+        });
+        this.setState({
+          ...this.state,
+          Data: res.data.bets,
+          Profit: res.data.profit,
+        });
+      }
       this.setState({
         ...this.state,
         email: response.data.profile.email,
@@ -115,6 +135,48 @@ class Profile extends React.Component<Props, State> {
   }
 
   render() {
+    const columns = [
+      {
+        title: 'Nombre',
+        dataIndex: 'user_name',
+        key: 'user_name',
+      },
+      {
+        title: 'Apellido',
+        dataIndex: 'last_name',
+        key: 'last_name',
+      },
+      {
+        title: 'Torneo',
+        dataIndex: 'tournament_name',
+        key: 'tournament_name',
+      },
+      {
+        title: 'Fecha',
+        dataIndex: 'created',
+        key: 'created',
+      },
+      {
+        title: 'Monto $',
+        dataIndex: 'ammount',
+        key: 'ammount',
+      },
+      {
+        title: 'Tipo de apuesta',
+        dataIndex: 'bet_type_name',
+        key: 'bet_type_name',
+      },
+      {
+        title: 'Equipo',
+        dataIndex: 'team_name',
+        key: 'team_name',
+      },
+      {
+        title: 'Equipo es',
+        dataIndex: 'side',
+        key: 'side',
+      },
+    ];
     return (
       <div>
         <MenuComponent sessionActive={this.props.sessionActive} title={'Perfil'}/>
@@ -163,10 +225,54 @@ class Profile extends React.Component<Props, State> {
         </div>
         : 
         <div>
-          <PdfDocument Props={this.props}/>
-          <div style={{ marginTop: 50, display: "flex", justifyContent: "center"}}>
+        <Table
+          dataSource={this.state.Data}
+          columns={columns}
+          size='small'
+          loading={this.state.load}
+        />
+        <h2>
+          Total de Apuestas: {this.state.Profit} $
+        </h2>
+        <h2>
+          Ganancias: {this.state.Profit * 0.2} $
+        </h2>
+        <div style={{paddingBottom: 50, display: "flex", justifyContent: "center"}}>
           <PDFDownloadLink
-            document={<PdfDocument Props={this.props}/>}
+            document={
+              <Document>
+                <Page>
+                    <div style={{ marginTop: 10, marginBottom: 15, textAlign: "center" }}>
+                      <Text>Balance de Apuestas:</Text>
+                    </div>
+                    <View>
+                    <Text>Total de Apuestas: {this.state.Profit} $</Text>
+                    <Text>Ganancias: {this.state.Profit * 0.2} $</Text>
+                    </View>
+                  </Page>
+                {
+                  this.state.Data.map((user, index) => {
+                  return (
+                    <Page>
+                      <div style={{ marginTop: 10, marginBottom: 15, textAlign: "center" }}>
+                        <Text>Aportador #{index + 1}</Text>
+                      </div>
+                      <View>
+                        <Text>Apostador: {user.user_name} {user.last_name}</Text>
+                        <Text>Torneo: {user.tournament_name}</Text>
+                        <Text>Fecha: {new Date(user.created).toUTCString().substr(0,17) }</Text>
+                        <Text>Tipo de apuesta: {user.bet_type_name}</Text>
+                        <Text>Monto: {user.ammount} $</Text>
+                        <Text>Equipo: {user.team_name}</Text>
+                        <Text>Equipo es: {user.side}</Text>
+                        <Text>Resultado del partido: {user.team_name}{" "} 
+                        {user.winner ? "ganó" : user.loser ? "Perdió" : "Empató"}</Text>
+                      </View>
+                    </Page>
+                  )})
+                }
+              </Document>
+            }
             fileName={"Apuestas "+new Date().toUTCString().substr(0,16)+".pdf"}
             style={{
               textDecoration: "none",
