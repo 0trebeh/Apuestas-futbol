@@ -81,7 +81,7 @@ class Stats extends React.Component<Props, State> {
   ) {
     this.getData(key);
   }
-  
+
   getColumnSearchProps = (dataIndex: any) => ({
     filterDropdown: ({
       setSelectedKeys,
@@ -91,7 +91,7 @@ class Stats extends React.Component<Props, State> {
     }: any) => (
       <div style={{padding: 8}}>
         <Input
-          placeholder={Search ${dataIndex}}
+          placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
           onChange={e =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -187,7 +187,7 @@ class Stats extends React.Component<Props, State> {
         ...this.getColumnSearchProps('player'),
         render: (name: string) => (
           <a
-            href={https://www.google.com/search?q=${name}+futbol}
+            href={`https://www.google.com/search?q=${name}+futbol`}
             target='_blank'
             rel='noreferrer'>
             {name}
@@ -200,7 +200,7 @@ class Stats extends React.Component<Props, State> {
         key: 'number_goals',
       },
     ];
-    
+
     const columnsTopTeams = [
       {
         title: 'Top',
@@ -214,7 +214,7 @@ class Stats extends React.Component<Props, State> {
         ...this.getColumnSearchProps('team_name'),
         render: (name: string) => (
           <a
-            href={https://www.google.com/search?q=${name}+futbol}
+            href={`https://www.google.com/search?q=${name}+futbol`}
             target='_blank'
             rel='noreferrer'>
             {name}
