@@ -2,14 +2,23 @@ import React from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import MenuComponent from '../components/pageHeader';
 import BalanceForm from '../components/balanceForm';
-import {List, Descriptions, Popconfirm, message, Skeleton, Tag, Table} from 'antd';
-import { 
-  PDFDownloadLink, 
+import {
+  List,
+  Descriptions,
+  Popconfirm,
+  message,
+  Skeleton,
+  Tag,
+  Table,
+} from 'antd';
+import {
+  PDFDownloadLink,
   Page,
   Text,
   View,
-  Document, 
-} from "@react-pdf/renderer";
+  Document,
+  StyleSheet,
+} from '@react-pdf/renderer';
 
 import type {RootState} from '../state-store/reducer.root';
 import type {Balance} from '../types/balanceInformation';
@@ -65,7 +74,7 @@ class Profile extends React.Component<Props, State> {
       const response = await axios.get('/users/user', {
         headers: {authorization: this.props.token},
       });
-      if(response.data.profile.email === "futbol.apuestas.v01@gmail.com"){
+      if (response.data.profile.email === 'futbol.apuestas.v01@gmail.com') {
         const res = await axios.get('/bets/report', {
           headers: {authorization: this.props.token},
         });
@@ -179,116 +188,148 @@ class Profile extends React.Component<Props, State> {
     ];
     return (
       <div>
-        <MenuComponent sessionActive={this.props.sessionActive} title={'Perfil'}/>
-        <div>
-          { 
-          this.state.email !== 'futbol.apuestas.v01@gmail.com' 
-          ?  
-        <div>
-          <Descriptions layout={'vertical'} bordered>
-          <Descriptions.Item label={'Nombre'}>
-            <Skeleton active loading={this.state.load} paragraph={{rows: 0}}>
-              {this.props.username}
-            </Skeleton>
-          </Descriptions.Item>
-          <Descriptions.Item label={'Correo'}>
-            <Skeleton active loading={this.state.load} paragraph={{rows: 0}}>
-              {this.state.email}
-            </Skeleton>
-          </Descriptions.Item>
-          <Descriptions.Item label={'Saldo'} style={labelStyle}>
-            <Skeleton active loading={this.state.load} paragraph={{rows: 0}}>
-              {`$${this.props.balance}`}
-              {'  '}
-              <Tag
-                color={'success'}
-                style={{cursor: 'pointer'}}
-                onClick={() => this.setState({...this.state, visible: true})}>
-                Añadir saldo
-              </Tag>
-            </Skeleton>
-          </Descriptions.Item>
-        </Descriptions>
-        <List
-          loading={this.state.load}
-          bordered
-          size={'large'}
-          dataSource={this.state.bets}
-          itemLayout={'horizontal'}
-          header={<b>Mis Apuestas</b>}
-          renderItem={this._listItem.bind(this)}
+        <MenuComponent
+          sessionActive={this.props.sessionActive}
+          title={'Perfil'}
         />
-        <BalanceForm
-          visible={this.state.visible}
-          onCancel={() => this.setState({...this.state, visible: false})}
-        /> 
-        </div>
-        : 
         <div>
-        <Table
-          dataSource={this.state.Data}
-          columns={columns}
-          size='small'
-          loading={this.state.load}
-        />
-        <h2>
-          Total de Apuestas: {this.state.Profit} $
-        </h2>
-        <h2>
-          Ganancias: {this.state.Profit * 0.2} $
-        </h2>
-        <div style={{paddingBottom: 50, display: "flex", justifyContent: "center"}}>
-          <PDFDownloadLink
-            document={
-              <Document>
-                <Page>
-                    <div style={{ marginTop: 10, marginBottom: 15, textAlign: "center" }}>
-                      <Text>Balance de Apuestas:</Text>
-                    </div>
-                    <View>
-                    <Text>Total de Apuestas: {this.state.Profit} $</Text>
-                    <Text>Ganancias: {this.state.Profit * 0.2} $</Text>
-                    </View>
-                  </Page>
-                {
-                  this.state.Data.map((user, index) => {
-                  return (
-                    <Page>
-                      <div style={{ marginTop: 10, marginBottom: 15, textAlign: "center" }}>
-                        <Text>Aportador #{index + 1}</Text>
-                      </div>
-                      <View>
-                        <Text>Apostador: {user.user_name} {user.last_name}</Text>
-                        <Text>Torneo: {user.tournament_name}</Text>
-                        <Text>Fecha: {new Date(user.created).toUTCString().substr(0,17) }</Text>
-                        <Text>Tipo de apuesta: {user.bet_type_name}</Text>
-                        <Text>Monto: {user.ammount} $</Text>
-                        <Text>Equipo: {user.team_name}</Text>
-                        <Text>Equipo es: {user.side}</Text>
-                        <Text>Resultado del partido: {user.team_name}{" "} 
-                        {user.winner ? "ganó" : user.loser ? "Perdió" : "Empató"}</Text>
-                      </View>
-                    </Page>
-                  )})
-                }
-              </Document>
-            }
-            fileName={"Apuestas "+new Date().toUTCString().substr(0,16)+".pdf"}
-            style={{
-              textDecoration: "none",
-              padding: "10px",
-              color: "#4a4a4a",
-              backgroundColor: "#f2f2f2",
-              border: "1px solid #4a4a4a",
-            }}
-          >
-            {({ blob, url, loading, error }) =>
-              loading ? "Loading document..." : "Download Pdf"
-            }
-          </PDFDownloadLink>
-          </div>
-        </div>
-        }
+          {this.state.email !== 'futbol.apuestas.v01@gmail.com' ? (
+            <div>
+              <Descriptions layout={'vertical'} bordered>
+                <Descriptions.Item label={'Nombre'}>
+                  <Skeleton
+                    active
+                    loading={this.state.load}
+                    paragraph={{rows: 0}}>
+                    {this.props.username}
+                  </Skeleton>
+                </Descriptions.Item>
+                <Descriptions.Item label={'Correo'}>
+                  <Skeleton
+                    active
+                    loading={this.state.load}
+                    paragraph={{rows: 0}}>
+                    {this.state.email}
+                  </Skeleton>
+                </Descriptions.Item>
+                <Descriptions.Item label={'Saldo'} style={labelStyle}>
+                  <Skeleton
+                    active
+                    loading={this.state.load}
+                    paragraph={{rows: 0}}>
+                    {`$${this.props.balance}`}
+                    {'  '}
+                    <Tag
+                      color={'success'}
+                      style={{cursor: 'pointer'}}
+                      onClick={() =>
+                        this.setState({...this.state, visible: true})
+                      }>
+                      Añadir saldo
+                    </Tag>
+                  </Skeleton>
+                </Descriptions.Item>
+              </Descriptions>
+              <List
+                loading={this.state.load}
+                bordered
+                size={'large'}
+                dataSource={this.state.bets}
+                itemLayout={'horizontal'}
+                header={<b>Mis Apuestas</b>}
+                renderItem={this._listItem.bind(this)}
+              />
+              <BalanceForm
+                visible={this.state.visible}
+                onCancel={() => this.setState({...this.state, visible: false})}
+              />
+            </div>
+          ) : (
+            <div>
+              <Table
+                dataSource={this.state.Data}
+                columns={columns}
+                size='small'
+                loading={this.state.load}
+              />
+              <h2>Total de Apuestas: ${this.state.Profit}</h2>
+              <h2>Ganancias: ${this.state.Profit * 0.2}</h2>
+              <div
+                style={{
+                  paddingBottom: 50,
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}>
+                <PDFDownloadLink
+                  document={
+                    <Document>
+                      <Page>
+                        <View style={docStyles.View}>
+                          <Text style={docStyles.Text}>
+                            Balance de Apuestas:
+                          </Text>
+                          <Text style={docStyles.Text}>
+                            Total de Apuestas: ${this.state.Profit}
+                          </Text>
+                          <Text style={docStyles.Text}>
+                            Ganancias: ${this.state.Profit * 0.2}
+                          </Text>
+                        </View>
+                      </Page>
+                      {this.state.Data.map((user, index) => {
+                        return (
+                          <Page>
+                            <View style={docStyles.View}>
+                              <Text style={docStyles.Text}>
+                                Aportador #{index + 1}
+                              </Text>
+                              <Text>
+                                Apostador: {user.user_name} {user.last_name}
+                              </Text>
+                              <Text>Torneo: {user.tournament_name}</Text>
+                              <Text>
+                                Fecha:{' '}
+                                {new Date(user.created)
+                                  .toUTCString()
+                                  .substr(0, 17)}
+                              </Text>
+                              <Text>Tipo de apuesta: {user.bet_type_name}</Text>
+                              <Text>Monto: ${user.ammount}</Text>
+                              <Text>Equipo: {user.team_name}</Text>
+                              <Text>Equipo es: {user.side}</Text>
+                              <Text>
+                                Resultado del partido: {user.team_name}{' '}
+                                {user.winner
+                                  ? 'ganó'
+                                  : user.loser
+                                  ? 'Perdió'
+                                  : 'Empató'}
+                              </Text>
+                            </View>
+                          </Page>
+                        );
+                      })}
+                    </Document>
+                  }
+                  fileName={
+                    'Apuestas ' +
+                    new Date().toUTCString().substr(0, 16) +
+                    '.pdf'
+                  }
+                  style={{
+                    textDecoration: 'none',
+                    padding: '10px',
+                    color: '#4a4a4a',
+                    backgroundColor: '#f2f2f2',
+                    border: '1px solid #4a4a4a',
+                  }}>
+                  {({blob, url, loading, error}) =>
+                    loading ? 'Loading document...' : 'Download Pdf'
+                  }
+                </PDFDownloadLink>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -299,5 +340,15 @@ const labelStyle: React.CSSProperties = {
   fontWeight: 'bold',
   fontSize: 15,
 };
+
+const docStyles = StyleSheet.create({
+  View: {
+    alignSelf: 'center',
+    textAlign: 'justify',
+  },
+  Text: {
+    margin: 13,
+  },
+});
 
 export default connector(Profile);
