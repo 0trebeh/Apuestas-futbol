@@ -98,3 +98,87 @@
 2021-04-19 13:38:02:382 [31merror[39m: [31mCannot read property 'winner' of undefined[39m
 2021-04-19 13:38:14:3814 [31merror[39m: [31mCannot read property 'winner' of undefined[39m
 2021-04-19 13:40:38:4038 [31merror[39m: [31mCannot read property 'winner' of undefined[39m
+2021-04-19 13:58:44:5844 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 22:46:36:4636 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 23:02:30:230 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 23:17:49:1749 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 23:31:26:3126 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-19 23:46:18:4618 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 00:01:19:119 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 00:16:16:1616 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 00:31:54:3154 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 02:04:39:439 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 02:19:39:1939 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 02:34:36:3436 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 09:07:28:728 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 09:25:37:2537 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 09:40:37:4037 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 09:55:38:5538 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 10:10:41:1041 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 10:25:38:2538 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 10:40:37:4037 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 11:10:40:1040 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 11:25:36:2536 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 11:40:38:4038 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 11:55:37:5537 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 12:10:36:1036 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 12:26:01:261 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 12:55:55:5555 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 13:10:43:1043 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 13:25:37:2537 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 13:41:03:413 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 13:55:54:5554 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 14:10:50:1050 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 14:25:39:2539 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 14:40:43:4043 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 14:55:45:5545 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 15:10:50:1050 [31merror[39m: [31minvalid input syntax for type double precision: "X"[39m
+2021-04-20 15:25:31:2531 [31merror[39m: [31mRequest failed with status code 429[39m
+2021-04-20 15:25:44:2544 [31merror[39m: [31mcontrol reached end of trigger procedure without RETURN[39m
+2021-04-20 15:40:44:4044 [31merror[39m: [31mRequest failed with status code 429[39m
+2021-04-20 15:55:43:5543 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-20 16:11:20:1120 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-21 02:52:56:5256 [31merror[39m: [31mconnect ETIMEDOUT 92.51.183.171:443[39m
+2021-04-21 21:45:03:453 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-21 22:00:15:015 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-21 22:15:17:1517 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-21 23:05:00:50 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-21 23:19:38:1938 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-21 23:34:38:3438 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-21 23:49:36:4936 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-22 00:04:36:436 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-22 00:19:37:1937 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-22 00:34:36:3436 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-22 00:49:38:4938 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-22 01:04:39:439 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-22 01:19:40:1940 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-22 01:34:55:3455 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-22 02:04:39:439 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-22 02:19:38:1938 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-22 02:34:38:3438 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-22 03:02:25:225 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-22 03:18:35:1835 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-22 03:33:33:3333 [31merror[39m: [31mschema "bet" does not exist 3F000[39m
+2021-04-22 03:35:31:3531 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 03:35:31:3531 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 03:35:31:3531 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 03:35:31:3531 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 03:35:31:3531 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 03:40:47:4047 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 03:40:47:4047 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 03:40:47:4047 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 03:41:22:4122 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 03:41:22:4122 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 03:41:22:4122 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 03:41:23:4123 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 03:41:23:4123 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 03:41:23:4123 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 03:41:23:4123 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 03:44:04:444 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 03:44:04:444 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 03:44:04:444 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 03:44:04:444 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 14:27:38:2738 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 14:27:39:2739 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 14:27:39:2739 [31merror[39m: [31m{ status: 403, custom: 'Invalid auth token' }[39m
+2021-04-22 14:40:17:4017 [31merror[39m: [31mconnect ETIMEDOUT 92.51.183.171:443[39m
