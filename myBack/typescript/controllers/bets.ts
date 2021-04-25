@@ -70,7 +70,7 @@ export default class Bet {
     }
   }
 
-  calculateProfit(bets: any[]): number {
+  private calculateProfit(bets: any[]): number {
     if (bets.length === 0) {
       return 0;
     }

@@ -19,3 +19,7 @@ Router.get(
     bet.Notifications(req, res, next);
   }
 );
+
+Router.get('/report', (req: Request, res: Response, next: NextFunction) => {
+  bet.Report(req, res, next);
+});
